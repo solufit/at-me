@@ -10,7 +10,7 @@
 				<input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
 				<div class="drawer-side lg:h-fit z-20">
 					<label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"></label>
-					<div class="menu p-4 w-80 min-h-screen lg:min-h-fit bg-base-200 lg:bg-transparent">
+					<div class="menu p-4 w-80 min-h-screen lg:min-h-fit bg-white lg:bg-transparent">
 						<div class="flex items-center justify-center mb-7">
 							<calender />
 						</div>

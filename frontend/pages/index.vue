@@ -1,6 +1,8 @@
 <script setup lang="ts">
 	import Timeline from '~/components/sidebar/timeline.vue';
+	import Tasks from '~/components/parts/tasks.vue';
 	import type { Schdule } from '~/types/schdule';
+	import type { Task } from '~/types/task';
 	const schs: Schdule[] = [
 		{
 			starttime: '2024-02-20 11:44',
@@ -29,6 +31,18 @@
 			duringtime: 10,
 			title: 'test',
 			description: 'test',
+		},
+	];
+	const tasks: Task[] = [
+		{
+			id: '',
+			title: 'test',
+			description: 'test',
+			schduletime: '',
+			deadtime: '',
+			project: '',
+			projectId: '',
+			duringtime: 10,
 		},
 	];
 	const tabs = ref('calender');
@@ -60,10 +74,12 @@
 		</div>
 		<div class="p-5 mt-5 md:mt-0">
 			<div class="md:flex w-full">
-				<div class="md:block md:w-1/3" :class="{ hidden: tabs != 'calender' }">
+				<div class="md:block md:w-1/2" :class="{ hidden: tabs != 'calender' }">
 					<Timeline :schdules="schs" />
 				</div>
-				<div class="md:block md:w-1/3" :class="{ hidden: tabs != 'tasks' }">ここにタスク一覧</div>
+				<div class="md:block md:w-1/2" :class="{ hidden: tabs != 'tasks' }">
+					<Tasks :tasks="tasks" />
+				</div>
 			</div>
 		</div>
 	</div>

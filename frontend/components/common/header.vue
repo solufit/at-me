@@ -12,7 +12,7 @@
 				</div>
 			</div>
 			<div class="flex-1">
-				<a class="btn btn-ghost text-xl">daisyUI</a>
+				<a class="btn btn-ghost text-xl">@me</a>
 			</div>
 			<div class="flex-none">
 				<div class="dropdown dropdown-end">
