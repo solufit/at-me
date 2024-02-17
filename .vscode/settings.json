@@ -2,11 +2,11 @@
     "sqltools.connections": [
         {
             "previewLimit": 50,
-            "server": "localhost",
+            "server": "db",
             "port": 5432,
             "driver": "PostgreSQL",
             "name": "local",
-            "database": "postgres",
+            "database": "atme",
             "username": "postgres",
             "password": "postgres"
         }
