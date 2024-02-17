@@ -11,4 +11,9 @@ export default defineNuxtConfig({
 	alias: {
 		'*': 'types/*',
 	},
+	modules: ['@nuxt/image', 'dayjs-nuxt'],
+	image: {
+		format: ['webp'],
+		dir: 'assets/images',
+	},
 });

@@ -1,10 +1,10 @@
 export interface Task {
 	id: string;
 	title: string;
-	deadtime: string;
+	deadtime: Date;
 	description: string;
 	project: string;
 	projectId: string;
-	schduletime: string;
+	schduletime: Date;
 	duringtime: number;
 }
