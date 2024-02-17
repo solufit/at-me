@@ -9,12 +9,12 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import os
 
-DATABASE = "mysql+pymysql"
-USER = os.getenv('MYSQL_USER')
-PASSWORD = os.getenv('MYSQL_PASSWORD')
-HOST = os.getenv('MYSQL_HOST')
-PORT = "3306"
-DB_NAME = os.getenv('MYSQL_DATABASE')
+DATABASE = "postgresql+psycopg2"
+USER = "postgres"
+PASSWORD = "postgres"
+HOST = "db"
+PORT = "5432"
+DB_NAME = "atme"
 
 DATABASE_URL = "{}://{}:{}@{}:{}/{}".format(
     DATABASE, USER, PASSWORD, HOST, PORT, DB_NAME

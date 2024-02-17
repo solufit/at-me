@@ -14,7 +14,7 @@
 	// "forwardPorts": [5000, 5432],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "pip install -r /workspaces/api/requirements.txt",
+	"postCreateCommand": "pip install -r /workspaces/api/requirements.txt && cd /workspaces/api/ && alembic upgrade head",
 	"customizations": {
 		"vscode": {
 			"extensions": [

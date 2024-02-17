@@ -21,8 +21,6 @@ services:
   db:
     image: postgres:latest
     restart: unless-stopped
-    volumes:
-      - ../../initdb:/docker-entrypoint-initdb.d
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres

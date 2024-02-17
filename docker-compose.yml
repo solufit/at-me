@@ -19,8 +19,6 @@ services:
       context: .
       dockerfile: ./docker/api/Dockerfile
 
-    volumes:
-      - initdb:/docker-entrypoint-initdb.d
 
     depends_on:
       - db
