@@ -2,4 +2,18 @@
 export default defineNuxtConfig({
 	devtools: { enabled: true },
 	css: ['~/assets/css/main.css'],
+	postcss: {
+		plugins: {
+			tailwindcss: {},
+			autoprefixer: {},
+		},
+	},
+	alias: {
+		'*': 'types/*',
+	},
+	modules: ['@nuxt/image', 'dayjs-nuxt'],
+	image: {
+		format: ['webp'],
+		dir: 'assets/images',
+	},
 });
