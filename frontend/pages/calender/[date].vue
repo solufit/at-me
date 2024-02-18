@@ -34,18 +34,7 @@
 			description: 'test',
 		},
 	];
-	const tasks: Task[] = [
-		{
-			id: '',
-			title: 'test',
-			description: 'test',
-			schduletime: new Date(),
-			deadtime: new Date(),
-			project: '',
-			projectId: '',
-			duringtime: 10,
-		},
-	];
+	const tasks: Task[] = [];
 	const tabs = ref('calender');
 	const change_tab = (tab: string) => {
 		tabs.value = tab;
