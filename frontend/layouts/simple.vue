@@ -12,7 +12,7 @@
 					<label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"></label>
 					<div class="menu p-4 w-80 min-h-screen lg:min-h-fit bg-white lg:bg-transparent">
 						<div class="mb-6 lg:hidden">
-							<a class="btn btn-ghost text-xl" href="/"> <NuxtImg provider="myProvider" src="logo.webp" class="h-8 w-8" alt="logo" />@me</a>
+							<a class="btn btn-ghost text-xl" href="/"> <NuxtImg src="/images/logo.webp" class="h-8 w-8" alt="logo" />@me</a>
 						</div>
 						<ul class="h-96">
 							<!-- Sidebar content here -->
