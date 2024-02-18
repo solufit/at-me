@@ -31,16 +31,7 @@ export default defineNuxtConfig({
 	modules: ['@nuxt/image', 'dayjs-nuxt', '@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', '@vite-pwa/nuxt'],
 	image: {
 		format: ['webp', 'png'],
-		dir: 'public/images',
-		providers: {
-			myProvider: {
-				name: 'myProvider', // optional value to overrider provider name
-				provider: '~/providers/my-provider.ts', // Path to custom provider
-				options: {
-					baseURL: 'https://staging.solufit.net/images/',
-				},
-			},
-		},
+		dir: 'public/',
 	},
 	pinia: {
 		storesDirs: ['./stores/**'],

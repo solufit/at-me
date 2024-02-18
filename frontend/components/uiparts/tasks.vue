@@ -43,7 +43,7 @@ import type { PartsTasks } from '#build/components';
 		<div v-else class="flex items-center justify-center p-12">
 			<div>
 				<div class="text-2xl font-extrabold text-center mb-6">Zero Task！</div>
-				<div><NuxtImg provider="myProvider" src="stackzero.png"></NuxtImg></div>
+				<div><NuxtImg provider="myProvider" src="/images/stackzero.png"></NuxtImg></div>
 			</div>
 		</div>
 	</div>

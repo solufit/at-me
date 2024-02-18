@@ -15,7 +15,7 @@
 				<div class="card-body">
 					<div class="block md:flex items-center justify-center">
 						<div class="text-center px-12">
-							<h1 class="text-5xl font-bold flex"><NuxtImg src="/logo.webp" class="h-16 w-16" /><span class="ml-3">@me</span></h1>
+							<h1 class="text-5xl font-bold flex"><NuxtImg src="/images/logo.webp" class="h-16 w-16" /><span class="ml-3">@me</span></h1>
 							<p class="py-6">始めよう、タスク管理</p>
 						</div>
 						<div class="px-12">
