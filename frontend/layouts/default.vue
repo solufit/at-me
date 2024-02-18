@@ -21,8 +21,8 @@
 						</div>
 						<ul class="h-96">
 							<!-- Sidebar content here -->
-							<li class="my-3"><a>近日予定のタスク</a></li>
-							<li class="my-3"><a>締め切り</a></li>
+							<li class="my-3"><NuxtLink to="/near">近日予定のタスク</NuxtLink></li>
+							<li class="my-3"><NuxtLink to="/deadline">締め切り</NuxtLink></li>
 						</ul>
 						<hr />
 						<ul class="">
@@ -43,7 +43,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="p-6 w-full">
+			<div class="p-6 w-full overflow-y-auto" style="height: 93vh">
 				<slot />
 			</div>
 			<div>

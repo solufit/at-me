@@ -24,7 +24,7 @@
 		},
 	]);
 	const movedate = (value: any) => {
-		router.push(`/${value.id}`);
+		router.push(`/calender/${value.id}`);
 	};
 </script>
 <template>
