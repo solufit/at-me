@@ -1,4 +1,14 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+	import { useAuth } from '../../composables/auth';
+	import { useUser } from '../../composables/user';
+
+	const { user } = useUser();
+
+	const signOut = async (): Promise<void> => {
+		await useAuth().signOut();
+		await navigateTo('/signIn');
+	};
+</script>
 <template>
 	<div>
 		<div class="navbar bg-base-100">
@@ -32,7 +42,7 @@
 				<div class="dropdown dropdown-end">
 					<div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
 						<div class="w-10 rounded-full">
-							<img alt="User Icon" src="https://lh3.googleusercontent.com/a/ACg8ocK_4fR8F708OIhvIug9Hd4EEtsPy0ok_P0jgdX3QsMm2g=s96-c-rg-br100" />
+							<img alt="User Icon" :src="user?.photoURL" v-if="user?.photoURL !== null" />
 						</div>
 					</div>
 					<ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
@@ -40,10 +50,10 @@
 							<a class="p-4">
 								<div class="avatar">
 									<div class="w-6 mr-2 rounded-full">
-										<img src="https://lh3.googleusercontent.com/a/ACg8ocK_4fR8F708OIhvIug9Hd4EEtsPy0ok_P0jgdX3QsMm2g=s96-c-rg-br100" />
+										<img alt="User Icon" :src="user?.photoURL" v-if="user?.photoURL !== null" />
 									</div>
 								</div>
-								さざんか
+								{{ user?.displayName }}
 							</a>
 						</li>
 						<li>
@@ -60,7 +70,7 @@
 							</a>
 						</li>
 						<li>
-							<a class="p-4">
+							<button class="p-4" @click="signOut">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
 									<path
 										stroke-linecap="round"
@@ -69,7 +79,7 @@
 									/>
 								</svg>
 								ログアウト
-							</a>
+							</button>
 						</li>
 					</ul>
 				</div>

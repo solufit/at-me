@@ -14,7 +14,10 @@
     "@nuxtjs/date-fns": "^1.5.0",
     "@popperjs/core": "^2.11.8",
     "dayjs-nuxt": "^2.1.9",
+    "firebase": "^10.6.0",
+    "firebase-admin": "^11.11.1",
     "nuxt": "^3.10.2",
+    "nuxt-vuefire": "^1.0.1",
     "v-calendar": "^3.1.2",
     "vue": "^3.4.19",
     "vue-router": "^4.2.5"

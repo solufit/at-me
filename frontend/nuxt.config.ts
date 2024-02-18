@@ -16,4 +16,11 @@ export default defineNuxtConfig({
 		format: ['webp'],
 		dir: 'assets/images',
 	},
+	runtimeConfig: {
+		public: {
+			FIREBASE_API_KEY: process.env.NUXT_PUBLIC_APIKEY || '',
+			FIREBASE_AUTH_DOMAIN: process.env.NUXT_PUBLIC_AUTH_DOMAIN || '',
+			FIREBASE_PROJECT_ID: process.env.NUXT_PUBLIC_PROJECT_ID || '',
+		},
+	},
 });
