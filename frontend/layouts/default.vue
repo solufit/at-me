@@ -14,7 +14,7 @@
 					<label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"></label>
 					<div class="menu p-4 w-80 min-h-screen lg:min-h-fit bg-white lg:bg-transparent">
 						<div class="mb-6 lg:hidden">
-							<a class="btn btn-ghost text-xl"> <NuxtImg src="/logo.webp" class="h-8 w-8" />@me</a>
+							<a class="btn btn-ghost text-xl" href="/"> <NuxtImg src="/logo.webp" class="h-8 w-8" alt="logo" />@me</a>
 						</div>
 						<div class="flex items-center justify-center mb-7">
 							<calender />
@@ -27,19 +27,20 @@
 						<hr />
 						<ul class="">
 							<!-- Sidebar content here -->
-							<li class="my-1"><a>チュートリアル</a></li>
-							<li class="my-1"><a>利用規約</a></li>
+							<li class="my-1"><NuxtLink to="/">チュートリアル</NuxtLink></li>
+							<li class="my-1"><NuxtLink to="/">利用規約</NuxtLink></li>
 							<li class="my-1"><button onclick="oss_license.showModal()">OSSライセンス</button></li>
-							<dialog id="oss_license" class="modal">
-								<div class="modal-box">
-									<Licence />
-								</div>
-								<form method="dialog" class="modal-backdrop">
-									<button>close</button>
-								</form>
-							</dialog>
-							<li class="my-1"><a>このアプリについて</a></li>
+
+							<li class="my-1"><NuxtLink to="/">このアプリについて</NuxtLink></li>
 						</ul>
+						<dialog id="oss_license" class="modal">
+							<div class="modal-box">
+								<Licence />
+							</div>
+							<form method="dialog" class="modal-backdrop">
+								<button>close</button>
+							</form>
+						</dialog>
 					</div>
 				</div>
 			</div>
@@ -62,11 +63,11 @@
 				-->
 				<div class="absolute bottom-0 right-0 m-6">
 					<div class="tooltip" data-tip="タスクを追加">
-						<div tabindex="0" role="button" class="btn btn-square m-1 bg-primary border-0" onclick="add_task.showModal()">
+						<button tabindex="0" role="button" class="btn btn-square m-1 bg-primary border-0" onclick="add_task.showModal()" aria-label="タスクの追加">
 							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
 								<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
 							</svg>
-						</div>
+						</button>
 					</div>
 				</div>
 				<dialog id="add_task" class="modal">

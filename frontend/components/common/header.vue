@@ -22,18 +22,18 @@
 				</div>
 			</div>
 			<div class="flex-1">
-				<NuxtLink to="/" class="btn btn-ghost text-xl"> <NuxtImg src="/logo.webp" class="h-8 w-8" />@me</NuxtLink>
+				<NuxtLink to="/" class="btn btn-ghost text-xl"> <NuxtImg src="/logo.webp" class="h-8 w-8" alt="logo" />@me</NuxtLink>
 			</div>
 			<div class="flex-none">
 				<div class="tooltip tooltip-bottom" data-tip="検索">
-					<button class="btn btn-ghost btn-circle">
+					<button class="btn btn-ghost btn-circle" aria-label="検索">
 						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
 						</svg>
 					</button>
 				</div>
 				<div class="tooltip tooltip-bottom" data-tip="同期">
-					<button class="btn btn-ghost btn-circle">
+					<button class="btn btn-ghost btn-circle" aria-label="同期">
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
 							<path
 								stroke-linecap="round"
@@ -52,17 +52,17 @@
 					</div>
 					<ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
 						<li>
-							<a class="p-4">
+							<NuxtLink to="/" class="p-4">
 								<div class="avatar">
 									<div class="w-6 mr-2 rounded-full">
 										<img alt="User Icon" :src="user?.photoURL" v-if="user?.photoURL !== null" />
 									</div>
 								</div>
 								{{ user?.displayName }}
-							</a>
+							</NuxtLink>
 						</li>
 						<li>
-							<a class="p-4">
+							<NuxtLink to="/" class="p-4">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
 									<path
 										stroke-linecap="round"
@@ -72,7 +72,7 @@
 									<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
 								</svg>
 								設定
-							</a>
+							</NuxtLink>
 						</li>
 						<li>
 							<button class="p-4" @click="signOut">

@@ -7,14 +7,7 @@ import type { PartsTasks } from '#build/components';
 </script>
 <template>
 	<div class="p-2" v-for="task in tasks">
-		<div
-			class="border-2 rounded-md p-3 cursor-pointer w-full"
-			@click="
-				{
-					() => $this.document.getElementById(task.id).showModal();
-				}
-			"
-		>
+		<div class="border-2 rounded-md p-3 cursor-pointer w-full">
 			<div class="flex w-full">
 				<div class="w-20">
 					<input type="radio" name="radio-2" class="radio radio-primary" />
@@ -24,7 +17,7 @@ import type { PartsTasks } from '#build/components';
 					<div class="p-1">{{ task.description }}</div>
 				</div>
 				<div class="w-9">
-					<button class="bg-neutral">
+					<button class="bg-neutral" aria-label="スケジュールの変更">
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-primary">
 							<path
 								stroke-linecap="round"

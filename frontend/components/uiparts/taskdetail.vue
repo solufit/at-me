@@ -25,7 +25,8 @@
 </script>
 <template>
 	<div class="h-full">
-		<input type="text" placeholder="タスク名" class="input w-full font-bold" v-model="title" />
+		<label class="hidden" for="name">タスク名</label>
+		<input type="text" name="name" placeholder="タスク名" class="input w-full font-bold" v-model="title" />
 		<div class="py-4">
 			<div class="flex mb-4">
 				<div class="w-1/2">
@@ -43,7 +44,8 @@
 			</div>
 			<div class="flex mb-4">
 				<div class="w-4/5">
-					<input type="range" min="0" max="120" class="range range-primary range-sm" step="15" v-model="duringtime" />
+					<label class="hidden" for="duringtime">タスクにかかる時間</label>
+					<input type="range" name="duringtime" min="0" max="120" class="range range-primary range-sm" step="15" v-model="duringtime" />
 					<div class="w-full flex justify-between text-xs px-2">
 						<span>0</span>
 						<span>30</span>
@@ -55,7 +57,8 @@
 				<div class="w-1/5 pl-6 text-xs">かかる時間: {{ duringtime }}分</div>
 			</div>
 			<div class="mb-6">
-				<textarea class="textarea w-full h-96" placeholder="タスクの詳細" v-model="description">{{ task }}</textarea>
+				<label class="hidden" for="memo">タスクの内容</label>
+				<textarea class="textarea w-full h-96" name="memo" placeholder="タスクの詳細" v-model="description">{{ task }}</textarea>
 			</div>
 			<div class="text-end">
 				<div class="btn btn-primary btn-md">
