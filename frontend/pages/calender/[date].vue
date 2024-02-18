@@ -1,11 +1,9 @@
 <script setup lang="ts">
-	useHead({
-		title: 'Today | @me',
-	});
 	import Timeline from '~/components/sidebar/timeline.vue';
 	import Tasks from '~/components/uiparts/tasks.vue';
 	import type { Schdule } from '~/types/schdule';
 	import type { Task } from '~/types/task';
+	import format from 'date-fns/format';
 	const schs: Schdule[] = [
 		{
 			starttime: '2024-02-20 11:44',
@@ -36,25 +34,28 @@
 			description: 'test',
 		},
 	];
-	const tasks: Task[] = [
-		{
-			id: '',
-			title: 'test',
-			description: 'test',
-			schduletime: new Date(),
-			deadtime: new Date(),
-			project: '',
-			projectId: '',
-			duringtime: 10,
-		},
-	];
+	const tasks: Task[] = [];
 	const tabs = ref('calender');
 	const change_tab = (tab: string) => {
 		tabs.value = tab;
 	};
+	const route = useRoute();
+	const targetdate = route.params.date as string;
+	useHead({
+		title: `${targetdate} | @me`,
+	});
+	const tfdate = new Date(targetdate);
 </script>
 <template>
 	<div>
+		<div class="flex text-center justify-center items-center h-14">
+			<div class="w-4/5 md:w-5/6">
+				<span class="text-center justify-center font-semibold mt-5 text-lg md:text-xl"
+					>{{ tfdate.getFullYear() }} / {{ tfdate.getMonth() + 1 }} / {{ tfdate.getDate() }} ( {{ ['日', '月', '火', '水', '木', '金', '土'][tfdate.getDay()] }} )</span
+				>
+			</div>
+			<NuxtLink class="w-1/5 md:w-1/6 text-center btn btn-outline btn-md btn-primary" to="/">TODAY</NuxtLink>
+		</div>
 		<div role="tablist" class="md:hidden tabs tabs-boxed w-32">
 			<button role="tab" class="tab" :class="{ 'tab-active': tabs == 'calender' }" @click="change_tab('calender')">
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
