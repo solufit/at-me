@@ -2,6 +2,7 @@
 export default defineNuxtConfig({
 	devtools: { enabled: true },
 	css: ['~/assets/css/main.css'],
+	ssr: true,
 	postcss: {
 		plugins: {
 			tailwindcss: {},
@@ -29,8 +30,8 @@ export default defineNuxtConfig({
 	},
 	modules: ['@nuxt/image', 'dayjs-nuxt', '@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', '@vite-pwa/nuxt'],
 	image: {
-		format: ['webp'],
-		dir: 'assets/images',
+		format: ['webp', 'png'],
+		dir: 'public/',
 	},
 	pinia: {
 		storesDirs: ['./stores/**'],
