@@ -1,4 +1,7 @@
 <script setup lang="ts">
+	useHead({
+		title: '近日予定 | @me',
+	});
 	import type { Task } from '~/types/task';
 	import Tasks from '~/components/uiparts/tasks.vue';
 	const tasks: Task[] = [

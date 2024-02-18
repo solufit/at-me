@@ -1,4 +1,7 @@
 <script setup lang="ts">
+	useHead({
+		title: 'Today | @me',
+	});
 	import Timeline from '~/components/sidebar/timeline.vue';
 	import Tasks from '~/components/uiparts/tasks.vue';
 	import type { Schdule } from '~/types/schdule';

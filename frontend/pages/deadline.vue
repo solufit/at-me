@@ -1,4 +1,7 @@
 <script setup lang="ts">
+	useHead({
+		title: '締め切り | @me',
+	});
 	import type { Task } from '~/types/task';
 	import Tasks from '~/components/uiparts/tasks.vue';
 	const tasks: Task[] = [

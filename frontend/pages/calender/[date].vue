@@ -52,6 +52,9 @@
 	};
 	const route = useRoute();
 	const targetdate = route.params.date as string;
+	useHead({
+		title: `${targetdate} | @me`,
+	});
 	const tfdate = new Date(targetdate);
 </script>
 <template>
