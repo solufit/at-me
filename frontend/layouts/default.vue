@@ -1,5 +1,6 @@
 <script setup lang="ts">
 	import headervue from '~/components/common/header.vue';
+	import Licence from '~/components/licence.vue';
 	import taskdetail from '~/components/parts/taskdetail.vue';
 	import Calender from '~/components/sidebar/calender.vue';
 </script>
@@ -18,10 +19,26 @@
 						<div class="flex items-center justify-center mb-7">
 							<calender />
 						</div>
+						<ul class="h-96">
+							<!-- Sidebar content here -->
+							<li class="my-3"><a>近日予定のタスク</a></li>
+							<li class="my-3"><a>締め切り</a></li>
+						</ul>
+						<hr />
 						<ul class="">
 							<!-- Sidebar content here -->
-							<li><a>Sidebar Item 1</a></li>
-							<li><a>Sidebar Item 2</a></li>
+							<li class="my-1"><a>チュートリアル</a></li>
+							<li class="my-1"><a>利用規約</a></li>
+							<li class="my-1"><button onclick="oss_license.showModal()">OSSライセンス</button></li>
+							<dialog id="oss_license" class="modal">
+								<div class="modal-box">
+									<Licence />
+								</div>
+								<form method="dialog" class="modal-backdrop">
+									<button>close</button>
+								</form>
+							</dialog>
+							<li class="my-1"><a>このアプリについて</a></li>
 						</ul>
 					</div>
 				</div>
@@ -43,11 +60,13 @@
 					</ul>
 				</div>
 				-->
-				<div class="absolute bottom-0 right-0 m-5">
-					<div tabindex="0" role="button" class="btn btn-square m-1 bg-primary border-0" onclick="add_task.showModal()">
-						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-							<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-						</svg>
+				<div class="absolute bottom-0 right-0 m-6">
+					<div class="tooltip" data-tip="タスクを追加">
+						<div tabindex="0" role="button" class="btn btn-square m-1 bg-primary border-0" onclick="add_task.showModal()">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+							</svg>
+						</div>
 					</div>
 				</div>
 				<dialog id="add_task" class="modal">
