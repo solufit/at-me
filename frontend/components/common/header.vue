@@ -22,7 +22,7 @@
 				</div>
 			</div>
 			<div class="flex-1">
-				<a class="btn btn-ghost text-xl"> <NuxtImg src="/logo.webp" class="h-8 w-8" />@me</a>
+				<NuxtLink to="/" class="btn btn-ghost text-xl"> <NuxtImg src="/logo.webp" class="h-8 w-8" />@me</NuxtLink>
 			</div>
 			<div class="flex-none">
 				<div class="tooltip tooltip-bottom" data-tip="検索">
