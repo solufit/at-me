@@ -31,7 +31,8 @@ export default defineNuxtConfig({
 	modules: ['@nuxt/image', 'dayjs-nuxt', '@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', '@vite-pwa/nuxt'],
 	image: {
 		format: ['webp'],
-		dir: 'assets/images',
+		dir: 'public/images',
+		domains: ['atme.solufit.net', 'staging.atme-d8t.pages.dev'],
 	},
 	pinia: {
 		storesDirs: ['./stores/**'],
