@@ -7,7 +7,7 @@ type Auth = {
 };
 
 export const useAuth = (): Auth => {
-	const { setUser } = useUser();
+	const { setUser, clearUser } = useUser();
 
 	const signIn = async (): Promise<void> => {
 		const auth = getAuth();
@@ -26,7 +26,7 @@ export const useAuth = (): Auth => {
 		const auth = getAuth();
 		await firebaseSignOut(auth)
 			.then(() => {
-				setUser(null);
+				clearUser();
 			})
 			.catch((error) => {
 				console.log(error);

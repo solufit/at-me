@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	import Timeline from '~/components/sidebar/timeline.vue';
-	import Tasks from '~/components/parts/tasks.vue';
+	import Tasks from '~/components/uiparts/tasks.vue';
 	import type { Schdule } from '~/types/schdule';
 	import type { Task } from '~/types/task';
 	import format from 'date-fns/format';

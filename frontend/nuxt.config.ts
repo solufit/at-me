@@ -11,10 +11,13 @@ export default defineNuxtConfig({
 	alias: {
 		'*': 'types/*',
 	},
-	modules: ['@nuxt/image', 'dayjs-nuxt'],
+	modules: ['@nuxt/image', 'dayjs-nuxt', '@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt'],
 	image: {
 		format: ['webp'],
 		dir: 'assets/images',
+	},
+	pinia: {
+		storesDirs: ['./stores/**'],
 	},
 	runtimeConfig: {
 		public: {

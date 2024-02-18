@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	import headervue from '~/components/common/header.vue';
 	import Licence from '~/components/licence.vue';
-	import taskdetail from '~/components/parts/taskdetail.vue';
+	import taskdetail from '~/components/uiparts/taskdetail.vue';
 	import Calender from '~/components/sidebar/calender.vue';
 </script>
 <template>
