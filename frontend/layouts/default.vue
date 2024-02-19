@@ -12,14 +12,14 @@
 				<input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
 				<div class="drawer-side lg:h-fit z-20">
 					<label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"></label>
-					<div class="menu p-4 w-80 min-h-screen lg:min-h-fit bg-white lg:bg-transparent">
+					<div class="menu p-4 w-80 h-screen bg-white lg:bg-transparent">
 						<div class="mb-6 lg:hidden">
 							<a class="btn btn-ghost text-xl" href="/"> <NuxtImg src="/images/logo.webp" class="h-8 w-8" alt="logo" />@me</a>
 						</div>
 						<div class="flex items-center justify-center mb-7">
 							<calender />
 						</div>
-						<ul class="h-96">
+						<ul class="h-56 md:h-80">
 							<!-- Sidebar content here -->
 							<li class="my-3"><NuxtLink to="/">TODAY</NuxtLink></li>
 							<li class="my-3"><NuxtLink to="/near">近日予定のタスク</NuxtLink></li>
