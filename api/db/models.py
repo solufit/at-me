@@ -4,7 +4,6 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.dialects.postgresql import CHAR, TEXT
 from sqlalchemy.dialects.mysql import BOOLEAN
 from sqlalchemy.dialects.mysql import DATETIME
-from sqlalchemy.dialects.mysql import TEXT
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, relationship
 import os
@@ -28,7 +27,7 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = 'users'
     localId = Column(TEXT, primary_key=True, unique=True)
-    email = Column(String(30), unique=True)
+    email = Column(TEXT, unique=True)
     displayname = Column(TEXT)
     photoIcon = Column(TEXT)
     refleshToken = Column(TEXT)
@@ -36,6 +35,11 @@ class User(Base):
 class TaskList(Base):
     __tablename__ = "taskList"
     id = Column(TEXT, primary_key=True, unique=True)
+    kind = Column(TEXT)
+    title = Column(TEXT)
+    updated = Column(TIMESTAMP)
+    selfLink = Column(TEXT)
+    etag = Column(TEXT)
     localId = Column(TEXT, ForeignKey("users.localId"))
     
 
@@ -45,8 +49,18 @@ class Task(Base):
     localId = Column(TEXT), ForeignKey("users.localId")
     kind = Column(TEXT)
     title = Column(TEXT)
-    duetime = Column(TIMESTAMP)
-    description = Column(TEXT)
+    note = Column(TEXT)
+    etag = Column(TEXT)
+    updated = Column(TIMESTAMP)
+    selfLink = Column(TEXT)
+    parent = Column(TEXT)
+    position = Column(TEXT)
+    status = Column(TEXT)
+    due = Column(Date)
+    completed = Column(TIMESTAMP)
+    deleted = Column(BOOLEAN)
+    hidden = Column(BOOLEAN)
+    
 
 class WorktimeWeek(Base):
     __tablename__ = 'worktimeWeek'
