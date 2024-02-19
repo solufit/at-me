@@ -63,7 +63,7 @@
 				</div>
 				-->
 				<div class="absolute bottom-0 right-0 m-6">
-					<div class="tooltip" data-tip="タスクを追加">
+					<div class="md:tooltip" data-tip="タスクを追加">
 						<button tabindex="0" role="button" class="btn btn-square m-1 bg-primary border-0" onclick="add_task.showModal()" aria-label="タスクの追加">
 							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
 								<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />

@@ -25,14 +25,14 @@
 				<NuxtLink to="/" class="btn btn-ghost text-xl"> <NuxtImg src="/images/logo.webp" class="h-8 w-8" alt="logo" />@me</NuxtLink>
 			</div>
 			<div class="flex-none">
-				<div class="tooltip tooltip-bottom" data-tip="検索">
+				<div class="md:tooltip md:tooltip-bottom" data-tip="検索">
 					<button class="btn btn-ghost btn-circle" aria-label="検索">
 						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
 						</svg>
 					</button>
 				</div>
-				<div class="tooltip tooltip-bottom" data-tip="同期">
+				<div class="md:tooltip md:tooltip-bottom" data-tip="同期">
 					<button class="btn btn-ghost btn-circle" aria-label="同期">
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
 							<path
