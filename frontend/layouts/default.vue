@@ -3,6 +3,14 @@
 	import Licence from '~/components/licence.vue';
 	import taskdetail from '~/components/uiparts/taskdetail.vue';
 	import Calender from '~/components/sidebar/calender.vue';
+	const { $pwa } = useNuxtApp();
+	const showInstall = ref(true);
+	const dismiss = async () => {
+		showInstall.value = false;
+	};
+	const install = async () => {
+		$pwa?.install();
+	};
 </script>
 <template>
 	<div>
@@ -46,6 +54,13 @@
 				</div>
 			</div>
 			<div class="p-6 w-full overflow-y-auto" style="height: 93vh">
+				<div v-if="$pwa?.isPWAInstalled == false && showInstall == true" class="w-full bg-neutral rounded-xl px-4 py-2 text-sm flex items-center justify-center">
+					<div class="w-2/3">アプリをダウンロードしてもっと便利に！</div>
+					<div class="w-1/6 p-1">
+						<button class="btn btn-primary btn-sm" @click="install()">インストール</button>
+					</div>
+					<button class="w-1/6 underline p-1" @click="dismiss()">表示しない</button>
+				</div>
 				<slot />
 			</div>
 			<div>
