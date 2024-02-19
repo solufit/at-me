@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Time, Date, Text, TIMESTAMP
+from sqlalchemy import Column, Integer, String, Time, Date, Text, TIMESTAMP, ForeignKey
 from sqlalchemy.sql import func
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.dialects.postgresql import CHAR, TEXT
@@ -6,7 +6,7 @@ from sqlalchemy.dialects.mysql import BOOLEAN
 from sqlalchemy.dialects.mysql import DATETIME
 from sqlalchemy.dialects.mysql import TEXT
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, relationship
 import os
 
 DATABASE = "postgresql+psycopg2"
@@ -27,35 +27,41 @@ Base = declarative_base()
 
 class User(Base):
     __tablename__ = 'users'
-    localId = Column(String(25), primary_key=True, unique=True)
+    localId = Column(TEXT, primary_key=True, unique=True)
     email = Column(String(30), unique=True)
-    displayname = Column(String(30))
-    photoIcon = Column(String(500))
-    refleshToken = Column(String(500))
+    displayname = Column(TEXT)
+    photoIcon = Column(TEXT)
+    refleshToken = Column(TEXT)
+
+class TaskList(Base):
+    __tablename__ = "taskList"
+    id = Column(TEXT, primary_key=True, unique=True)
+    localId = Column(TEXT, ForeignKey("users.localId"))
+    
 
 class Task(Base):
     __tablename__ = 'tasks'
-    id = Column(String(25), primary_key=True, unique=True)
-    kind = Column(String(25))
-    localId = Column(String(25))
+    id = Column(TEXT, primary_key=True, unique=True)
+    localId = Column(TEXT), ForeignKey("users.localId")
+    kind = Column(TEXT)
     title = Column(TEXT)
     duetime = Column(TIMESTAMP)
     description = Column(TEXT)
 
 class WorktimeWeek(Base):
     __tablename__ = 'worktimeWeek'
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     worktimeStart = Column(Time, nullable=False)
     worktimeEnd = Column(Time, nullable=False)
-    localID = Column(Text)
+    localId = Column(TEXT), ForeignKey("users.localId")
 
 class WorktimeDate(Base):
     __tablename__ = 'worktimeDate'
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     targetDate = Column(Date, nullable=False)
     worktimeStart = Column(Time, nullable=False)
     worktimeEnd = Column(Time, nullable=False)
-    localID = Column(Text)
+    localId = Column(TEXT), ForeignKey("users.localId")
 
 class Calendar(Base):
     __tablename__ = 'calendar'
@@ -64,5 +70,5 @@ class Calendar(Base):
     endtime = Column(TIMESTAMP, nullable=False)
     title = Column(Text)
     note = Column(Text)
-    localID = Column(Text)
     calID = Column(Text)
+    localId = Column(TEXT), ForeignKey("users.localId")
