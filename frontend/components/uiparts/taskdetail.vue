@@ -42,8 +42,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="flex mb-4">
-				<div class="w-4/5">
+			<div class="flex flex-wrap mb-4">
+				<div class="w-full md:w-4/5">
 					<label class="hidden" for="duringtime">タスクにかかる時間</label>
 					<input type="range" name="duringtime" min="0" max="120" class="range range-primary range-sm" step="15" v-model="duringtime" />
 					<div class="w-full flex justify-between text-xs px-2">
@@ -54,7 +54,7 @@
 						<span>120</span>
 					</div>
 				</div>
-				<div class="w-1/5 pl-6 text-xs">かかる時間: {{ duringtime }}分</div>
+				<div class="w-full md:w-1/5 pt-3 md:pl-6 text-xs">かかる時間: {{ duringtime }}分</div>
 			</div>
 			<div class="mb-6">
 				<label class="hidden" for="memo">タスクの内容</label>
