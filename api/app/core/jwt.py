@@ -9,7 +9,7 @@ from app.core import config
 import firebase_admin
 from firebase_admin import auth, credentials
 
-cred = credentials.Certificate("firebase-adminsdk.json")
+cred = credentials.Certificate("app/firebase-adminsdk.json")
 firebase_admin.initialize_app(cred)
 
 
