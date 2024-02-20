@@ -19,7 +19,6 @@
 
 	// api requests
 	async () => {
-		const today = new Date();
 		const { data, error } = await useFetch(`https://${api_endpoint}/calenders?date=${today}`);
 		schs.value = data.value as Schdule[];
 	};
