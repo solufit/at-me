@@ -20,12 +20,28 @@ class Event(atMeBase):
     title : str = Field("title", description="titlej")
     etag : str = Field("etag", description="etag")
     note : str = Field("note", description="Note")
-    localId : str = Field("localID", description="local user id")
     Taskid : str = Field("task id", description="relational task id")
 
     class Config:
         orm_mode = True
-        
+
+class Task(atMeBase):
+    id : str = Field("id", description="Task ID")
+    title : str = Field("title", description="task title")
+    note : str = Field("note", description="task note")
+    updated : datetime.datetime = Field(datetime.datetime(1,1,1,1,1,1), description="updated time and date")
+    selfLink : str = Field("URL", description="tasks url")
+    parent : str = Field("parent", description="parent")
+    position : str = Field("position", description="position")
+    status : str = Field("status", description="task status")
+    due : datetime.date = Field(datetime.date(1,1,1), description="due date")
+    completed : bool = Field(False, description="task completed(y or n)")
+    deleted : bool = Field(False, description="if task deleted, it is true")
+    hidden : bool = Field(False, description="if the flag is true, the task is hidden")
+
+    class Config:
+        orm_mode = True
+     
    
 
     
