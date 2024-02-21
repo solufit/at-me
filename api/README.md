@@ -1,5 +1,7 @@
 # @me API仕様
 
+## 詳細、最新情報は"https://APIROOT:PORT/docs"または、"https://APIROOT:PORT/redoc"を参照されたし。
+
 ## Auth
 
 ## Users
@@ -36,3 +38,14 @@
 ### POST /sync
 
 登録されているプロバイダーから情報を一括取得
+
+
+# For Develop
+
+Discordより引用
+```
+ここから秘密鍵落として「firebase-adminsdk.json」っていう名前でappディレクトリ直下（at-me/api/appfirebase-adminsdk.json）においてください
+そういえばgitignoreにしてた
+```
+
+https://console.firebase.google.com/project/PROJECTROOT/settings/serviceaccounts/adminsdk
