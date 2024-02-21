@@ -12,6 +12,7 @@ router = APIRouter()
 
 @router.post(
     "/",
+    description="Sync with google apis",
     response_model = Result,
     responses = {
         500: {
