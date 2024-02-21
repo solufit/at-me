@@ -1,4 +1,19 @@
 from datetime import datetime, timedelta
+import os
+import glob
+from pathlib import Path
+
+#TODO Fix placement 
+def get_secret_path(filename : str) -> str:
+    
+    #get root path
+    root_dir = "{}../../..".format(os.path.dirname(os.path.abspath(__file__)))
+    root_dir = Path(root_dir).resolve()
+
+    #get path
+    result : list = glob.glob("{}/**/{}".format(root_dir, filename), recursive=True)
+
+    return result[0]
 
 import jwt
 from fastapi import FastAPI, Depends, HTTPException, status
@@ -9,7 +24,7 @@ from app.core import config
 import firebase_admin
 from firebase_admin import auth, credentials
 
-cred = credentials.Certificate("app/firebase-adminsdk.json")
+cred = credentials.Certificate(get_secret_path("firebase-adminsdk.json"))
 firebase_admin.initialize_app(cred)
 
 
@@ -42,3 +57,5 @@ def get_current_user(cred: HTTPAuthorizationCredentials = Depends(HTTPBearer()))
             headers={"WWW-Authenticate": "Bearer"}
         )
     return cred
+
+    

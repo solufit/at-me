@@ -1,12 +1,14 @@
 import uvicorn 
-from at import app
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
 from app.api.v1.api import api_router
 from app.core import config
 
-app = FastAPI(title=config.PROJECT_NAME, openapi_url="/api/v1/openapi.json")
+app = FastAPI(
+    title=config.PROJECT_NAME, openapi_url="/api/v1/openapi.json",
+    description = config.DESCRIPTION, version = config.VERSION
+              )
 
 # CORS
 origins = []
