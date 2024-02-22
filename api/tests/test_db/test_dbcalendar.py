@@ -75,7 +75,7 @@ class db_calendar_Tests():
 
             assert result[1] == Event.from_orm(default_calendar)
 
-    def test_cal_create(self, db):
+    def test_cal_create_delete(self, db):
 
         
         with db() as session:
@@ -105,6 +105,27 @@ class db_calendar_Tests():
 
             assert result[1] == Event.from_orm(default_calendar)
             assert result[2] == Event.from_orm(target_calendar)
+
+            calendar.delete(
+                id = 1
+            )
+
+            with pytest.raises(KeyError):
+                result[1] == Event.from_orm(default_calendar)
+
+            assert result[2] == Event.from_orm(target_calendar)
+
+            calendar.delete(
+                id = 2
+            )
+
+            with pytest.raises(KeyError):
+                result[2] == Event.from_orm(target_calendar)
+            
+
+            
+
+            
 
             
 
