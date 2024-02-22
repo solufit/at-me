@@ -59,6 +59,21 @@ class db_calendar_Tests():
         os.remove("./test.db")
 
         return
+    
+    def test_cal_load(self, db):
+
+        with db() as session:
+            session : Session = session # for completion
+
+            calendar = calendar_db(
+                session = session,
+
+            )
+            result = calendar.load(
+                localId = default_calendar.localId
+            )
+
+            assert result[1] == Event.from_orm(default_calendar)
 
     def test_cal_create(self, db):
 
