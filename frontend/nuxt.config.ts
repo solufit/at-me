@@ -36,6 +36,12 @@ export default defineNuxtConfig({
 	pinia: {
 		storesDirs: ['./stores/**'],
 	},
+	piniaPersistedstate: {
+		cookieOptions: {
+			sameSite: 'strict',
+		},
+		storage: 'localStorage',
+	},
 	pwa: {
 		registerType: 'autoUpdate',
 		includeAssets: ['favicon.ico'],

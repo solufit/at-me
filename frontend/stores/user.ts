@@ -1,5 +1,5 @@
-import { ref, computed } from 'vue';
-import { defineStore, storeToRefs } from 'pinia';
+import { ref } from 'vue';
+import { defineStore } from 'pinia';
 import { type User as firebaseUser } from 'firebase/auth';
 
 export const useUserStore = defineStore(
@@ -15,6 +15,8 @@ export const useUserStore = defineStore(
 		return { user, setUser, clearUser };
 	},
 	{
-		persist: true,
+		persist: {
+			storage: persistedState.sessionStorage,
+		},
 	}
 );
