@@ -63,6 +63,34 @@ class db_calendar_Tests():
     def test_cal_create(self, db):
 
         
+        with db() as session:
+            session : Session = session # for completion
+
+            calendar = calendar_db(
+                session = session,
+                
+            )
+            calendar.create(
+                id = target_calendar.id,
+                calendarID = target_calendar.calendarId,
+                htmlLink = target_calendar.htmlLink,
+                starttime = target_calendar.starttime,
+                endtime = target_calendar.endtime,
+                title = target_calendar.title,
+                etag = target_calendar.etag,
+                note = target_calendar.note,
+                localId = target_calendar.localId,
+                Taskid = target_calendar.Taskid
+                
+            )
+
+            result = calendar.load(
+                localId = target_calendar.localId
+            )
+
+            assert result[1] == Event.from_orm(default_calendar)
+            assert result[2] == Event.from_orm(target_calendar)
+
             
 
 
