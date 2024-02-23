@@ -6,7 +6,7 @@ import datetime
 
 from db import models
 from app.db_connector import task_db
-from app.basemodel.common_model import Event
+from app.basemodel.common_model import Task
 
 
 
@@ -82,7 +82,7 @@ class db_task_Tests():
 
         return
     
-    def test_cal_load(self, db):
+    def test_tasks_load(self, db):
 
         with db() as session:
             session : Session = session # for completion
@@ -95,7 +95,7 @@ class db_task_Tests():
                 localId = default_task.localId
             )
 
-            assert result[1] == Event.from_orm(default_task)
+            assert result[1] == Task.from_orm(default_task)
 
     def test_cal_create_delete(self, db):
 
@@ -128,8 +128,8 @@ class db_task_Tests():
                 localId = target_task.localId
             )
 
-            assert result[1] == Event.from_orm(default_task)
-            assert result[2] == Event.from_orm(target_task)
+            assert result[1] == Task.from_orm(default_task)
+            assert result[2] == Task.from_orm(target_task)
 
             task.delete(
                 id = 1,
@@ -137,9 +137,9 @@ class db_task_Tests():
             )
 
             with pytest.raises(KeyError):
-                result[1] == Event.from_orm(default_task)
+                result[1] == Task.from_orm(default_task)
 
-            assert result[2] == Event.from_orm(target_task)
+            assert result[2] == Task.from_orm(target_task)
 
             task.delete(
                 id = 2,
@@ -147,7 +147,9 @@ class db_task_Tests():
             )
 
             with pytest.raises(KeyError):
-                result[2] == Event.from_orm(target_task)
+                result[2] == Task.from_orm(target_task)
+
+                
             
 
             
