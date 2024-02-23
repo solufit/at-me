@@ -43,6 +43,22 @@ default_task_updated : models.Task = models.Task(
 )
 
 
+default_task_nearline : models.Task = models.Task(    
+    localId = "localID",
+    id = "id",
+    title = "title-updated",
+    note = "notes-updated",
+    updated = datetime.datetime(2, 1, 1, 1, 1, 1),
+    selfLink = "selflink-update",
+    parent = "parent-update",
+    position = "position-update",
+    status = "status-update",
+    due = datetime.date.today() - datetime.timedelta(days = 3),
+    completed = True,
+    deleted = False,
+    hidden = False 
+)
+
 target_task : models.Task = models.Task(
     localId = "localID",
     id = "targetid",
@@ -128,8 +144,8 @@ class db_task_Tests():
                 localId = target_task.localId
             )
 
-            assert result[1] == Task.from_orm(default_task)
-            assert result[2] == Task.from_orm(target_task)
+            assert result["id"] == Task.from_orm(default_task)
+            assert ["targetid"] == Task.from_orm(target_task)
 
             task.delete(
                 id = 1,
@@ -137,9 +153,9 @@ class db_task_Tests():
             )
 
             with pytest.raises(KeyError):
-                result[1] == Task.from_orm(default_task)
+                result["id"] == Task.from_orm(default_task)
 
-            assert result[2] == Task.from_orm(target_task)
+            assert result["targetid"] == Task.from_orm(target_task)
 
             task.delete(
                 id = 2,
@@ -147,7 +163,7 @@ class db_task_Tests():
             )
 
             with pytest.raises(KeyError):
-                result[2] == Task.from_orm(target_task)
+                result["targetid"] == Task.from_orm(target_task)
     
     
     def test_task_update(self, db):
@@ -194,6 +210,41 @@ class db_task_Tests():
             )
 
             assert result[1] == Task.from_orm(default_task)
+
+            
+    def test_get_nearline_tasks(self, db):
+        with db() as session:
+            session : Session = session # for completion
+
+
+            task = task_db(
+                session = session,
+
+            )
+
+            task.create(
+                localid = default_task_nearline.localId,
+                id = default_task_nearline.id,  
+                title = default_task_nearline.title,
+                note = default_task_nearline.note,
+                updated = default_task_nearline.updated,
+                selfLink = default_task_nearline.selfLink,
+                parent = default_task_nearline.parent,
+                position = default_task_nearline.position,
+                status = default_task_nearline.status,
+                due = default_task_nearline.due,
+                completed = default_task_nearline.completed,
+                deleted = default_task_nearline.deleted,
+                hidden = default_task_nearline.hidden
+                
+            )            
+            
+
+            result = task.get_nearline_tasks(
+                localId = default_task.localId
+            )
+
+            assert result[1] == Task.from_orm(default_task_nearline)
         
 
         
