@@ -24,7 +24,7 @@ default_calendar : models.event = models.event(
 )
 
 
-default_calendar_updated : models.event = models.event(
+default_calendar_updated : models.Event = models.Event(
     id = "1",
     calendarid = "testtest",
     htmllink = "t",

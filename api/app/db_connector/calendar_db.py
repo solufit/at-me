@@ -59,7 +59,11 @@ class calendar_db():
         self.session.commit()
 
         
-        
+    def load(self, localId: BaseEvent.localId):
+
+        result = self.session.query(Event).filter(Event.localId == localId).all()
+
+        return result
 
     
 
