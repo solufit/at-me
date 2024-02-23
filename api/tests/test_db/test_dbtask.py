@@ -97,7 +97,7 @@ class db_task_Tests():
 
             assert result[1] == Task.from_orm(default_task)
 
-    def test_cal_create_delete(self, db):
+    def test_task_create_delete(self, db):
 
         
         with db() as session:
@@ -148,6 +148,41 @@ class db_task_Tests():
 
             with pytest.raises(KeyError):
                 result[2] == Task.from_orm(target_task)
+    
+    
+    def test_task_update(self, db):
+        with db() as session:
+            session : Session = session # for completion
+
+            task = task_db(
+                session = session,
+
+            )
+            task.update(
+                localId = default_task.localId,
+                id = default_task.id,
+                title = default_task_updated.title,
+                note = default_task_updated.note,
+                updated = default_task_updated.updated,
+                selfLink = default_task_updated.selfLink,
+                parent = default_task_updated.parent,
+                position = default_task_updated.position,
+                status = default_task_updated.status,
+                due = default_task_updated.due,
+                completed = default_task_updated.completed,
+                deleted = default_task_updated.deleted,
+                hidden = default_task_updated.hidden
+
+            )
+
+            result = task.load(
+                localId = default_task.localId
+            )
+
+            assert result[1] == Task.from_orm(default_task_updated)
+        
+
+        
 
                 
             
@@ -167,6 +202,4 @@ class db_task_Tests():
         
         
     
-
-
 
