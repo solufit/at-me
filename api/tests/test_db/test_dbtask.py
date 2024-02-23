@@ -9,42 +9,58 @@ from app.db_connector import task_db
 from app.basemodel.common_model import Event
 
 
-default_calendar : models.Event = models.Event(
-    id = "1",
-    calendarId = "testtest",
-    htmlLink = "t",
-    starttime = datetime.datetime(1,1,1,1,1,1),
-    endtime = datetime.datetime(1,2,1,1,1,1),
+
+default_task : models.Task = models.Task(    
+    localId = "localID",
+    id = "id",
     title = "title",
-    etag = "etag",
-    note = "note",
+    note = "notes",
+    updated = datetime.datetime(1, 1, 1, 1, 1, 1),
+    selfLink = "selflink",
+    parent = "parent",
+    position = "position",
+    status = "status",
+    due = datetime.date(2,1,1),
+    completed = False,
+    deleted = False,
+    hidden = False 
+)
+
+default_task_updated : models.Task = models.Task(    
     localId = "localID",
-    Taskid = "taskid"
-    
+    id = "id",
+    title = "title-updated",
+    note = "notes-updated",
+    updated = datetime.datetime(2, 1, 1, 1, 1, 1),
+    selfLink = "selflink-update",
+    parent = "parent-update",
+    position = "position-update",
+    status = "status-update",
+    due = datetime.date(1,1,1),
+    completed = True,
+    deleted = False,
+    hidden = False 
 )
 
-default_task : models.Task = models.Task(
 
-    
-)
-
-
-target_calendar : models.Event = models.Event(
-    id = 2,
-    calendarId = "testtest",
-    htmlLink = "t",
-    starttime = datetime.datetime(4,1,1,1,1,1),
-    endtime = datetime.datetime(6,2,1,1,1,1),
-    title = "title-2",
-    etag = "etag",
-    note = "note",
+target_task : models.Task = models.Task(
     localId = "localID",
-    Taskid = "taskid"
-    
+    id = "targetid",
+    title = "title",
+    note = "notes",
+    updated = datetime.datetime(1, 2, 1, 1, 1, 1),
+    selfLink = "selflink",
+    parent = "parent",
+    position = "position",
+    status = "status",
+    due = datetime.date(2, 1, 1),
+    completed = False,
+    deleted = False,
+    hidden = False
 )
 
 
-class db_calendar_Tests():
+class db_task_Tests():
     @pytest.fixture(scope="function")
     def db(self):
         db_engine = create_engine("sqlite:///./test.db")
@@ -56,7 +72,7 @@ class db_calendar_Tests():
         with session() as session:
             session: Session = session
 
-            session.add(default_calendar)
+            session.add(default_task)
             session.commit()
 
         yield session
@@ -71,15 +87,15 @@ class db_calendar_Tests():
         with db() as session:
             session : Session = session # for completion
 
-            calendar = calendar_db(
+            task = task_db(
                 session = session,
 
             )
-            result = calendar.load(
-                localId = default_calendar.localId
+            result = task.load(
+                localId = default_task.localId
             )
 
-            assert result[1] == Event.from_orm(default_calendar)
+            assert result[1] == Event.from_orm(default_task)
 
     def test_cal_create_delete(self, db):
 
@@ -87,46 +103,51 @@ class db_calendar_Tests():
         with db() as session:
             session : Session = session # for completion
 
-            calendar = calendar_db(
+            task = task_db(
                 session = session,
                 
             )
-            calendar.create(
-                id = target_calendar.id,
-                calendarID = target_calendar.calendarId,
-                htmlLink = target_calendar.htmlLink,
-                starttime = target_calendar.starttime,
-                endtime = target_calendar.endtime,
-                title = target_calendar.title,
-                etag = target_calendar.etag,
-                note = target_calendar.note,
-                localId = target_calendar.localId,
-                Taskid = target_calendar.Taskid
-                
+            task.create(
+                localId = target_task.localId, 
+                id = target_task.id,
+                title = target_task.title,
+                note = target_task.note,
+                updated = target_task.updated,
+                selfLink = target_task.selfLink,
+                parent = target_task.parent,
+                position = target_task.position,
+                status = target_task.status,
+                due = target_task.due,
+                completed = target_task.completed,
+                deleted = target_task.deleted,
+                hidden = target_task.hidden
+                 
             )
 
-            result = calendar.load(
-                localId = target_calendar.localId
+            result = task.load(
+                localId = target_task.localId
             )
 
-            assert result[1] == Event.from_orm(default_calendar)
-            assert result[2] == Event.from_orm(target_calendar)
+            assert result[1] == Event.from_orm(default_task)
+            assert result[2] == Event.from_orm(target_task)
 
-            calendar.delete(
-                id = 1
-            )
-
-            with pytest.raises(KeyError):
-                result[1] == Event.from_orm(default_calendar)
-
-            assert result[2] == Event.from_orm(target_calendar)
-
-            calendar.delete(
-                id = 2
+            task.delete(
+                id = 1,
+                localId = default_task.localId
             )
 
             with pytest.raises(KeyError):
-                result[2] == Event.from_orm(target_calendar)
+                result[1] == Event.from_orm(default_task)
+
+            assert result[2] == Event.from_orm(target_task)
+
+            task.delete(
+                id = 2,
+                localId = target_task.localId
+            )
+
+            with pytest.raises(KeyError):
+                result[2] == Event.from_orm(target_task)
             
 
             
