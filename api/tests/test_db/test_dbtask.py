@@ -180,6 +180,20 @@ class db_task_Tests():
             )
 
             assert result[1] == Task.from_orm(default_task_updated)
+
+    def test_get_deadline_tasks(self, db):
+        with db() as session:
+            session : Session = session # for completion
+
+            task = task_db(
+                session = session,
+
+            )
+            result = task.get_deadline_tasks(
+                localId = default_task.localId
+            )
+
+            assert result[1] == Task.from_orm(default_task)
         
 
         
