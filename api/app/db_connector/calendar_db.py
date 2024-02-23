@@ -93,6 +93,16 @@ class calendar_db():
         self.session.commit()
 
         
+    def delete(self, localId: BaseEvent.localId, id: BaseEvent.id):
+
+        event : Event = self.session.query(Event).filter(Event.localId == localId).filter(Event.id == id).delete()
+
+        self.session.commit()
+        
+        
+
+
+        
 
     
 
