@@ -65,6 +65,35 @@ class calendar_db():
 
         return result
 
+        
+    def update(
+        self,
+        localId = BaseEvent.localId,
+        id = BaseEvent.id,
+        calendarID = BaseEvent.calendarID,
+        htmlLink = BaseEvent.htmlLink,
+        starttime = BaseEvent.starttime,
+        endtime = BaseEvent.endtime,
+        etag = BaseEvent.etag,
+        note = BaseEvent.note,
+        Taskid = BaseEvent.Taskid,
+    ):
+        event : Event = self.session.query(Event).filter(Event.localId == localId).first()
+
+        event.localId = localId
+        event.id = id
+        event.calendarId = calendarID
+        event.htmlLink = htmlLink
+        event.starttime = starttime
+        event.endtime = endtime
+        event.etag = etag
+        event.note = note
+        event.Taskid = Taskid
+        
+        self.session.commit()
+
+        
+
     
 
         
