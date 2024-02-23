@@ -9,21 +9,34 @@ from app.db_connector import calendar_db
 from app.basemodel.common_model import Event
 
 
-default_calendar : models.Event = models.Event(
+default_calendar : models.event = models.event(
     id = "1",
-    calendarId = "testtest",
-    htmlLink = "t",
+    calendarid = "testtest",
+    htmllink = "t",
     starttime = datetime.datetime(1,1,1,1,1,1),
     endtime = datetime.datetime(1,2,1,1,1,1),
     title = "title",
     etag = "etag",
     note = "note",
-    localId = "localID",
-    Taskid = "taskid"
+    localid = "localid",
+    taskid = "taskid"
     
 )
 
 
+default_calendar_updated : models.event = models.event(
+    id = "1",
+    calendarid = "testtest",
+    htmllink = "t",
+    starttime = datetime.datetime(1,1,1,1,1,1),
+    endtime = datetime.datetime(1,2,1,1,1,1),
+    title = "title-updated",
+    etag = "etag",
+    note = "note",
+    localid = "localid",
+    taskid = "taskid"
+    
+)
 
 
 target_calendar : models.Event = models.Event(
@@ -124,6 +137,36 @@ class db_calendar_Tests():
 
             with pytest.raises(KeyError):
                 result[2] == Event.from_orm(target_calendar)
+
+                
+    def test_cal_update(self, db):
+        
+        with db() as session:
+            session : Session = session # for completion
+
+            calendar = calendar_db(
+                session = session,
+
+            )
+            calendar.update(
+                id = default_calendar.id,
+                calendarID = default_calendar.calendarId,
+                htmlLink = default_calendar.htmlLink,
+                starttime = default_calendar.starttime,
+                endtime = default_calendar.endtime,
+                title = default_calendar_updated.title,
+                etag = default_calendar.etag,
+                note = default_calendar.note,
+                localId = default_calendar.localId,
+                Taskid = default_calendar.Taskid
+
+            )
+
+            result = calendar.load(
+                localId = default_calendar.localId
+            )
+
+            assert result[1] == Event.from_orm(default_calendar_updated)
             
 
             
