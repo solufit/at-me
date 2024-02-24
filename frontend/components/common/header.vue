@@ -4,7 +4,7 @@
 
 	const signOut = async (): Promise<void> => {
 		await useAuth().signOut();
-		await navigateTo('/auth/login');
+		await navigateTo('/about');
 	};
 	console.log(user);
 </script>
