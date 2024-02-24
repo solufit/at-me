@@ -14,18 +14,17 @@ export const useAuth = (): Auth => {
 	const { setToken, clearToken } = useAccessToken();
 	const { setRefresh, clearRefresh } = useRefreshToken();
 
-	const signIn = async (): Promise<void> => {
-		const auth = getAuth();
-		const provider = new GoogleAuthProvider();
-		await signInWithPopup(auth, provider)
-			.then(async (result: UserCredential) => {
-				setUser(result.user);
-				setToken(await result.user.getIdToken());
-				setRefresh(result.user.refreshToken);
-			})
-			.catch((error) => {
-				alert('統合認証システムに接続できません');
-			});
+	const signIn = async (): Promise<string> => {
+		const config = useRuntimeConfig();
+		const { data, error } = await useFetch(`${config.public.AUTH_API}/oauth2/login`, {
+			params: {
+				redirect: config.public.AUTH_REDIRECT,
+			},
+		});
+		return data.value as string;
+		//setUser(result.user);
+		//setToken(await result.user.getIdToken());
+		//setRefresh(result.user.refreshToken);
 	};
 
 	const signOut = async (): Promise<void> => {

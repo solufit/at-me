@@ -3,9 +3,13 @@
 		layout: false,
 	});
 	const signIn = async (): Promise<void> => {
-		console.log('OK');
-		await useAuth().signIn();
-		await navigateTo('/');
+		const config = useRuntimeConfig();
+		const { data, error } = await useFetch(`${config.public.AUTH_API}/oauth2/login`, {
+			params: {
+				redirect: config.public.AUTH_REDIRECT,
+			},
+		});
+		window.location.href = data.value as string;
 	};
 </script>
 <template>

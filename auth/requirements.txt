@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+pymysql
+pydantic
+alembic
+requests
+motor
+typing
+requests
+pymongo
+datetime
+python-multipart
+python-dateutil
+jwt
+httpx
+jinja2

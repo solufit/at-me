@@ -5,6 +5,7 @@ export default defineNuxtRouteMiddleware(async (to: RouteLocationNormalized) => 
 	if (process.server) {
 		return;
 	}
+	if (to.path == '/auth/callback') return;
 	if (to.path == '/auth/login') return;
 	const { token } = useAccessToken();
 	if (!token) {
