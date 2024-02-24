@@ -2,13 +2,14 @@
 	definePageMeta({
 		layout: false,
 	});
+	const config = useRuntimeConfig();
 	const signIn = async (): Promise<void> => {
-		const config = useRuntimeConfig();
 		const { data, error } = await useFetch(`${config.public.AUTH_API}/oauth2/login`, {
 			params: {
 				redirect: config.public.AUTH_REDIRECT,
 			},
 		});
+		console.log(config.public.AUTH_REDIRECT);
 		window.location.href = data.value as string;
 	};
 </script>
