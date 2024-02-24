@@ -1,8 +1,10 @@
 import pytest
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import sessionmaker, Session, close_all_sessions
 import os
 import datetime
+import time
+import copy
 
 from db import models
 from app.db_connector import calendar_db
@@ -66,27 +68,47 @@ target_calendar : models.Event = models.Event(
 class db_calendar_Tests():
     @pytest.fixture(scope="function")
     def db(self):
-        db_engine = create_engine("sqlite:///./test.db")
-        session : sessionmaker = sessionmaker(db_engine, expire_on_commit=False)
-        self.session = session
 
         if os.path.exists("./test.db"):
             os.remove("./test.db")
 
+        self.session = None
+        db_engine = None
+
+
+        db_engine = create_engine("sqlite:///./test.db")
+        db_engine2 = create_engine("sqlite:///./test.db")
+        db_engine.clear_compiled_cache()
+
+
+        session : sessionmaker = sessionmaker(db_engine, expire_on_commit=False, autoflush=True)
+        session2 : sessionmaker = sessionmaker(db_engine2, expire_on_commit=False, autoflush=True)
+        self.session = session
+
+
+
         #add table to db
         models.Base.metadata.create_all(bind=db_engine)
 
-        with self.session() as session:
-            session: Session = session
+        with session2() as s:
 
-            session.add(default_user)
-            session.add(default_calendar)
-            session.commit()
+            s.add(copy.deepcopy(default_user))
+            s.add(copy.deepcopy(default_calendar))
+            s.commit()
+            s.flush()
+            s.close()
 
 
-        yield self.session
+
+        yield session
+
+ 
+        close_all_sessions()
         
+        db_engine.clear_compiled_cache()
+        db_engine.connect().close()
         db_engine.dispose()
+        db_engine.dispose(close=False)
         os.remove("./test.db")
 
         return
@@ -95,7 +117,7 @@ class db_calendar_Tests():
 
 
         calendar = calendar_db(
-            sessionmk = self.session,
+            sessionmk = db,
 
         )
         result = calendar.load(
@@ -109,7 +131,7 @@ class db_calendar_Tests():
         
 
         calendar = calendar_db(
-            sessionmk = self.session,
+            sessionmk = db
             
         )
         calendar.create(
@@ -163,7 +185,7 @@ class db_calendar_Tests():
         
      
         calendar = calendar_db(
-            sessionmk = self.session
+            sessionmk = db
 
         )
         calendar.update(
