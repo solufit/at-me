@@ -7,10 +7,10 @@ export default defineNuxtRouteMiddleware(async (to: RouteLocationNormalized) => 
 		return;
 	}
 	if (to.path == '/auth/callback') return;
-	if (to.path == '/auth/login') return;
+	if (to.path == '/about') return;
 	const { token } = useAccessToken();
 	if (!token) {
-		return await navigateTo('/auth/login');
+		return await navigateTo('/about');
 	} else {
 		const { user, setUser } = useUserStore();
 		const config = useRuntimeConfig();
