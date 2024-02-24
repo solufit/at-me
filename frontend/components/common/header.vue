@@ -1,8 +1,8 @@
 <script setup lang="ts">
 	import { useAuth } from '../../composables/auth';
-	import { useUser } from '../../composables/user';
+	import { useUserStore } from '../../composables/user';
 
-	const { user } = useUser();
+	const { user } = useUserStore();
 
 	const signOut = async (): Promise<void> => {
 		await useAuth().signOut();
