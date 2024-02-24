@@ -8,33 +8,42 @@ from db import models
 from app.db_connector import calendar_db
 from app.basemodel.common_model import Event
 
+default_user : models.User = models.User(
+    localId  = "localId",
+    email = "email@email.com",
+    displayname = "displayName",
+    photoIcon = "photoIcon",
+    refleshToken = "token"
 
-default_calendar : models.event = models.event(
-    id = "1",
-    calendarid = "testtest",
-    htmllink = "t",
+)
+
+
+default_calendar : models.Event = models.Event(
+    id = 1,
+    calendarId = "testtest",
+    htmlLink = "t",
     starttime = datetime.datetime(1,1,1,1,1,1),
     endtime = datetime.datetime(1,2,1,1,1,1),
     title = "title",
     etag = "etag",
     note = "note",
-    localid = "localid",
-    taskid = "taskid"
+    localId = "localid",
+    Taskid = "taskid"
     
 )
 
 
 default_calendar_updated : models.Event = models.Event(
-    id = "1",
-    calendarid = "testtest",
-    htmllink = "t",
+    id = 1,
+    calendarId = "testtest",
+    htmlLink = "t",
     starttime = datetime.datetime(1,1,1,1,1,1),
     endtime = datetime.datetime(1,2,1,1,1,1),
     title = "title-updated",
     etag = "etag",
     note = "note",
-    localid = "localid",
-    taskid = "taskid"
+    localId = "localid",
+    Taskid = "taskid"
     
 )
 
@@ -59,17 +68,23 @@ class db_calendar_Tests():
     def db(self):
         db_engine = create_engine("sqlite:///./test.db")
         session : sessionmaker = sessionmaker(db_engine)
+        self.session = session
+
+        if os.path.exists("./test.db"):
+            os.remove("./test.db")
 
         #add table to db
         models.Base.metadata.create_all(bind=db_engine)
 
-        with session() as session:
+        with self.session() as session:
             session: Session = session
 
+            session.add(default_user)
             session.add(default_calendar)
             session.commit()
 
-        yield session
+
+        yield self.session
         
         db_engine.dispose()
         os.remove("./test.db")
@@ -78,18 +93,16 @@ class db_calendar_Tests():
     
     def test_cal_load(self, db):
 
-        with db() as session:
-            session : Session = session # for completion
 
-            calendar = calendar_db(
-                session = session,
+        calendar = calendar_db(
+            sessionmk = self.session,
 
-            )
-            result = calendar.load(
-                localId = default_calendar.localId
-            )
+        )
+        result = calendar.load(
+            localId = default_calendar.localId
+        )
 
-            assert result[1] == Event.from_orm(default_calendar)
+        assert result[1] == Event.from_orm(default_calendar)
 
     def test_cal_create_delete(self, db):
 

@@ -1,4 +1,5 @@
 from sqlalchemy.orm import sessionmaker, Session
+import datetime
 
 
 from app.db_connector.settings import session as session_maker
@@ -29,15 +30,15 @@ class calendar_db():
         
     def create(
         self,
-        localId = BaseEvent.localId,
-        id = BaseEvent.id,
-        calendarID = BaseEvent.calendarID,
-        htmlLink = BaseEvent.htmlLink,
-        starttime = BaseEvent.starttime,
-        endtime = BaseEvent.endtime,
-        etag = BaseEvent.etag,
-        note = BaseEvent.note,
-        Taskid = BaseEvent.Taskid,
+        localId : str,
+        id : str,
+        calendarID : str,
+        htmlLink : str,
+        starttime : datetime.datetime,
+        endtime : datetime.datetime,
+        etag : str,
+        note : str,
+        Taskid : str,
         
     ):
 
@@ -59,24 +60,25 @@ class calendar_db():
         self.session.commit()
 
         
-    def load(self, localId: BaseEvent.localId):
+    def load(self, localId: str):
 
-        result = self.session.query(Event).filter(Event.localId == localId).all()
+        #result = self.session.query(Event).filter(Event.localId == localId).all()
+        result = self.session.query(Event).all()
 
         return result
 
         
     def update(
         self,
-        localId = BaseEvent.localId,
-        id = BaseEvent.id,
-        calendarID = BaseEvent.calendarID,
-        htmlLink = BaseEvent.htmlLink,
-        starttime = BaseEvent.starttime,
-        endtime = BaseEvent.endtime,
-        etag = BaseEvent.etag,
-        note = BaseEvent.note,
-        Taskid = BaseEvent.Taskid,
+        localId : str,
+        id : str,
+        calendarID : str,
+        htmlLink : str,
+        starttime : datetime.datetime,
+        endtime : datetime.datetime,
+        etag : str,
+        note : str,
+        Taskid : str,
     ):
         event : Event = self.session.query(Event).filter(Event.localId == localId).first()
 
@@ -93,7 +95,7 @@ class calendar_db():
         self.session.commit()
 
         
-    def delete(self, localId: BaseEvent.localId, id: BaseEvent.id):
+    def delete(self, localId: str, id: str):
 
         event : Event = self.session.query(Event).filter(Event.localId == localId).filter(Event.id == id).delete()
 

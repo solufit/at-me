@@ -87,5 +87,8 @@ class Event(Base):
     title = Column(TEXT)
     etag = Column(Text)
     note = Column(Text)
+    #localId = Column(TEXT)
     localId = Column(TEXT), ForeignKey("users.localId")
+    #Taskid = Column(TEXT)
     Taskid = Column(TEXT, ForeignKey("tasks.id"))
+    
