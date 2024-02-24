@@ -3,5 +3,5 @@
 	const jwt = route.query.jwt;
 	const { setToken } = useAccessToken();
 	setToken(jwt as string);
-	navigateTo('/');
+	window.location.href = '/';
 </script>
