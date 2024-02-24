@@ -6,6 +6,20 @@
 	import Tasks from '~/components/uiparts/tasks.vue';
 	import type { Schdule } from '~/types/schdule';
 	import type { Task } from '~/types/task';
+	import { useAccessToken } from '../composables/accesstoken';
+	const { refresh } = useAuth();
+	const { token } = useAccessToken();
+	const config = useRuntimeConfig();
+	const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/info`, {
+		method: 'get',
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	});
+	if (error.value?.data.detail == 'Not authenticated') {
+		refresh();
+	} else {
+	}
 	const schs: Schdule[] = [
 		{
 			starttime: '2024-02-20 11:44',

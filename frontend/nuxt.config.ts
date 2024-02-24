@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
 	devtools: { enabled: true },
 	css: ['~/assets/css/main.css'],
-	ssr: true,
+	ssr: false,
 	postcss: {
 		plugins: {
 			tailwindcss: {},
@@ -34,7 +34,7 @@ export default defineNuxtConfig({
 		dir: 'public/',
 	},
 	pinia: {
-		storesDirs: ['./stores/**'],
+		storesDirs: ['./composables/**'],
 	},
 	piniaPersistedstate: {
 		cookieOptions: {
