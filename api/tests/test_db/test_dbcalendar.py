@@ -77,20 +77,17 @@ class db_calendar_Tests():
 
 
         db_engine = create_engine("sqlite:///./test.db")
-        db_engine2 = create_engine("sqlite:///./test.db")
         db_engine.clear_compiled_cache()
 
 
         session : sessionmaker = sessionmaker(db_engine, expire_on_commit=False, autoflush=True)
-        session2 : sessionmaker = sessionmaker(db_engine2, expire_on_commit=False, autoflush=True)
-        self.session = session
 
 
 
         #add table to db
         models.Base.metadata.create_all(bind=db_engine)
 
-        with session2() as s:
+        with session() as s:
 
             s.add(copy.deepcopy(default_user))
             s.add(copy.deepcopy(default_calendar))
@@ -106,9 +103,7 @@ class db_calendar_Tests():
         close_all_sessions()
         
         db_engine.clear_compiled_cache()
-        db_engine.connect().close()
         db_engine.dispose()
-        db_engine.dispose(close=False)
         os.remove("./test.db")
 
         return
