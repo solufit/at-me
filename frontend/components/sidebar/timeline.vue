@@ -15,10 +15,14 @@
 				</svg>
 			</span>
 			<h3 class="flex items-center mb-1 text-lg font-semibold text-gray-900 dark:text-white">
-				{{ sch.title }} <span class="text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">NOW</span>
+				{{ sch.title }}
+				<span class="text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ms-3" v-if="new Date() > new Date(sch.starttime)">NOW</span>
 			</h3>
 			<time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500"
-				>{{ sch.starttime.split(' ')[1] }} - {{ sch.endtime?.split(' ')[1] }} ( {{ sch.duringtime }}mins )</time
+				>{{ sch.starttime.split('T')[1].split(':')[0] }}:{{ sch.starttime.split('T')[1].split(':')[1] }} - {{ sch.endtime?.split('T')[1].split(':')[0] }}:{{
+					sch.endtime?.split('T')[1].split(':')[1]
+				}}
+				( {{ sch.duringtime }} mins )</time
 			>
 			<p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">
 				{{ sch.description }}

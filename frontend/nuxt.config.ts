@@ -133,6 +133,7 @@ export default defineNuxtConfig({
 			FIREBASE_API_KEY: process.env.NUXT_PUBLIC_APIKEY || '',
 			FIREBASE_AUTH_DOMAIN: process.env.NUXT_PUBLIC_AUTH_DOMAIN || '',
 			FIREBASE_PROJECT_ID: process.env.NUXT_PUBLIC_PROJECT_ID || '',
+			API_ENDPOINT: process.env.NUXT_PUBLIC_API_ENDPOINT || '',
 		},
 	},
 });

@@ -10,36 +10,37 @@
 	const { refresh } = useAuth();
 	const { token } = useAccessToken();
 	const config = useRuntimeConfig();
-	const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/info`, {
-		method: 'get',
-		headers: {
-			Authorization: `Bearer ${token}`,
-		},
-	});
-	if (error.value?.data.detail == 'Not authenticated') {
-		refresh();
-	} else {
-	}
 	// defind variable
 	const schs = ref<Schdule[]>([]);
 	const tasks = ref<Task[]>([]);
-	const api_endpoint = process.env.NUXT_API_ENDPOINT;
 	// defind today
 	const date = new Date();
 	const yyyy = String(date.getFullYear());
 	const mm = String(date.getMonth() + 1).padStart(2, '0');
 	const dd = String(date.getDate()).padStart(2, '0');
-	const today = `${yyyy}/${mm}/${dd}`;
+	const today = `${yyyy}-${mm}-${dd}`;
 
 	// api requests
-	async () => {
-		const { data, error } = await useFetch(`https://${api_endpoint}/calenders?date=${today}`);
+	const get_schs = async () => {
+		const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/calenders?date=${today}`, {
+			method: 'get',
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
 		schs.value = data.value as Schdule[];
 	};
-	async () => {
-		const { data, error } = await useFetch(`https://${api_endpoint}/tasks?date=${today}`);
+	const get_tasks = async () => {
+		const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/tasks?date=${today}`, {
+			method: 'get',
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
 		tasks.value = data.value as Task[];
 	};
+	get_schs();
+	get_tasks();
 	const tabs = ref('calender');
 	const change_tab = (tab: string) => {
 		tabs.value = tab;
