@@ -51,6 +51,6 @@ def get_current_user(cred: HTTPAuthorizationCredentials = Depends(HTTPBearer()))
             detail="Invalid authentication credentials",
             headers={"WWW-Authenticate": "Bearer"}
         )
-    return cred
+    return cred.json()
 
     

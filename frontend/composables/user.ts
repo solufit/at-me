@@ -1,12 +1,12 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
-import { type User as firebaseUser } from 'firebase/auth';
+import { type User } from '../types/user';
 
 export const useUserStore = defineStore(
 	'user',
 	() => {
-		const user = ref<firebaseUser | null>();
-		function setUser(newuser: firebaseUser) {
+		const user = ref<User | null>();
+		function setUser(newuser: User) {
 			user.value = newuser;
 		}
 		function clearUser() {

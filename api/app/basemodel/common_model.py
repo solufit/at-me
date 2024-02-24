@@ -43,6 +43,11 @@ class Task(atMeBase):
 
     class Config:
         orm_mode = True
+
+class User(atMeBase):
+    email: str
+    displayName: str
+    photoURL: str
      
    
 
