@@ -84,9 +84,7 @@ class task_db():
         
     def load(self, localId: str):
 
-        #result = self.session.query(Event).filter(Event.localId == localId).all()
-        result = self.session.query(Event).all()
-
+        result = self.session.query(Task).filter(Task.localId == localId).all()
         complete = self._convert_model(result)
 
         return complete
