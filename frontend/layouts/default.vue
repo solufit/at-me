@@ -22,7 +22,7 @@
 					<label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"></label>
 					<div class="menu p-4 w-80 bg-white lg:bg-transparent h-screen md:h-full">
 						<div class="mb-6 lg:hidden">
-							<a class="btn btn-ghost text-xl" href="/"> <NuxtImg src="/images/logo.webp" class="h-8 w-8" alt="logo" />@me</a>
+							<NuxtLink to="/" class="btn btn-ghost text-xl"> <NuxtImg src="/images/logo.webp" class="h-8 w-8" alt="logo" />@me</NuxtLink>
 						</div>
 						<div class="flex items-center justify-center mb-7">
 							<calender />
@@ -36,11 +36,11 @@
 						<hr />
 						<ul class="">
 							<!-- Sidebar content here -->
-							<li class="my-1"><NuxtLink to="/">チュートリアル</NuxtLink></li>
-							<li class="my-1"><NuxtLink to="/">利用規約</NuxtLink></li>
+							<li class="my-1"><NuxtLink to="/tutorial">チュートリアル</NuxtLink></li>
+							<li class="my-1"><NuxtLink to="/terms">利用規約</NuxtLink></li>
 							<li class="my-1"><button onclick="oss_license.showModal()">OSSライセンス</button></li>
 
-							<li class="my-1"><NuxtLink to="/">このアプリについて</NuxtLink></li>
+							<li class="my-1"><NuxtLink to="/about">このアプリについて</NuxtLink></li>
 						</ul>
 						<dialog id="oss_license" class="modal">
 							<div class="modal-box">
