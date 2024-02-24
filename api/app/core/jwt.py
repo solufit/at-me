@@ -21,12 +21,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from jwt import PyJWTError
 from starlette.status import HTTP_403_FORBIDDEN
 from app.core import config
-import firebase_admin
-from firebase_admin import auth, credentials
-
-cred = credentials.Certificate(get_secret_path("firebase-adminsdk.json"))
-firebase_admin.initialize_app(cred)
-
+import requests
 
 ALGORITHM = "HS256"
 access_token_jwt_subject = "access"
@@ -49,7 +44,7 @@ def get_current_user(cred: HTTPAuthorizationCredentials = Depends(HTTPBearer()))
             headers={"WWW-Authenticate": "Bearer"}
         )
     try:
-        cred = auth.verify_id_token(cred.credentials)
+        cred = requests.get(f"https://oauth2.googleapis.com/tokeninfo?id_token={cred.credentials}")
     except:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
