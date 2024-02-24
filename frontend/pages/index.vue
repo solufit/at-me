@@ -80,10 +80,10 @@
 		</div>
 		<div class="p-5 mt-5 md:mt-0">
 			<div class="md:flex w-full">
-				<div class="md:block md:w-1/2" :class="{ hidden: tabs != 'calender' }">
+				<div class="md:block md:w-1/2" :class="{ hidden: tabs !== 'calender' }">
 					<Timeline :schdules="schs" />
 				</div>
-				<div class="md:block md:w-1/2" :class="{ hidden: tabs != 'tasks' }">
+				<div class="md:block md:w-1/2" :class="{ hidden: tabs !== 'tasks' }">
 					<Tasks :tasks="tasks" />
 				</div>
 			</div>

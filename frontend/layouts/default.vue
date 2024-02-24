@@ -20,7 +20,7 @@
 				<input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
 				<div class="drawer-side lg:h-fit z-20">
 					<label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"></label>
-					<div class="menu p-4 w-80 bg-white lg:bg-transparent">
+					<div class="menu p-4 w-80 bg-white lg:bg-transparent h-screen md:h-full">
 						<div class="mb-6 lg:hidden">
 							<a class="btn btn-ghost text-xl" href="/"> <NuxtImg src="/images/logo.webp" class="h-8 w-8" alt="logo" />@me</a>
 						</div>
@@ -54,7 +54,7 @@
 				</div>
 			</div>
 			<div class="p-6 w-full" style="height: 93vh">
-				<div v-if="$pwa?.isPWAInstalled == false && showInstall == true" class="w-full bg-neutral rounded-xl px-4 py-2 m-4 mb-10 text-sm flex items-center justify-center">
+				<div v-if="$pwa?.isPWAInstalled == false && showInstall == true" class="w-full bg-neutral rounded-xl px-4 py-2 my-4 mb-10 text-sm flex items-center justify-center">
 					<div class="flex-1">アプリをダウンロードしてもっと便利に！</div>
 					<div class="flex-none flex gap-3">
 						<div class="p-1">
