@@ -4,18 +4,14 @@
 	});
 	import type { Task } from '~/types/task';
 	import Tasks from '~/components/uiparts/tasks.vue';
-	const tasks: Task[] = [
-		{
-			id: '',
-			title: 'test',
-			description: 'test',
-			schduletime: new Date(),
-			deadtime: new Date(),
-			project: '',
-			projectId: '',
-			duringtime: 10,
-		},
-	];
+	// defind variable
+	const tasks = ref<[Task[]]>([[]]);
+	const api_endpoint = process.env.NUXT_API_ENDPOINT;
+	// api requests
+	async () => {
+		const { data, error } = await useFetch(`https://${api_endpoint}/tasks/deadline`);
+		tasks.value = data.value as [Task[]];
+	};
 </script>
 <template>
 	<div>
@@ -24,31 +20,31 @@
 			<div>
 				<div class="font-semibold text-lg">明日</div>
 				<div class="p-4">
-					<Tasks :tasks="tasks" />
+					<Tasks :tasks="tasks[0]" />
 				</div>
 			</div>
 			<div>
 				<div class="font-semibold text-lg">火曜日</div>
 				<div class="p-4">
-					<Tasks :tasks="tasks" />
+					<Tasks :tasks="tasks[0]" />
 				</div>
 			</div>
 			<div>
 				<div class="font-semibold text-lg">水曜日</div>
 				<div class="p-4">
-					<Tasks :tasks="tasks" />
+					<Tasks :tasks="tasks[0]" />
 				</div>
 			</div>
 			<div>
 				<div class="font-semibold text-lg">木曜日</div>
 				<div class="p-4">
-					<Tasks :tasks="tasks" />
+					<Tasks :tasks="tasks[0]" />
 				</div>
 			</div>
 			<div>
 				<div class="font-semibold text-lg">金曜日</div>
 				<div class="p-4">
-					<Tasks :tasks="tasks" />
+					<Tasks :tasks="tasks[0]" />
 				</div>
 			</div>
 			<div>

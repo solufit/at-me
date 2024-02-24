@@ -20,48 +20,26 @@
 		refresh();
 	} else {
 	}
-	const schs: Schdule[] = [
-		{
-			starttime: '2024-02-20 11:44',
-			endtime: '2024-02-20 11:54',
-			duringtime: 10,
-			title: 'test',
-			description: 'test',
-		},
-		{
-			starttime: '2024-02-20 11:44',
-			endtime: '2024-02-20 11:54',
-			duringtime: 10,
-			title: 'test',
-			description: 'test',
-		},
-		{
-			starttime: '2024-02-20 11:44',
-			endtime: '2024-02-20 11:54',
-			duringtime: 10,
-			title: 'test',
-			description: 'test',
-		},
-		{
-			starttime: '2024-02-20 11:44',
-			endtime: '2024-02-20 11:54',
-			duringtime: 10,
-			title: 'test',
-			description: 'test',
-		},
-	];
-	const tasks: Task[] = [
-		{
-			id: '',
-			title: 'test',
-			description: 'test',
-			schduletime: new Date(),
-			deadtime: new Date(),
-			project: '',
-			projectId: '',
-			duringtime: 10,
-		},
-	];
+	// defind variable
+	const schs = ref<Schdule[]>([]);
+	const tasks = ref<Task[]>([]);
+	const api_endpoint = process.env.NUXT_API_ENDPOINT;
+	// defind today
+	const date = new Date();
+	const yyyy = String(date.getFullYear());
+	const mm = String(date.getMonth() + 1).padStart(2, '0');
+	const dd = String(date.getDate()).padStart(2, '0');
+	const today = `${yyyy}/${mm}/${dd}`;
+
+	// api requests
+	async () => {
+		const { data, error } = await useFetch(`https://${api_endpoint}/calenders?date=${today}`);
+		schs.value = data.value as Schdule[];
+	};
+	async () => {
+		const { data, error } = await useFetch(`https://${api_endpoint}/tasks?date=${today}`);
+		tasks.value = data.value as Task[];
+	};
 	const tabs = ref('calender');
 	const change_tab = (tab: string) => {
 		tabs.value = tab;
