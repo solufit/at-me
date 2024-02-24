@@ -1,4 +1,5 @@
 import pytest
+import copy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 import os
@@ -88,7 +89,7 @@ class db_task_Tests():
         with session() as session:
             session: Session = session
 
-            session.add(default_task)
+            session.add(copy.deepcopy(default_task))
             session.commit()
 
         yield session
@@ -100,18 +101,17 @@ class db_task_Tests():
     
     def test_tasks_load(self, db):
 
-        with db() as session:
-            session : Session = session # for completion
+        session : Session = session # for completion
 
-            task = task_db(
-                session = session,
+        task = task_db(
+            sessionmk = db
 
-            )
-            result = task.load(
-                localId = default_task.localId
-            )
+        )
+        result = task.load(
+            localId = default_task.localId
+        )
 
-            assert result[1] == Task.from_orm(default_task)
+        assert result[1] == Task.from_orm(default_task)
 
     def test_task_create_delete(self, db):
 
