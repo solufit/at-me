@@ -74,8 +74,13 @@ class calendar_db():
         
     def load(self, localId: str):
 
-        #result = self.session.query(Event).filter(Event.localId == localId).all()
-        result = self.session.query(Event).all()
+        result = self.session.query(Event).filter(Event.localId == localId).all()
+        #result = self.session.query(Event).all()
+
+        #for i in result:
+        #    if i.localId != localId:
+        #        result.remove(i)
+                
 
         complete = self._convert_model(result)
 

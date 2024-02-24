@@ -147,8 +147,12 @@ class db_calendar_Tests():
             localId = target_calendar.localId
         )
 
-        assert result["1"] == Event.from_orm(default_calendar)
         assert result["2"] == Event.from_orm(target_calendar)
+
+        result = calendar.load(
+            localId = default_calendar.localId
+        )
+        assert result["1"] == Event.from_orm(default_calendar)
 
         calendar.delete(
             id = "1",
@@ -156,13 +160,12 @@ class db_calendar_Tests():
         )
 
         result = calendar.load(
-            localId = target_calendar.localId
+            localId = default_calendar.localId
         )
 
         with pytest.raises(KeyError):
             result["1"] == Event.from_orm(default_calendar)
 
-        assert result["2"] == Event.from_orm(target_calendar)
 
         calendar.delete(
             id = "2",
