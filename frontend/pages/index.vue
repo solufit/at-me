@@ -28,7 +28,12 @@
 				Authorization: `Bearer ${token}`,
 			},
 		});
-		schs.value = data.value as Schdule[];
+		if (error.value?.data.detail == 'Not authenticated') {
+			refresh();
+			navigateTo('');
+		} else {
+			schs.value = data.value as Schdule[];
+		}
 	};
 	const get_tasks = async () => {
 		const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/tasks?date=${today}`, {
@@ -37,7 +42,12 @@
 				Authorization: `Bearer ${token}`,
 			},
 		});
-		tasks.value = data.value as Task[];
+		if (error.value?.data.detail == 'Not authenticated') {
+			refresh();
+			navigateTo('/');
+		} else {
+			tasks.value = data.value as Task[];
+		}
 	};
 	get_schs();
 	get_tasks();

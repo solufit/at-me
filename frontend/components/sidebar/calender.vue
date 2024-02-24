@@ -10,6 +10,11 @@
 			Authorization: `Bearer ${token}`,
 		},
 	});
+	if (error.value?.data.detail == 'Not authenticated') {
+		const { refresh } = useAuth();
+		refresh();
+		navigateTo('/');
+	}
 	const attributes = ref([
 		{
 			// Boolean
