@@ -49,19 +49,21 @@ class calendar_db():
         etag : str,
         note : str,
         Taskid : str,
+        title: str,
         
     ):
 
         model = Event(
             localId = localId,
             id = id,
-            calendarID = calendarID,
+            calendarId = calendarID,
             htmlLink = htmlLink,
             starttime = starttime,
             endtime = endtime,
             etag = etag,
             note = note,
-            Taskid = Taskid
+            Taskid = Taskid,
+            title = title
         )
         
         
@@ -85,6 +87,7 @@ class calendar_db():
         localId : str,
         id : str,
         calendarID : str,
+        title : str,
         htmlLink : str,
         starttime : datetime.datetime,
         endtime : datetime.datetime,
@@ -103,6 +106,7 @@ class calendar_db():
         event.etag = etag
         event.note = note
         event.Taskid = Taskid
+        event.title = title
         
         self.session.commit()
 

@@ -107,49 +107,56 @@ class db_calendar_Tests():
     def test_cal_create_delete(self, db):
 
         
-        with db() as session:
-            session : Session = session # for completion
 
-            calendar = calendar_db(
-                session = session,
-                
-            )
-            calendar.create(
-                id = target_calendar.id,
-                calendarID = target_calendar.calendarId,
-                htmlLink = target_calendar.htmlLink,
-                starttime = target_calendar.starttime,
-                endtime = target_calendar.endtime,
-                title = target_calendar.title,
-                etag = target_calendar.etag,
-                note = target_calendar.note,
-                localId = target_calendar.localId,
-                Taskid = target_calendar.Taskid
-                
-            )
+        calendar = calendar_db(
+            sessionmk = self.session,
+            
+        )
+        calendar.create(
+            id = target_calendar.id,
+            calendarID = target_calendar.calendarId,
+            htmlLink = target_calendar.htmlLink,
+            starttime = target_calendar.starttime,
+            endtime = target_calendar.endtime,
+            title = target_calendar.title,
+            etag = target_calendar.etag,
+            note = target_calendar.note,
+            localId = target_calendar.localId,
+            Taskid = target_calendar.Taskid
+            
+        )
 
-            result = calendar.load(
-                localId = target_calendar.localId
-            )
+        result = calendar.load(
+            localId = target_calendar.localId
+        )
 
-            assert result[1] == Event.from_orm(default_calendar)
-            assert result[2] == Event.from_orm(target_calendar)
+        assert result["1"] == Event.from_orm(default_calendar)
+        assert result["2"] == Event.from_orm(target_calendar)
 
-            calendar.delete(
-                id = 1
-            )
+        calendar.delete(
+            id = "1",
+            localId = default_calendar.localId
+        )
 
-            with pytest.raises(KeyError):
-                result[1] == Event.from_orm(default_calendar)
+        result = calendar.load(
+            localId = target_calendar.localId
+        )
 
-            assert result[2] == Event.from_orm(target_calendar)
+        with pytest.raises(KeyError):
+            result["1"] == Event.from_orm(default_calendar)
 
-            calendar.delete(
-                id = 2
-            )
+        assert result["2"] == Event.from_orm(target_calendar)
 
-            with pytest.raises(KeyError):
-                result[2] == Event.from_orm(target_calendar)
+        calendar.delete(
+            id = "2",
+            localId = target_calendar.localId
+        )
+
+        result = calendar.load(
+            localId = target_calendar.localId
+        )
+        with pytest.raises(KeyError):
+            result["2"] == Event.from_orm(target_calendar)
 
                 
     def test_cal_update(self, db):
@@ -179,7 +186,7 @@ class db_calendar_Tests():
                 localId = default_calendar.localId
             )
 
-            assert result[1] == Event.from_orm(default_calendar_updated)
+            assert result["1"] == Event.from_orm(default_calendar_updated)
             
 
             
