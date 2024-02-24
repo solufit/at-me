@@ -161,32 +161,30 @@ class db_calendar_Tests():
                 
     def test_cal_update(self, db):
         
-        with db() as session:
-            session : Session = session # for completion
+     
+        calendar = calendar_db(
+            sessionmk = self.session
 
-            calendar = calendar_db(
-                session = session,
+        )
+        calendar.update(
+            id = default_calendar.id,
+            calendarID = default_calendar.calendarId,
+            htmlLink = default_calendar.htmlLink,
+            starttime = default_calendar.starttime,
+            endtime = default_calendar.endtime,
+            title = default_calendar_updated.title,
+            etag = default_calendar.etag,
+            note = default_calendar.note,
+            localId = default_calendar.localId,
+            Taskid = default_calendar.Taskid
 
-            )
-            calendar.update(
-                id = default_calendar.id,
-                calendarID = default_calendar.calendarId,
-                htmlLink = default_calendar.htmlLink,
-                starttime = default_calendar.starttime,
-                endtime = default_calendar.endtime,
-                title = default_calendar_updated.title,
-                etag = default_calendar.etag,
-                note = default_calendar.note,
-                localId = default_calendar.localId,
-                Taskid = default_calendar.Taskid
+        )
 
-            )
+        result = calendar.load(
+            localId = default_calendar.localId
+        )
 
-            result = calendar.load(
-                localId = default_calendar.localId
-            )
-
-            assert result["1"] == Event.from_orm(default_calendar_updated)
+        assert result["1"] == Event.from_orm(default_calendar_updated)
             
 
             
