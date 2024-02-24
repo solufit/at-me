@@ -79,7 +79,7 @@ class WorktimeDate(Base):
 
 class Event(Base):
     __tablename__ = 'calendar'
-    id = Column(Integer, primary_key=True)
+    id = Column(TEXT, primary_key=True)
     calendarId = Column(TEXT)
     htmlLink = Column(TEXT)
     starttime = Column(TIMESTAMP, nullable=False)
@@ -88,7 +88,8 @@ class Event(Base):
     etag = Column(Text)
     note = Column(Text)
     #localId = Column(TEXT)
-    localId = Column(TEXT), ForeignKey("users.localId")
+    localId = Column(TEXT, ForeignKey("users.localId"))
     #Taskid = Column(TEXT)
     Taskid = Column(TEXT, ForeignKey("tasks.id"))
+
     

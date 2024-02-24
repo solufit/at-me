@@ -27,6 +27,16 @@ class calendar_db():
     def __delattr__(self, __name: str) -> None:
         self.session.close()
 
+    def _convert_model(self, result: list[Event]) -> dict[str, BaseEvent]:
+
+        result_dict = {}
+        for i in result:
+            convert = BaseEvent().from_orm(i)
+            result_dict[convert.id] = convert
+
+            
+        return result_dict
+
         
     def create(
         self,
@@ -65,7 +75,9 @@ class calendar_db():
         #result = self.session.query(Event).filter(Event.localId == localId).all()
         result = self.session.query(Event).all()
 
-        return result
+        complete = self._convert_model(result)
+
+        return complete
 
         
     def update(
@@ -94,12 +106,20 @@ class calendar_db():
         
         self.session.commit()
 
-        
+
     def delete(self, localId: str, id: str):
 
         event : Event = self.session.query(Event).filter(Event.localId == localId).filter(Event.id == id).delete()
 
         self.session.commit()
+
+        
+
+
+            
+
+            
+
         
         
 

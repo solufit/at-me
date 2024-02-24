@@ -19,7 +19,7 @@ default_user : models.User = models.User(
 
 
 default_calendar : models.Event = models.Event(
-    id = 1,
+    id = "1",
     calendarId = "testtest",
     htmlLink = "t",
     starttime = datetime.datetime(1,1,1,1,1,1),
@@ -34,7 +34,7 @@ default_calendar : models.Event = models.Event(
 
 
 default_calendar_updated : models.Event = models.Event(
-    id = 1,
+    id = "1",
     calendarId = "testtest",
     htmlLink = "t",
     starttime = datetime.datetime(1,1,1,1,1,1),
@@ -49,7 +49,7 @@ default_calendar_updated : models.Event = models.Event(
 
 
 target_calendar : models.Event = models.Event(
-    id = 2,
+    id = "2",
     calendarId = "testtest",
     htmlLink = "t",
     starttime = datetime.datetime(4,1,1,1,1,1),
@@ -67,7 +67,7 @@ class db_calendar_Tests():
     @pytest.fixture(scope="function")
     def db(self):
         db_engine = create_engine("sqlite:///./test.db")
-        session : sessionmaker = sessionmaker(db_engine)
+        session : sessionmaker = sessionmaker(db_engine, expire_on_commit=False)
         self.session = session
 
         if os.path.exists("./test.db"):
@@ -102,7 +102,7 @@ class db_calendar_Tests():
             localId = default_calendar.localId
         )
 
-        assert result[1] == Event.from_orm(default_calendar)
+        assert result["1"] == Event.from_orm(default_calendar)
 
     def test_cal_create_delete(self, db):
 

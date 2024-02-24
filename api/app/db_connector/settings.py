@@ -7,5 +7,6 @@ engine = create_engine(
 )
 session = sessionmaker(
     engine = engine,
-    autoflush=True
+    autoflush=True,
+    expire_on_commit=False
 )
