@@ -7,7 +7,6 @@
 	import type { Schdule } from '~/types/schdule';
 	import type { Task } from '~/types/task';
 	import { useAccessToken } from '../composables/accesstoken';
-	const { refresh } = useAuth();
 	const { token } = useAccessToken();
 	const config = useRuntimeConfig();
 	// defind variable
@@ -29,7 +28,6 @@
 			},
 		});
 		if (error.value?.data.detail == 'Not authenticated') {
-			refresh();
 			navigateTo('');
 		} else {
 			schs.value = data.value as Schdule[];
@@ -43,7 +41,6 @@
 			},
 		});
 		if (error.value?.data.detail == 'Not authenticated') {
-			refresh();
 			navigateTo('/');
 		} else {
 			tasks.value = data.value as Task[];
