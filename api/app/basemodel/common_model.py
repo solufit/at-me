@@ -39,6 +39,7 @@ class Task(atMeBase):
     completed : bool = Field(False, description="task completed(y or n)")
     deleted : bool = Field(False, description="if task deleted, it is true")
     hidden : bool = Field(False, description="if the flag is true, the task is hidden")
+    duringtime: int = Field(30)
 
     class Config:
         orm_mode = True

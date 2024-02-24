@@ -4,6 +4,9 @@ import type { PartsTasks } from '#build/components';
 	const props = defineProps<{
 		tasks: Task[];
 	}>();
+	const task_click = (id: string) => {
+		console.log(`Click ${id}`);
+	};
 </script>
 <template>
 	<div>
@@ -11,11 +14,11 @@ import type { PartsTasks } from '#build/components';
 			<div class="border-2 rounded-md p-3 cursor-pointer w-full">
 				<div class="flex w-full">
 					<div class="w-20">
-						<input type="radio" name="radio-2" class="radio radio-primary" />
+						<input type="radio" :name="task.id" @change="task_click(task.id)" class="radio radio-primary" :checked="task.completed" />
 					</div>
 					<div class="w-full px-3">
 						<div class="font-bold">{{ task.title }}</div>
-						<div class="p-1">{{ task.description }}</div>
+						<div class="p-1">{{ task.note }}</div>
 					</div>
 					<div class="w-9">
 						<button class="bg-neutral" aria-label="スケジュールの変更">
