@@ -48,3 +48,35 @@ async def get_calenders(
         }
     ]
     return testdata
+
+@router.get('/dot')
+async def get_dot(cred = Depends(get_current_user)):
+    return {
+        "schedules" : [
+            datetime.date(2024,2,2),
+            datetime.date(2024,2,4),
+            datetime.date(2024,2,7),
+            datetime.date(2024,2,8),
+            datetime.date(2024,2,9),
+            datetime.date(2024,2,12),
+            datetime.date(2024,2,15),
+            datetime.date(2024,2,16),
+            datetime.date(2024,2,19),
+            datetime.date(2024,2,20),
+            datetime.date(2024,2,22),
+            datetime.date(2024,2,24),
+            datetime.date(2024,2,25),
+            datetime.date(2024,2,26),
+            datetime.date(2024,2,27),
+            datetime.date(2024,2,28),
+            datetime.date(2024,3,1) 
+        ],
+        "tasks": [
+            datetime.date(2024,2,24),
+            datetime.date(2024,2,25),
+            datetime.date(2024,2,27),
+            datetime.date(2024,2,29),
+            datetime.date(2024,3,1),
+            datetime.date(2024,3,2) 
+        ]
+    }

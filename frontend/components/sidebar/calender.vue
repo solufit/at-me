@@ -2,25 +2,24 @@
 	import { Calendar, DatePicker } from 'v-calendar';
 	import 'v-calendar/style.css';
 	const router = useRouter();
+	const { token } = useAccessToken();
+	const config = useRuntimeConfig();
+	const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/calenders/dot`, {
+		method: 'get',
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	});
 	const attributes = ref([
 		{
 			// Boolean
-			dot: true,
-			dates: [new Date(2024, 1, 1), new Date(2024, 1, 10), new Date(2024, 1, 22)],
+			dot: 'green',
+			dates: (data.value as any).schedules,
 		},
 		{
 			// String
-			dot: 'red',
-			dates: [new Date(2024, 1, 1), new Date(2024, 1, 10), new Date(2024, 1, 22)],
-		},
-		{
-			// Object
-			dot: {
-				style: {
-					backgroundColor: 'brown',
-				},
-			},
-			dates: [new Date(2024, 1, 1), new Date(2024, 1, 10), new Date(2024, 1, 22)],
+			dot: 'orange',
+			dates: (data.value as any).tasks,
 		},
 	]);
 	const movedate = (value: any) => {
