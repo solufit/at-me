@@ -1,13 +1,13 @@
 import type { RouteLocationNormalized } from 'vue-router';
-import { useUser } from '../composables/user';
+import { useAccessToken } from '../composables/accesstoken';
 import { defineNuxtRouteMiddleware, navigateTo } from 'nuxt/app';
 export default defineNuxtRouteMiddleware(async (to: RouteLocationNormalized) => {
+	if (process.server) {
+		return;
+	}
 	if (to.path == '/auth/login') return;
-
-	const { user } = useUser();
-
-	if (!user.value) {
-		console.log('not authenticated');
+	const { token } = useAccessToken();
+	if (!token) {
 		return await navigateTo('/auth/login');
 	}
 });

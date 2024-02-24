@@ -5,14 +5,14 @@
 	definePageMeta({
 		layout: 'simple',
 	});
-	import { useUser } from '../composables/user';
+	import { useUserStore } from '../composables/user';
 	import { useAuth } from '../composables/auth';
-	const { user } = useUser();
+	const { user } = useUserStore();
 	const signOut = async (): Promise<void> => {
 		await useAuth().signOut();
 		await navigateTo('/signIn');
 	};
-	const providers = (user.value === null || user.value === undefined ? [] : user.value.providerData).map((pvd) => {
+	const providers = (user === null || user === undefined ? [] : user.providerData).map((pvd) => {
 		return pvd.providerId;
 	});
 	const wt_mon = ref(true);
