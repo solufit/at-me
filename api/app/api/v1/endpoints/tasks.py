@@ -60,3 +60,38 @@ async def get_tasks_deadline(cred = Depends(get_current_user)) -> List[Task]:
 @router.get('/near', description="Get a list of tasks with deadlines in the last week")
 async def get_tasks_near(cred = Depends(get_current_user)) -> List[Task]:
     return
+
+@router.get('/complite', description="Task update as complited")
+async def get_tasks_complite(taskid: str,cred = Depends(get_current_user)) -> List[Task]:
+    result = [
+        {
+            "id":'asdasd',
+            "title":'APIと連携する',
+            "note":'',
+            "updated": datetime.datetime(2024,2,24,14,0),
+            "selfLink": '',
+            "parent": '',
+            "position": '',
+            "status": '',
+            "due": datetime.datetime(2024,2,25,15,0),
+            "completed": False,
+            "deleted": False,
+            "hidden":False,
+            "duringtime": 30
+        },
+        {
+            "id":'asdasdasd',
+            "title":'UIを頑張って作る',
+            "note":'',
+            "updated": datetime.datetime(2024,2,24,14,0),
+            "selfLink": '',
+            "parent": '',
+            "position": '',
+            "status": '',
+            "due": datetime.datetime(2024,2,25,15,0),
+            "completed": True,
+            "deleted": False,
+            "hidden":False
+        }
+    ]
+    return result
