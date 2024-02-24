@@ -3,6 +3,9 @@ from fastapi.security import OAuth2AuthorizationCodeBearer
 from fastapi.responses import RedirectResponse
 import httpx
 import os
+import time
+import redis
+import uuid
 
 router = APIRouter()
 
@@ -14,10 +17,12 @@ FRONTEND_URL = os.getenv("FRONTEND_URL")
 AUTHORIZATION_URL = "https://accounts.google.com/o/oauth2/v2/auth"
 TOKEN_URL = "https://oauth2.googleapis.com/token"
 
-oauth2_scheme = OAuth2AuthorizationCodeBearer(
-    authorizationUrl=AUTHORIZATION_URL,
-    tokenUrl=TOKEN_URL
+connection_pool = redis.ConnectionPool(
+    host="atme_auth_redis",
+    port=6379,
+    db="atme_auth",
 )
+rc = redis.StrictRedis(connection_pool=connection_pool)
 
 @router.get("/oauth2/login")
 async def login_form(redirect: str):
@@ -42,4 +47,19 @@ async def login_callback(code: str = Query(...)):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=token_response_json,
         )
-    return RedirectResponse(url=f"{FRONTEND_URL}?jwt={token_response_json['id_token']}")
+    
+    linkcode=  str(uuid.uuid4())
+    rc = redis.Redis(
+        host="atme-auth-redis",
+        port=6379,
+        db=0,
+    )
+    rc.hmset(
+        linkcode,
+        {
+            "access_token":token_response_json["access_token"],
+            "refresh_token":token_response_json["refresh_token"],
+            "exp":int(time.time())
+        }
+    )
+    return RedirectResponse(url=f"{FRONTEND_URL}?jwt={token_response_json['id_token']}&linkcode={linkcode}")
