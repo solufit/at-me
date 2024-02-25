@@ -7,7 +7,9 @@
 	import type { Schdule } from '~/types/schdule';
 	import type { Task } from '~/types/task';
 	import { useAccessToken } from '../composables/accesstoken';
+	import { useUserLink } from '../composables/userlink';
 	const { token } = useAccessToken();
+	const { userLink } = useUserLink();
 	const config = useRuntimeConfig();
 	// defind variable
 	const schs = ref<Schdule[]>([]);
@@ -21,7 +23,7 @@
 
 	// api requests
 	const get_schs = async () => {
-		const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/calenders?date=${today}`, {
+		const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/google/calender?date=${today}&userlink=${userLink}`, {
 			method: 'get',
 			headers: {
 				Authorization: `Bearer ${token}`,
@@ -78,7 +80,8 @@
 		<div class="p-5 mt-5 md:mt-0">
 			<div class="md:flex w-full">
 				<div class="md:block md:w-1/2" :class="{ hidden: tabs !== 'calender' }">
-					<Timeline :schdules="schs" />
+					<div v-if="schs.length == 0" class="flex items-center justify-center font-semibold text-2xl mt-10">予定はありません！</div>
+					<div v-else><Timeline :schdules="schs" /></div>
 				</div>
 				<div class="md:block md:w-1/2" :class="{ hidden: tabs !== 'tasks' }">
 					<Tasks :tasks="tasks" />
