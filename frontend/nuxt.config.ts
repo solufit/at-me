@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
 	devtools: { enabled: true },
 	css: ['~/assets/css/main.css'],
-	ssr: true,
+	ssr: false,
 	postcss: {
 		plugins: {
 			tailwindcss: {},
@@ -34,7 +34,13 @@ export default defineNuxtConfig({
 		dir: 'public/',
 	},
 	pinia: {
-		storesDirs: ['./stores/**'],
+		storesDirs: ['./composables/**'],
+	},
+	piniaPersistedstate: {
+		cookieOptions: {
+			sameSite: 'strict',
+		},
+		storage: 'localStorage',
 	},
 	pwa: {
 		registerType: 'autoUpdate',
@@ -127,6 +133,9 @@ export default defineNuxtConfig({
 			FIREBASE_API_KEY: process.env.NUXT_PUBLIC_APIKEY || '',
 			FIREBASE_AUTH_DOMAIN: process.env.NUXT_PUBLIC_AUTH_DOMAIN || '',
 			FIREBASE_PROJECT_ID: process.env.NUXT_PUBLIC_PROJECT_ID || '',
+			API_ENDPOINT: process.env.NUXT_PUBLIC_API_ENDPOINT || '',
+			AUTH_API: process.env.NUXT_PUBLIC_AUTH_API || '',
+			AUTH_REDIRECT: process.env.NUXT_PUBLIC_AUTH_REDIRECT || '',
 		},
 	},
 });
