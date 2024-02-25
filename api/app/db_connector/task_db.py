@@ -160,6 +160,18 @@ class task_db():
         return result
 
         
+    def get_nearline_tasks(self, localId: str):
+        today = datetime.date.today()
+        seven_days_before = today - datetime.timedelta(days=7)
+
+        query: Query  = self._load(localId)
+
+        result = query.filter(Task.due >= seven_days_before).filter(Task.due < today)\
+            .all()
+
+        result = self._convert_model(result)
+
+        return result
 
 
         
