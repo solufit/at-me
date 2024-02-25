@@ -43,10 +43,20 @@ services:
     ports:
       - "8000:80"
 
+  atme-auth-redis:
+    image: redis
+    container_name: atme-auth-redis
+    expose:
+      - 6379
+    volumes:
+      - redis-data:/data/
+    networks:
+      - atme
 
 
 
 volumes:
   db-data:
+  redis-data:
 
 
