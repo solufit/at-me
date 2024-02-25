@@ -8,12 +8,12 @@ from app.core import config
 app = FastAPI(
     title=config.PROJECT_NAME, openapi_url="/api/v1/openapi.json",
     description = config.DESCRIPTION, version = config.VERSION
-              )
+)
 
 # Set all CORS enabled origins
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://atme.solufit.net","http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

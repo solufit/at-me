@@ -31,7 +31,6 @@ async def get_calender(
     Returns:
         _type_: _description_
     """
-    print(cred['email'])
     access_token = requests.get(f"{AUTH_API}/oauth2/token?linkcode={userlink}&secure={SECURE_LOCK}", timeout=(3.0, 7.5))
     if access_token.status_code == 403:
         raise HTTPException(status_code=403)
