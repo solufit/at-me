@@ -20,14 +20,14 @@
 				<input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
 				<div class="drawer-side lg:h-fit z-20">
 					<label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"></label>
-					<div class="menu p-4 w-80 h-screen bg-white lg:bg-transparent">
+					<div class="menu p-4 w-80 bg-white lg:bg-transparent h-screen md:h-full">
 						<div class="mb-6 lg:hidden">
-							<a class="btn btn-ghost text-xl" href="/"> <NuxtImg src="/images/logo.webp" class="h-8 w-8" alt="logo" />@me</a>
+							<NuxtLink to="/" class="btn btn-ghost text-xl"> <NuxtImg src="/images/logo.webp" class="h-8 w-8" alt="logo" />@me</NuxtLink>
 						</div>
 						<div class="flex items-center justify-center mb-7">
 							<calender />
 						</div>
-						<ul class="h-56 md:h-80">
+						<ul class="">
 							<!-- Sidebar content here -->
 							<li class="my-3"><NuxtLink to="/">TODAY</NuxtLink></li>
 							<li class="my-3"><NuxtLink to="/near">近日予定のタスク</NuxtLink></li>
@@ -36,11 +36,11 @@
 						<hr />
 						<ul class="">
 							<!-- Sidebar content here -->
-							<li class="my-1"><NuxtLink to="/">チュートリアル</NuxtLink></li>
-							<li class="my-1"><NuxtLink to="/">利用規約</NuxtLink></li>
+							<li class="my-1"><NuxtLink to="/tutorial">チュートリアル</NuxtLink></li>
+							<li class="my-1"><NuxtLink to="/terms">利用規約</NuxtLink></li>
 							<li class="my-1"><button onclick="oss_license.showModal()">OSSライセンス</button></li>
 
-							<li class="my-1"><NuxtLink to="/">このアプリについて</NuxtLink></li>
+							<li class="my-1"><NuxtLink to="/about">このアプリについて</NuxtLink></li>
 						</ul>
 						<dialog id="oss_license" class="modal">
 							<div class="modal-box">
@@ -53,15 +53,19 @@
 					</div>
 				</div>
 			</div>
-			<div class="p-6 w-full overflow-y-auto" style="height: 93vh">
-				<div v-if="$pwa?.isPWAInstalled == false && showInstall == true" class="w-full bg-neutral rounded-xl px-4 py-2 text-sm flex items-center justify-center">
-					<div class="w-2/3">アプリをダウンロードしてもっと便利に！</div>
-					<div class="w-1/6 p-1">
-						<button class="btn btn-primary btn-sm" @click="install()">インストール</button>
+			<div class="p-6 w-full" style="height: 93vh">
+				<div v-if="$pwa?.isPWAInstalled == false && showInstall == true" class="w-full bg-neutral rounded-xl px-4 py-2 my-4 mb-10 text-sm flex items-center justify-center">
+					<div class="flex-1">アプリをダウンロードしてもっと便利に！</div>
+					<div class="flex-none flex gap-3">
+						<div class="p-1">
+							<button class="btn btn-primary btn-sm" @click="install()">インストール</button>
+						</div>
+						<button class="underline p-1" @click="dismiss()">表示しない</button>
 					</div>
-					<button class="w-1/6 underline p-1" @click="dismiss()">表示しない</button>
 				</div>
-				<slot />
+				<div class="overflow-y-auto">
+					<slot />
+				</div>
 			</div>
 			<div>
 				<!--

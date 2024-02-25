@@ -1,13 +1,12 @@
 <script setup lang="ts">
-	import { useAuth } from '../../composables/auth';
 	import { useUserStore } from '../../composables/user';
-
-	const { user } = useUserStore();
+	const { user, setUser } = useUserStore();
 
 	const signOut = async (): Promise<void> => {
 		await useAuth().signOut();
-		await navigateTo('/signIn');
+		await navigateTo('/about');
 	};
+	console.log(user);
 </script>
 <template>
 	<div>

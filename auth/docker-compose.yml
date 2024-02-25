@@ -1,0 +1,30 @@
+version: '3'
+services:
+  atme-auth-api:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: atme-auth-api
+    volumes:
+      - ./app/:/src/
+    env_file:
+      - .env
+    restart: always
+    ports:
+      - 8000:80
+    networks:
+      - atme
+  
+  atme-auth-redis:
+    image: redis
+    container_name: atme-auth-redis
+    expose:
+      - 6379
+    volumes:
+      - ./db/:/data/
+    networks:
+      - atme
+
+networks:
+  atme:
+    external: true

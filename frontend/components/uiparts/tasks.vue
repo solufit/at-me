@@ -1,9 +1,23 @@
 import type { PartsTasks } from '#build/components';
 <script setup lang="ts">
 	import type { Task } from '~/types/task';
+	import { Calendar, DatePicker } from 'v-calendar';
 	const props = defineProps<{
 		tasks: Task[];
 	}>();
+	const { token } = useAccessToken();
+	const config = useRuntimeConfig();
+	const task_click = async (id: string) => {
+		const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/tasks/complite`, {
+			method: 'get',
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+			params: {
+				taskid: id,
+			},
+		});
+	};
 </script>
 <template>
 	<div>
@@ -11,22 +25,28 @@ import type { PartsTasks } from '#build/components';
 			<div class="border-2 rounded-md p-3 cursor-pointer w-full">
 				<div class="flex w-full">
 					<div class="w-20">
-						<input type="radio" name="radio-2" class="radio radio-primary" />
+						<input type="radio" :name="task.id" @change="task_click(task.id)" class="radio radio-primary" :checked="task.completed" />
 					</div>
 					<div class="w-full px-3">
 						<div class="font-bold">{{ task.title }}</div>
-						<div class="p-1">{{ task.description }}</div>
+						<div class="p-1">{{ task.note }}</div>
 					</div>
 					<div class="w-9">
-						<button class="bg-neutral" aria-label="スケジュールの変更">
-							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-primary">
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"
-								/>
-							</svg>
-						</button>
+						<div class="dropdown dropdown-end absolute">
+							<button tabindex="0" role="button" class="bg-neutral" aria-label="スケジュールの変更">
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-primary">
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"
+									/>
+								</svg>
+							</button>
+							<div class="dropdown-content z-[1] menu p-2 shadow border-2 border-primary bg-base-100 rounded-box">
+								<div class="mb-2 flex items-center justify-center text-center font-semibold text-md">リスケジュール</div>
+								<DatePicker :min-date="new Date()" :value="task.due" mode="dateTime" color="green" borderless />
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -43,7 +63,7 @@ import type { PartsTasks } from '#build/components';
 		<div v-else class="flex items-center justify-center p-12">
 			<div>
 				<div class="text-2xl font-extrabold text-center mb-6">Zero Task！</div>
-				<div><NuxtImg src="/images/stackzero.png"></NuxtImg></div>
+				<div><NuxtImg src="/images/stackzero.png" class="h-96 w-96"></NuxtImg></div>
 			</div>
 		</div>
 	</div>

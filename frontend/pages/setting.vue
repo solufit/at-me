@@ -12,9 +12,6 @@
 		await useAuth().signOut();
 		await navigateTo('/signIn');
 	};
-	const providers = (user === null || user === undefined ? [] : user.providerData).map((pvd) => {
-		return pvd.providerId;
-	});
 	const wt_mon = ref(true);
 	const wt_the = ref(true);
 	const wt_wed = ref(true);
@@ -46,19 +43,6 @@
 				</svg>
 				<span class="ml-3">ログアウト</span>
 			</button>
-		</div>
-		<div class="mt-6 p-6">
-			<h2 class="font-bold">アカウント連携</h2>
-			<p class="m-2 text-sm text-gray-600">アカウントを連携することでほかのサービスの情報を利用することができます。</p>
-			<div class="p-6">
-				<div class="flex items-center justify-center">
-					<div class="w-2/3">Google</div>
-					<div class="w-1/3">
-						<button class="btn w-24" v-if="providers.indexOf('google.com')">連携する</button>
-						<button class="btn w-24 btn-disabled" v-else>連携中</button>
-					</div>
-				</div>
-			</div>
 		</div>
 		<div class="mt-3 p-6">
 			<h2 class="font-bold">ワークタイム</h2>

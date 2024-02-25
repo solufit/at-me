@@ -7,39 +7,49 @@
 	import type { Schdule } from '~/types/schdule';
 	import type { Task } from '~/types/task';
 	import { useAccessToken } from '../composables/accesstoken';
-	const { refresh } = useAuth();
+	import { useUserLink } from '../composables/userlink';
 	const { token } = useAccessToken();
+	const { userLink } = useUserLink();
 	const config = useRuntimeConfig();
-	const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/info`, {
-		method: 'get',
-		headers: {
-			Authorization: `Bearer ${token}`,
-		},
-	});
-	if (error.value?.data.detail == 'Not authenticated') {
-		refresh();
-	} else {
-	}
 	// defind variable
 	const schs = ref<Schdule[]>([]);
 	const tasks = ref<Task[]>([]);
-	const api_endpoint = process.env.NUXT_API_ENDPOINT;
 	// defind today
 	const date = new Date();
 	const yyyy = String(date.getFullYear());
 	const mm = String(date.getMonth() + 1).padStart(2, '0');
 	const dd = String(date.getDate()).padStart(2, '0');
-	const today = `${yyyy}/${mm}/${dd}`;
+	const today = `${yyyy}-${mm}-${dd}`;
 
 	// api requests
-	async () => {
-		const { data, error } = await useFetch(`https://${api_endpoint}/calenders?date=${today}`);
-		schs.value = data.value as Schdule[];
+	const get_schs = async () => {
+		const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/google/calender?date=${today}&userlink=${userLink}`, {
+			method: 'get',
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		if (error.value?.data.detail == 'Not authenticated') {
+			navigateTo('');
+		} else {
+			schs.value = data.value as Schdule[];
+		}
 	};
-	async () => {
-		const { data, error } = await useFetch(`https://${api_endpoint}/tasks?date=${today}`);
-		tasks.value = data.value as Task[];
+	const get_tasks = async () => {
+		const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/tasks?date=${today}`, {
+			method: 'get',
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		if (error.value?.data.detail == 'Not authenticated') {
+			navigateTo('/');
+		} else {
+			tasks.value = data.value as Task[];
+		}
 	};
+	get_schs();
+	get_tasks();
 	const tabs = ref('calender');
 	const change_tab = (tab: string) => {
 		tabs.value = tab;
@@ -69,10 +79,11 @@
 		</div>
 		<div class="p-5 mt-5 md:mt-0">
 			<div class="md:flex w-full">
-				<div class="md:block md:w-1/2" :class="{ hidden: tabs != 'calender' }">
-					<Timeline :schdules="schs" />
+				<div class="md:block md:w-1/2" :class="{ hidden: tabs !== 'calender' }">
+					<div v-if="schs.length == 0" class="flex items-center justify-center font-semibold text-2xl mt-10">予定はありません！</div>
+					<div v-else><Timeline :schdules="schs" /></div>
 				</div>
-				<div class="md:block md:w-1/2" :class="{ hidden: tabs != 'tasks' }">
+				<div class="md:block md:w-1/2" :class="{ hidden: tabs !== 'tasks' }">
 					<Tasks :tasks="tasks" />
 				</div>
 			</div>
