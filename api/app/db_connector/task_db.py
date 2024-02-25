@@ -152,7 +152,8 @@ class task_db():
 
         query: Query  = self._load(localId)
 
-        result = query.filter(Task.due >= today).filter(Task.due <= seven_days_later).all()
+        result = query.filter(Task.due >= today).filter(Task.due <= seven_days_later)\
+            .filter(Task.completed == False).all()
 
         result = self._convert_model(result)
 
