@@ -100,7 +100,8 @@ class calendar_db():
         note : str,
         Taskid : str,
     ):
-        event : Event = self.session.query(Event).filter(Event.localId == localId).first()
+        event : Event = self.session.query(Event).filter(Event.localId == localId)\
+            .filter(Event.id == id).filter(Event.calendarId == calendarID).first()
 
         event.localId = localId
         event.id = id
@@ -112,6 +113,7 @@ class calendar_db():
         event.note = note
         event.Taskid = Taskid
         event.title = title
+
         
         self.session.commit()
 
