@@ -50,9 +50,6 @@ services:
       - 6379
     volumes:
       - redis-data:/data/
-    networks:
-      - atme
-
 
 
 volumes:
