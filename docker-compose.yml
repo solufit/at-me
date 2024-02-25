@@ -41,7 +41,7 @@ services:
       - auth.env
 
     ports:
-      - "8000:80"
+      - "80:80"
 
   atme-auth-redis:
     image: redis
