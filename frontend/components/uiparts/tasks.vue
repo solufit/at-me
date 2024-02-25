@@ -28,7 +28,9 @@ import type { PartsTasks } from '#build/components';
 						<input type="radio" :name="task.id" @change="task_click(task.id)" class="radio radio-primary" :checked="task.completed" />
 					</div>
 					<div class="w-full px-3">
-						<div class="font-bold">{{ task.title }}</div>
+						<div class="font-bold">
+							{{ task.title }} <span class="text-sm font-normal ml-4">{{ task.duringtime }} mins</span>
+						</div>
 						<div class="p-1">{{ task.note }}</div>
 					</div>
 					<div class="w-9">
