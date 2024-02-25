@@ -40,6 +40,9 @@ services:
     env_file:
       - auth.env
 
+    ports:
+      - "8000:80"
+
 
 
 
