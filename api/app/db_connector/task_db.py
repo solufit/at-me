@@ -94,27 +94,43 @@ class task_db():
         self,
         localId : str,
         id : str,
-        calendarID : str,
+        kind : str,
         title : str,
-        htmlLink : str,
-        starttime : datetime.datetime,
-        endtime : datetime.datetime,
-        etag : str,
         note : str,
-        Taskid : str,
+        etag : str,
+        updated : datetime.datetime,
+        selfLink : str,
+        parent : str,
+        position : str,
+        status : str,
+        due : datetime.date,
+        completed : datetime.datetime,
+        deleted : bool,
+        hidden: bool
     ):
-        event : Event = self.session.query(Event).filter(Event.localId == localId).first()
+        task: Task = self.session.query(Task).filter(Task.localId == localId)\
+            .filter(Task.id == id).first()
 
-        event.localId = localId
-        event.id = id
-        event.calendarId = calendarID
-        event.htmlLink = htmlLink
-        event.starttime = starttime
-        event.endtime = endtime
-        event.etag = etag
-        event.note = note
-        event.Taskid = Taskid
-        event.title = title
+        task.id = id,
+        task.localId = localId,
+        task.kind = kind,
+        task.title = title,
+        task.note = note,
+        task.etag = etag,
+        task.updated = updated,
+        task.selfLink = selfLink,
+        task.parent = parent,
+        task.position = position,
+        task.status = status,
+        task.due = due,
+        task.completed = completed,
+        task.deleted = deleted,
+        task.hidden = hidden
+        
+
+
+
+
         
         self.session.commit()
 
