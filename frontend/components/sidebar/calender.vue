@@ -11,9 +11,7 @@
 		},
 	});
 	if (error.value?.data.detail == 'Not authenticated') {
-		const { refresh } = useAuth();
-		refresh();
-		navigateTo('/');
+		navigateTo('/about');
 	}
 	const attributes = ref([
 		{
