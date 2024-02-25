@@ -31,15 +31,15 @@ async def get_calender(
         _type_: _description_
     """
     print(cred['email'])
-    access_token = await requests.get(f"{AUTH_API}/oauth2/token?linkcode={userlink}&secure={SECURE_LOCK}", timeout=(3.0, 7.5))
+    access_token = requests.get(f"{AUTH_API}/oauth2/token?linkcode={userlink}&secure={SECURE_LOCK}", timeout=(3.0, 7.5))
     if access_token.status_code == 403:
         raise HTTPException(status_code=403)
     access_token = access_token.text
-
+    print(datetime.datetime(date.year, date.month, 1,0,0,0).isoformat())
     res = requests.get(
-        f"https://www.googleapis.com/calender/v3/primary/events?timeMin={datetime.datetime(date.year, date.month, 1,0,0,0)}&timeMax={date.year, date.month, 29,23,59,59}",
+        f"https://content.googleapis.com/calendar/v3/calendars/primary/events?timeMin={datetime.datetime(date.year, date.month, 1,0,0,0).isoformat()}Z&timeMax={datetime.datetime(date.year, date.month, 29,23,59,59).isoformat()}Z",
         timeout=(3.0, 7.5),
         headers={'Authorization': f"Bearer {access_token}"}
     )
-    print(res.json())
+    print(res.text)
     return res.json()

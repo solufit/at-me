@@ -38,7 +38,7 @@ async def login_callback(code: str = Query(...)):
             data={
                 "grant_type": "authorization_code",
                 "code": code,
-                "redirect_uri": REDIRECT_URI,
+                "redirect_uri": f"{REDIRECT_URI}/oauth2/login/callback",
                 "client_id": CLIENT_ID,
                 "client_secret": CLIENT_SECRET,
             },

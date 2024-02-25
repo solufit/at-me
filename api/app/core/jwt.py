@@ -18,7 +18,7 @@ def get_secret_path(filename : str) -> str:
 import jwt
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from jwt import PyJWTError
+import jwt
 from starlette.status import HTTP_403_FORBIDDEN
 from app.core import config
 import requests
