@@ -137,6 +137,6 @@ class task_db():
 
     def delete(self, localId: str, id: str):
 
-        event : Event = self.session.query(Event).filter(Event.localId == localId).filter(Event.id == id).delete()
+        task : Task = self.session.query(Task).filter(Task.localId == localId).filter(Task.id == id).delete()
 
         self.session.commit()
