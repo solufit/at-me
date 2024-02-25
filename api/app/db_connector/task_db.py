@@ -1,4 +1,4 @@
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import sessionmaker, Session, Query
 import datetime
 
 
@@ -145,3 +145,21 @@ class task_db():
         task : Task = self.session.query(Task).filter(Task.localId == localId).filter(Task.id == id).delete()
 
         self.session.commit()
+
+    def get_deadline_tasks(self, localId: str):
+        today = datetime.date.today()
+        seven_days_later = today + datetime.timedelta(days=7)
+
+        query: Query  = self._load(localId)
+
+        result = query.filter(Task.due >= today).filter(Task.due <= seven_days_later).all()
+
+        result = self._convert_model(result)
+
+        return result
+
+        
+
+
+        
+        
