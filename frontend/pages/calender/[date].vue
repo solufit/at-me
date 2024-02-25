@@ -3,48 +3,31 @@
 	import Tasks from '~/components/uiparts/tasks.vue';
 	import type { Schdule } from '~/types/schdule';
 	import type { Task } from '~/types/task';
-	import format from 'date-fns/format';
-	const schs: Schdule[] = [
-		{
-			starttime: '2024-02-20 11:44',
-			endtime: '2024-02-20 11:54',
-			duringtime: 10,
-			title: 'test',
-			description: 'test',
-		},
-		{
-			starttime: '2024-02-20 11:44',
-			endtime: '2024-02-20 11:54',
-			duringtime: 10,
-			title: 'test',
-			description: 'test',
-		},
-		{
-			starttime: '2024-02-20 11:44',
-			endtime: '2024-02-20 11:54',
-			duringtime: 10,
-			title: 'test',
-			description: 'test',
-		},
-		{
-			starttime: '2024-02-20 11:44',
-			endtime: '2024-02-20 11:54',
-			duringtime: 10,
-			title: 'test',
-			description: 'test',
-		},
-	];
-	const tasks: Task[] = [];
-	const tabs = ref('calender');
-	const change_tab = (tab: string) => {
-		tabs.value = tab;
-	};
 	const route = useRoute();
 	const targetdate = route.params.date as string;
 	useHead({
 		title: `${targetdate} | @me`,
 	});
 	const tfdate = new Date(targetdate);
+	// defind variable
+	const schs = ref<Schdule[]>([]);
+	const tasks = ref<Task[]>([]);
+	const api_endpoint = process.env.NUXT_API_ENDPOINT;
+
+	// api requests
+	async () => {
+		const { data, error } = await useFetch(`https://${api_endpoint}/calenders?date=${targetdate}`);
+		schs.value = data.value as Schdule[];
+	};
+	async () => {
+		const { data, error } = await useFetch(`https://${api_endpoint}/tasks?date=${targetdate}`);
+		tasks.value = data.value as Task[];
+	};
+	// defind tabs method
+	const tabs = ref('calender');
+	const change_tab = (tab: string) => {
+		tabs.value = tab;
+	};
 </script>
 <template>
 	<div>

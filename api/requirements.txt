@@ -3,3 +3,6 @@ uvicorn>=0.27.0,<0.28.0
 sqlalchemy
 alembic
 psycopg2
+pydantic==1.10.9
+python-dotenv==1.0.0
+firebase-admin
