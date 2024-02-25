@@ -81,10 +81,15 @@ class task_db():
 
         self.session.commit()
 
+    def _load(self, localId: str): 
+        result = self.session.query(Task).filter(Task.localId == localId).all()
+
+        return result
+
         
     def load(self, localId: str):
 
-        result = self.session.query(Task).filter(Task.localId == localId).all()
+        result = self._load(localId)
         complete = self._convert_model(result)
 
         return complete
