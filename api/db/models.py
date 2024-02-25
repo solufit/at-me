@@ -46,7 +46,7 @@ class TaskList(Base):
 class Task(Base):
     __tablename__ = 'tasks'
     id = Column(TEXT, primary_key=True, unique=True)
-    localId = Column(TEXT), ForeignKey("users.localId")
+    localId = Column(TEXT, ForeignKey("users.localId"))
     kind = Column(TEXT)
     title = Column(TEXT)
     note = Column(TEXT)
@@ -57,7 +57,8 @@ class Task(Base):
     position = Column(TEXT)
     status = Column(TEXT)
     due = Column(Date)
-    completed = Column(TIMESTAMP)
+    completed = Column(BOOLEAN)
+    completedTime = Column(TIMESTAMP)
     deleted = Column(BOOLEAN)
     hidden = Column(BOOLEAN)
     

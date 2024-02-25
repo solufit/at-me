@@ -9,26 +9,34 @@ from db import models
 from app.db_connector import task_db
 from app.basemodel.common_model import Task
 
+default_user : models.User = models.User(
+    localId  = "localId",
+    email = "email@email.com",
+    displayname = "displayName",
+    photoIcon = "photoIcon",
+    refleshToken = "token"
 
+)
 
 default_task : models.Task = models.Task(    
-    localId = "localID",
+    localId = "localId",
     id = "id",
     title = "title",
     note = "notes",
-    updated = datetime.datetime(1, 1, 1, 1, 1, 1),
+    updated = datetime.datetime(2023, 12, 20, 20, 59),
     selfLink = "selflink",
     parent = "parent",
     position = "position",
     status = "status",
-    due = datetime.date(2,1,1),
+    due = datetime.date(2023, 12, 24),
     completed = False,
+    completedTime = datetime.datetime(1, 1, 1, 1, 1, 1),
     deleted = False,
     hidden = False 
 )
 
 default_task_updated : models.Task = models.Task(    
-    localId = "localID",
+    localId = "localId",
     id = "id",
     title = "title-updated",
     note = "notes-updated",
@@ -37,7 +45,8 @@ default_task_updated : models.Task = models.Task(
     parent = "parent-update",
     position = "position-update",
     status = "status-update",
-    due = datetime.date(1,1,1),
+    due = datetime.datetime(1,1,1),
+    completedTime = datetime.datetime(1, 1, 1, 1, 1, 1),
     completed = True,
     deleted = False,
     hidden = False 
@@ -45,7 +54,7 @@ default_task_updated : models.Task = models.Task(
 
 
 default_task_nearline : models.Task = models.Task(    
-    localId = "localID",
+    localId = "localId",
     id = "id",
     title = "title-updated",
     note = "notes-updated",
@@ -56,12 +65,13 @@ default_task_nearline : models.Task = models.Task(
     status = "status-update",
     due = datetime.date.today() - datetime.timedelta(days = 3),
     completed = True,
+    completedTime = datetime.datetime(1, 1, 1, 1, 1, 1),
     deleted = False,
     hidden = False 
 )
 
 target_task : models.Task = models.Task(
-    localId = "localID",
+    localId = "localId",
     id = "targetid",
     title = "title",
     note = "notes",
@@ -72,6 +82,7 @@ target_task : models.Task = models.Task(
     status = "status",
     due = datetime.date(2, 1, 1),
     completed = False,
+    completedTime = datetime.datetime(1, 1, 1, 1, 1, 1),
     deleted = False,
     hidden = False
 )
@@ -80,17 +91,21 @@ target_task : models.Task = models.Task(
 class db_task_Tests():
     @pytest.fixture(scope="function")
     def db(self):
+        if os.path.exists("./test.db"):
+            os.remove("./test.db")
+
         db_engine = create_engine("sqlite:///./test.db")
         session : sessionmaker = sessionmaker(db_engine)
 
         #add table to db
         models.Base.metadata.create_all(bind=db_engine)
 
-        with session() as session:
-            session: Session = session
+        with session() as s:
+            s: Session = s
 
-            session.add(copy.deepcopy(default_task))
-            session.commit()
+            s.add(copy.deepcopy(default_user))
+            s.add(copy.deepcopy(default_task))
+            s.commit()
 
         yield session
         
@@ -101,7 +116,6 @@ class db_task_Tests():
     
     def test_tasks_load(self, db):
 
-        session : Session = session # for completion
 
         task = task_db(
             sessionmk = db
@@ -111,7 +125,7 @@ class db_task_Tests():
             localId = default_task.localId
         )
 
-        assert result[1] == Task.from_orm(default_task)
+        assert result["id"] == Task.from_orm(default_task)
 
     def test_task_create_delete(self, db):
 
