@@ -24,7 +24,7 @@ rc = redis.StrictRedis(connection_pool=connection_pool)
 
 @router.get("/login")
 async def login_form():
-    return f"{AUTHORIZATION_URL}?client_id={CLIENT_ID}&redirect_uri={config.AUTH_HOST}/github/callback&scope=user:read"
+    return f"{AUTHORIZATION_URL}?client_id={CLIENT_ID}&redirect_uri={config.AUTH_HOST}/github/callback&scope=repo"
 
 @router.get("/callback")
 async def login_callback(code: str = Query(...)):
