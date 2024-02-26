@@ -24,7 +24,7 @@ services:
       - db
     ports:
       - "8080:8080"
-    command: /bin/bash -c "cd /server/api/app/ && uvicorn main:app --host=0.0.0.0 --port=8080 --reload"
+    command: /bin/bash -c "cd /server/api/ && uvicorn main:app --host=0.0.0.0 --port=8080 --reload"
     env_file:
       - api.env
 
