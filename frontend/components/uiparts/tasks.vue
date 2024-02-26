@@ -2,6 +2,10 @@ import type { PartsTasks } from '#build/components';
 <script setup lang="ts">
 	import type { Task } from '~/types/task';
 	import { Calendar, DatePicker } from 'v-calendar';
+	import MarkdownIt from 'markdown-it';
+	const mdit: MarkdownIt = new MarkdownIt({
+		html: true,
+	});
 	const props = defineProps<{
 		tasks: Task[];
 	}>();
@@ -43,13 +47,13 @@ import type { PartsTasks } from '#build/components';
 								<div class="font-bold ml-2">
 									{{ task.title }}
 								</div>
-								<div class="flex my-1 text-sm font-normal ml-3">
-									<div>{{ task.parent }}</div>
+								<div class="flex gap-4 my-1 text-sm font-normal ml-3">
 									<div v-if="task.provider == 'at-me'">{{ task.duringtime }} mins</div>
+									<div>{{ task.parent }}</div>
 								</div>
 							</summary>
 							<div class="collapse-content">
-								<div class="p-1 mt-2 max-w-md break-words">{{ task.note }}</div>
+								<div class="p-1 mt-2 max-w-md"><div v-html="mdit.render(task.note)"></div></div>
 							</div>
 						</details>
 					</div>
