@@ -6,7 +6,7 @@ import time
 import redis
 import uuid
 import json
-from auth.app.core import config
+from app.core import config
 
 router = APIRouter()
 
@@ -77,7 +77,7 @@ async def get_token(linkcode: str, secure: str) -> str:
     data = rc.hgetall(linkcode)
     token = json.dumps({key.decode(): value.decode() for key, value in data.items()})
     token = json.loads(token)
-    if "access_token" in token:
+    if not "access_token" in token:
         raise HTTPException(status_code=401, detail="LinkCode is invalid")
     if int(token["exp"]) - int(time.time()) < 300:
         async with httpx.AsyncClient() as client:

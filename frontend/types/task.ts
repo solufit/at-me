@@ -12,4 +12,5 @@ export interface Task {
 	completed: boolean;
 	deleted: boolean;
 	hidden: boolean;
+	provider: string;
 }

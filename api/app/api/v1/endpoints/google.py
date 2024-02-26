@@ -31,9 +31,11 @@ async def get_calender(
     Returns:
         _type_: _description_
     """
-    access_token = requests.get(f"{AUTH_API}/oauth2/token?linkcode={userlink}&secure={SECURE_LOCK}", timeout=(3.0, 7.5))
+    access_token = requests.get(f"{AUTH_API}/google/token?linkcode={userlink}&secure={SECURE_LOCK}", timeout=(3.0, 7.5))
     if access_token.status_code == 403:
         raise HTTPException(status_code=403)
+    elif access_token.status_code == 401:
+        raise HTTPException(status_code=401)
     access_token = access_token.text
     res = requests.get(
         f"https://content.googleapis.com/calendar/v3/calendars/primary/events?timeMin={datetime.datetime(date.year, date.month, date.day,0,0,0).isoformat()}Z&timeMax={datetime.datetime(date.year, date.month, date.day,23,59,59).isoformat()}Z",
