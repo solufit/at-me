@@ -40,5 +40,7 @@ async def get_calender(
         timeout=(3.0, 7.5),
         headers={'Authorization': f"Bearer {access_token}"}
     )
+    if 'items' in res.json():
+        return []
     contens = [ Event(localId=item['id'],id=item['id'],calendarID=item['iCalUID'],htmlLink=item['htmlLink'],starttime=item['start']['dateTime'],endtime=item['end']['dateTime'],duringtime=((datetime.datetime.fromisoformat(item['end']['dateTime']) - datetime.datetime.fromisoformat(item['start']['dateTime'])).seconds // 60),title=item['summary'],etag=item['etag'],note=(item['description'] if 'description' in item else ''),Taskid='')  for item in res.json()["items"] if 'dateTime' in item['start']]
     return contens
