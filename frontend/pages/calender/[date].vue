@@ -13,17 +13,38 @@
 	const schs = ref<Schdule[]>([]);
 	const tasks = ref<Task[]>([]);
 	const api_endpoint = process.env.NUXT_API_ENDPOINT;
-
+	const config = useRuntimeConfig();
+	const { userLink } = useUserLink();
+	const { token } = useAccessToken();
 	// api requests
-	async () => {
-		const { data, error } = await useFetch(`https://${api_endpoint}/calenders?date=${targetdate}`);
-		schs.value = data.value as Schdule[];
+	const get_schs = async () => {
+		const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/google/calender?date=${targetdate}&userlink=${userLink}`, {
+			method: 'get',
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		if (error.value?.data.detail == 'Not authenticated') {
+			navigateTo('');
+		} else {
+			schs.value = data.value as Schdule[];
+		}
 	};
-	async () => {
-		const { data, error } = await useFetch(`https://${api_endpoint}/tasks?date=${targetdate}`);
-		tasks.value = data.value as Task[];
+	const get_tasks = async () => {
+		const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/tasks?date=${targetdate}`, {
+			method: 'get',
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		if (error.value?.data.detail == 'Not authenticated') {
+			navigateTo('/');
+		} else {
+			tasks.value = data.value as Task[];
+		}
 	};
-	// defind tabs method
+	get_schs();
+	get_tasks();
 	const tabs = ref('calender');
 	const change_tab = (tab: string) => {
 		tabs.value = tab;

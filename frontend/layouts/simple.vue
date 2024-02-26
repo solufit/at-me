@@ -21,7 +21,7 @@
 							<li class="my-3"><NuxtLink to="/deadline">締め切り</NuxtLink></li>
 						</ul>
 						<hr />
-						<ul class="">
+						<ul class="hidden">
 							<!-- Sidebar content here -->
 							<li class="my-1"><NuxtLink to="/">チュートリアル</NuxtLink></li>
 							<li class="my-1"><NuxtLink to="/">利用規約</NuxtLink></li>

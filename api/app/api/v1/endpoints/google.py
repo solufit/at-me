@@ -31,7 +31,6 @@ async def get_calender(
     Returns:
         _type_: _description_
     """
-    print(cred['email'])
     access_token = requests.get(f"{AUTH_API}/oauth2/token?linkcode={userlink}&secure={SECURE_LOCK}", timeout=(3.0, 7.5))
     if access_token.status_code == 403:
         raise HTTPException(status_code=403)
@@ -41,5 +40,8 @@ async def get_calender(
         timeout=(3.0, 7.5),
         headers={'Authorization': f"Bearer {access_token}"}
     )
-    contens = [ Event(localId=item['id'],id=item['id'],calendarID=item['iCalUID'],htmlLink=item['htmlLink'],starttime=item['start']['dateTime'],endtime=item['end']['dateTime'],duringtime=((datetime.datetime.fromisoformat(item['end']['dateTime']) - datetime.datetime.fromisoformat(item['start']['dateTime'])).seconds // 60),title=item['summary'],etag=item['etag'],note=(item['description'] if 'description' in item else ''),Taskid='')  for item in res.json()["items"] if 'dateTime' in item['start']]
-    return contens
+    if 'items' in res.json():
+        contens = [ Event(localId=item['id'],id=item['id'],calendarID=item['iCalUID'],htmlLink=item['htmlLink'],starttime=item['start']['dateTime'],endtime=item['end']['dateTime'],duringtime=((datetime.datetime.fromisoformat(item['end']['dateTime']) - datetime.datetime.fromisoformat(item['start']['dateTime'])).seconds // 60),title=item['summary'],etag=item['etag'],note=(item['description'] if 'description' in item else ''),Taskid='')  for item in res.json()["items"] if 'dateTime' in item['start']]
+        return contens
+    else:
+        return []

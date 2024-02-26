@@ -23,14 +23,14 @@
 <template>
 	<div class="p-5">
 		<h1 class="font-bold text-2xl mb-12">設定</h1>
-		<div class="flex border-2 shadow-sm rounded-lg p-6 items-center justify-center">
-			<div class="w-1/4 rounded-full">
-				<img alt="User Icon" :src="user?.photoURL" v-if="user?.photoURL !== null" />
+		<div class="flex border-2 shadow-sm rounded-lg p-6 items-center justify-center h-32">
+			<div class="h-22 w-22 avater">
+				<img alt="User Icon" src="https://lh3.googleusercontent.com/a/ACg8ocKUJcVJhLy843JCOXAb9oA_Ttpz1lkLtAQ9yTNhv0dfJ5Y3=s96-c" class="rounded-full" />
 			</div>
-			<div class="md:w-1/2 p-3">
+			<div class="md:w-1/2 p-3 ml-6">
 				<div class="text-2xl">
-					<div class="text-2xl m-1">{{ user?.displayName }}</div>
-					<div class="text-sm m-1">{{ user?.email }}</div>
+					<div class="text-2xl m-1">さざんか</div>
+					<div class="text-sm m-1">**********@gmail.com</div>
 				</div>
 			</div>
 			<button class="hidden md:flex items-center justify-center btn btn-outline btn-primary w-36" @click="signOut">

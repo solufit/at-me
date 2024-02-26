@@ -23,7 +23,7 @@ import type { PartsTasks } from '#build/components';
 	<div>
 		<div class="p-2" v-if="tasks.length > 0" v-for="task in tasks">
 			<div class="border-2 rounded-md p-3 cursor-pointer w-full">
-				<div class="flex w-full">
+				<div class="flex w-full" :class="{ 'opacity-25': task.completed }">
 					<div class="w-20">
 						<input type="radio" :name="task.id" @change="task_click(task.id)" class="radio radio-primary" :checked="task.completed" />
 					</div>
