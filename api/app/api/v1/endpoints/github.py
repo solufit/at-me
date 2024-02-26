@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from typing import List
 
 from app.core.jwt import get_current_user
-from app.basemodel.common_model import Task
+from app.basemodel.common_model import Task, User
 
 router = APIRouter()
 
@@ -30,7 +30,6 @@ async def get_issues(userlink: str) -> List[Task]:
         _type_: _description_
     """
     access_token = requests.get(f"{AUTH_API}/github/token?linkcode={userlink}&secure={SECURE_LOCK}", timeout=(3.0, 7.5))
-    print(access_token.text.replace('"',''))
     if access_token.status_code == 403:
         raise HTTPException(status_code=403)
     elif access_token.status_code == 401:
@@ -66,4 +65,16 @@ async def get_issues(userlink: str) -> List[Task]:
 
 @router.get("/profile", description="get user profile")
 async def get_profile(userlink: str):
-    return
+    access_token = requests.get(f"{AUTH_API}/github/token?linkcode={userlink}&secure={SECURE_LOCK}", timeout=(3.0, 7.5))
+    if access_token.status_code == 403:
+        raise HTTPException(status_code=403)
+    elif access_token.status_code == 401:
+        raise HTTPException(status_code=401)
+    access_token = access_token.text.replace('"','')
+    res = requests.get(
+        f" https://api.github.com/user",
+        timeout=(3.0, 7.5),
+        headers={"Accept": "application/vnd.github+json",'Authorization': f"Bearer {access_token}","X-GitHub-Api-Version": "2022-11-28"}
+    )
+    content = res.json()
+    return {"email": content['login'],"displayName":content['name'],"photoURL":content['avatar_url']}
