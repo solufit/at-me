@@ -13,14 +13,14 @@
 	};
 </script>
 <template>
-	<div>
+	<div class="min-h-screen">
 		<headervue />
 		<div class="lg:flex">
 			<div class="drawer lg:drawer-open w-80">
 				<input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
 				<div class="drawer-side lg:h-fit z-20">
 					<label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"></label>
-					<div class="menu p-4 w-80 bg-white lg:bg-transparent h-screen md:h-full">
+					<div class="menu p-4 w-80 bg-white lg:bg-transparent h-screen md:h-fit">
 						<div class="mb-6 lg:hidden">
 							<NuxtLink to="/" class="btn btn-ghost text-xl"> <NuxtImg src="/images/logo.webp" class="h-8 w-8" alt="logo" />@me</NuxtLink>
 						</div>
@@ -64,11 +64,11 @@
 						<button class="underline p-1" @click="dismiss()">表示しない</button>
 					</div>
 				</div>
-				<div class="overflow-y-auto">
+				<div>
 					<slot />
 				</div>
 			</div>
-			<div>
+			<div class="relative">
 				<!--
 				<div class="dropdown dropdown-top dropdown-end absolute bottom-0 right-0 m-5">
 					<div tabindex="0" role="button" class="btn btn-square m-1 bg-primary border-0">
@@ -82,7 +82,7 @@
 					</ul>
 				</div>
 				-->
-				<div class="absolute bottom-0 right-0 m-6">
+				<div class="fixed bottom-0 right-0 m-6">
 					<div class="md:tooltip" data-tip="タスクを追加">
 						<button tabindex="0" role="button" class="btn btn-square m-1 bg-primary border-0" onclick="add_task.showModal()" aria-label="タスクの追加">
 							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

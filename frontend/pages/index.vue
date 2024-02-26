@@ -97,6 +97,8 @@
 			completed: false,
 			deleted: false,
 			hidden: false,
+			provider: 'at-me',
+			parent_id: '',
 		},
 	];
 </script>

@@ -38,7 +38,7 @@ async def get_issues(userlink: str) -> List[Task]:
     res = requests.get(
         f" https://api.github.com/issues",
         timeout=(3.0, 7.5),
-        headers={"Accept": "application/vnd.github+json",'Authorization': f"Bearer {access_token}","X-GitHub-Api-Version": "2022-11-28"}
+        headers={"Accept": "application/vnd.github.text+json",'Authorization': f"Bearer {access_token}","X-GitHub-Api-Version": "2022-11-28"}
     )
     def convert_datetime_str(utc):
         utc_time = datetime.datetime.strptime(utc,"%Y-%m-%dT%H:%M:%SZ" )
@@ -50,17 +50,16 @@ async def get_issues(userlink: str) -> List[Task]:
             id= issue['id'],
             provider= 'github',
             title= issue['title'],
-            note= issue['body'] if issue['body'] != None else '',
+            note= issue['body_text'] if issue['body_text'] != None else '',
             updated= convert_datetime_str(issue['updated_at']),
             selfLink= issue['html_url'],
-            parent= '',
+            parent= f"{issue['url'].split('/')[4]}/{issue['url'].split('/')[5]}" ,
             position= '',
             status= '',
             duringtime= 0,
         )
         for issue in res.json()
     ]
-    print(f'Authorization Bearer {access_token}')
     return result
 
 @router.get("/profile", description="get user profile")
