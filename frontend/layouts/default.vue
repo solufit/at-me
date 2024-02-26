@@ -34,7 +34,7 @@
 							<li class="my-3"><NuxtLink to="/deadline">締め切り</NuxtLink></li>
 						</ul>
 						<hr />
-						<ul class="hidden">
+						<ul class="">
 							<!-- Sidebar content here -->
 							<li class="my-1"><NuxtLink to="/tutorial">チュートリアル</NuxtLink></li>
 							<li class="my-1"><a href="https://solufit.net/terms" target="_blank">利用規約</a></li>
