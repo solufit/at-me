@@ -25,11 +25,15 @@ rc = redis.StrictRedis(connection_pool=connection_pool)
 
 @router.get("/login")
 async def login_form():
+    return f"{AUTHORIZATION_URL}?client_id={CLIENT_ID}&scopes=user:email repo issues:read&redirect_uri={config.AUTH_HOST}/github/callback"
+
+@router.get("/install")
+async def install_form():
     return "https://github.com/apps/at-me-app/installations/new"
-#    return f"{AUTHORIZATION_URL}?client_id={CLIENT_ID}&scopes=user:email repo issues:read&redirect_uri={config.AUTH_HOST}/github/callback"
 
 @router.get("/callback")
 async def login_callback(code: str = Query(...)):
+    print(Query(...))
     token_response = requests.post(
         TOKEN_URL,
         headers={"Accept":"application/json"},
@@ -47,6 +51,21 @@ async def login_callback(code: str = Query(...)):
             detail=token_response_json,
         )
     
+    access_token = token_response_json["access_token"].replace('"','')
+    res = requests.get(
+        f" https://api.github.com/app",
+        timeout=(3.0, 7.5),
+        headers={"Accept": "application/vnd.github+json",'Authorization': f"Bearer {access_token}","X-GitHub-Api-Version": "2022-11-28"}
+    )
+    slug = False
+    print(res.json())
+    for app in res.json():
+        if app['slug'] == 'at-me-app':
+            slug=True
+        
+    if slug:
+        return RedirectResponse(url="https://github.com/apps/at-me-app/installations/new")
+
     linkcode=  str(uuid.uuid4())
     rc = redis.Redis(
         host="atme-auth-redis",
