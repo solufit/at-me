@@ -6,10 +6,15 @@
 	const jwt = route.query.jwt;
 	const linkcode = route.query.linkcode;
 	const provider = route.query.provider;
+	const reqtype = route.query.type;
 	const { setToken } = useAccessToken();
 	const { userLink, setLink } = useUserLink();
 	const { user, clearUser } = useUserStore();
-	if (userLink == null) {
+	if (reqtype == 'auth') {
+		// APIにアカウント認証処理を送信
+		window.location.href = '/setting';
+	}
+	if (userLink == null && reqtype == 'login') {
 		setToken(jwt as string);
 		setLink({ linkcode: linkcode as string, provider: provider as string });
 		window.location.href = '/';
@@ -27,7 +32,7 @@
 	};
 </script>
 <template>
-	<div class="md:h-screen w-screen flex items-center justify-center">
+	<div class="md:h-screen w-screen flex items-center justify-center" v-if="userLink != null && reqtype == 'login'">
 		<div class="w-5/6 m-6 md:m-0 md:w-1/2 border rounded-xl p-3">
 			<div class="flex items-center justify-center text-4xl">
 				<div>

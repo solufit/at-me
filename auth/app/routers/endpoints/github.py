@@ -31,19 +31,7 @@ async def login_form():
 async def install_form():
     return "https://github.com/apps/at-me-app/installations/new"
 
-@router.get("/callback")
-async def login_callback(code: str = Query(...)):
-    print(Query(...))
-    token_response = requests.post(
-        TOKEN_URL,
-        headers={"Accept":"application/json"},
-        data={
-            "code": code,
-            "redirect_uri": f"{config.AUTH_HOST}/github/callback",
-            "client_id": CLIENT_ID,
-            "client_secret": CLIENT_SECRET,
-        },
-    )
+def callback(token_response):
     token_response_json = token_response.json()
     if token_response.status_code != 200:
         raise HTTPException(
@@ -51,21 +39,6 @@ async def login_callback(code: str = Query(...)):
             detail=token_response_json,
         )
     
-    access_token = token_response_json["access_token"].replace('"','')
-    res = requests.get(
-        f" https://api.github.com/app",
-        timeout=(3.0, 7.5),
-        headers={"Accept": "application/vnd.github+json",'Authorization': f"Bearer {access_token}","X-GitHub-Api-Version": "2022-11-28"}
-    )
-    slug = False
-    print(res.json())
-    for app in res.json():
-        if app['slug'] == 'at-me-app':
-            slug=True
-        
-    if slug:
-        return RedirectResponse(url="https://github.com/apps/at-me-app/installations/new")
-
     linkcode=  str(uuid.uuid4())
     rc = redis.Redis(
         host="atme-auth-redis",
@@ -81,7 +54,38 @@ async def login_callback(code: str = Query(...)):
             "exp_refresh": int(time.time()) + int(token_response_json["refresh_token_expires_in"])
         }
     )
-    return RedirectResponse(url=f"{config.FRONTEND_URL}?jwt={token_response_json["access_token"]}&linkcode={linkcode}&provider=github")
+    return token_response_json, linkcode
+
+@router.get("/callback")
+async def login_callback(code: str = Query(...)):
+    token_response = requests.post(
+        TOKEN_URL,
+        headers={"Accept":"application/json"},
+        data={
+            "code": code,
+            "redirect_uri": f"{config.AUTH_HOST}/github/callback",
+            "client_id": CLIENT_ID,
+            "client_secret": CLIENT_SECRET,
+        },
+    )
+    token_response_json, linkcode = callable(token_response)
+    return RedirectResponse(url=f"{config.FRONTEND_URL}?jwt={token_response_json["access_token"]}&linkcode={linkcode}&provider=github&type=login")
+
+@router.get('/callback_install')
+async def get_callback_install(code: str = Query(...)):
+    token_response = requests.post(
+        TOKEN_URL,
+        headers={"Accept":"application/json"},
+        data={
+            "code": code,
+            "redirect_uri": f"{config.AUTH_HOST}/github/callback",
+            "client_id": CLIENT_ID,
+            "client_secret": CLIENT_SECRET,
+        },
+    )
+    token_response_json, linkcode = callable(token_response)
+    return RedirectResponse(url=f"{config.FRONTEND_URL}?jwt={token_response_json["access_token"]}&linkcode={linkcode}&provider=github&type=auth")
+
 
 @router.get('/token')
 async def get_token(linkcode: str, secure: str) -> str:
