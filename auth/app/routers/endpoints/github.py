@@ -8,6 +8,7 @@ import uuid
 import json
 import requests
 from app.core import config
+from app.core import jwt
 router = APIRouter()
 
 # 環境変数の読み込み
@@ -26,10 +27,6 @@ rc = redis.StrictRedis(connection_pool=connection_pool)
 @router.get("/login")
 async def login_form():
     return f"{AUTHORIZATION_URL}?client_id={CLIENT_ID}&scopes=user:email repo issues:read&redirect_uri={config.AUTH_HOST}/github/callback"
-
-@router.get("/install")
-async def install_form():
-    return "https://github.com/apps/at-me-app/installations/new"
 
 def callback(token_response):
     token_response_json = token_response.json()
@@ -68,24 +65,8 @@ async def login_callback(code: str = Query(...)):
             "client_secret": CLIENT_SECRET,
         },
     )
-    token_response_json, linkcode = callable(token_response)
+    token_response_json, linkcode = callback(token_response)
     return RedirectResponse(url=f"{config.FRONTEND_URL}?jwt={token_response_json["access_token"]}&linkcode={linkcode}&provider=github&type=login")
-
-@router.get('/callback_install')
-async def get_callback_install(code: str = Query(...)):
-    token_response = requests.post(
-        TOKEN_URL,
-        headers={"Accept":"application/json"},
-        data={
-            "code": code,
-            "redirect_uri": f"{config.AUTH_HOST}/github/callback",
-            "client_id": CLIENT_ID,
-            "client_secret": CLIENT_SECRET,
-        },
-    )
-    token_response_json, linkcode = callable(token_response)
-    return RedirectResponse(url=f"{config.FRONTEND_URL}?jwt={token_response_json["access_token"]}&linkcode={linkcode}&provider=github&type=auth")
-
 
 @router.get('/token')
 async def get_token(linkcode: str, secure: str) -> str:

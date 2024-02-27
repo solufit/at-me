@@ -160,3 +160,4 @@ cython_debug/
 #.idea/
 
 /api/app/*.json
+/auth/*.pem

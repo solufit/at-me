@@ -42,7 +42,7 @@ import type { PartsTasks } from '#build/components';
 						</svg>
 					</div>
 					<div class="w-full max-w-xl px-3">
-						<details tabindex="0" class="collapse collapse-arrow">
+						<details tabindex="0" class="collapse">
 							<summary class="collapse-title p-0">
 								<div class="font-bold ml-2">
 									{{ task.title }}
