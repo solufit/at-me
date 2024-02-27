@@ -12,11 +12,15 @@ client = AsyncIOMotorClient(
 db = client.get_database(os.getenv("MONGO_INITDB_DATABASE"))
 user_collection = db.get_collection("user")
 class ProviderInfo(BaseModel):
-    provider: str = Field(...)
     photoURL: str = Field(...)
     displayName: str = Field(...)
     email: str = Field(...)
     linkcoede: str = Field(...)
+
+class Providers(BaseModel):
+    atme: ProviderInfo = Field(...)
+    google: ProviderInfo= Field(...)
+    github: ProviderInfo = Field(...)
 
 class User(BaseModel):
     """_summary_
@@ -30,6 +34,6 @@ class User(BaseModel):
     photoURL: str = Field(...)
     calenderProvider: str = Field(...)
     taskProvider: str = Field(...)
-    providers: List[ProviderInfo] = Field(...)
+    providers: Providers = Field(...)
     created_at: datetime = Field(...)
     
