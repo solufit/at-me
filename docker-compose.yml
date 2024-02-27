@@ -57,7 +57,16 @@ services:
       - 6379
     volumes:
       - redis-data:/data/
-
+  
+  atme-auth-mongo:
+    image: mongo
+    container_name: atme-auth-mongo
+    expose:
+      - 27017
+    volumes:
+      - mongo-data:/data/db
+    env_file:
+      - auth.env
 
 volumes:
   db-data:
