@@ -13,24 +13,18 @@ export default defineNuxtRouteMiddleware(async (to: RouteLocationNormalized) => 
 		return await navigateTo('/about');
 	} else {
 		const { user, setUser } = useUserStore();
-		const { userLink } = useUserLink();
+		const { signOut } = useAuth();
 		const config = useRuntimeConfig();
-		if (userLink?.provider == 'google') {
-			const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/auth/info`, {
-				method: 'get',
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			});
-			setUser(data.value as User);
-		} else if (userLink?.provider == 'github') {
-			const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/github/profile`, {
-				method: 'get',
-				params: {
-					userlink: userLink.linkcode,
-				},
-			});
-			setUser(data.value as User);
+		if (!user?.userId) {
+			await signOut();
+			return await navigateTo('/about');
 		}
+		const { data, error } = await useFetch(`${config.public.AUTH_API}/user/profile`, {
+			method: 'get',
+			params: {
+				userId: user?.userId,
+			},
+		});
+		setUser(data.value as User);
 	}
 });

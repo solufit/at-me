@@ -71,5 +71,6 @@ services:
 volumes:
   db-data:
   redis-data:
+  mongo-data:
 
 

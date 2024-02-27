@@ -11,3 +11,4 @@ jwt
 redis
 httpx
 uuid
+motor

@@ -6,19 +6,11 @@
 	});
 	const config = useRuntimeConfig();
 	const signInWithGoogle = async (): Promise<void> => {
-		const { data, error } = await useFetch(`${config.public.AUTH_API}/google/login`, {
-			params: {
-				redirect: config.public.AUTH_REDIRECT,
-			},
-		});
+		const { data, error } = await useFetch(`${config.public.AUTH_API}/google/login`);
 		window.location.href = data.value as string;
 	};
 	const signInWithGithub = async (): Promise<void> => {
-		const { data, error } = await useFetch(`${config.public.AUTH_API}/github/login`, {
-			params: {
-				redirect: config.public.AUTH_REDIRECT,
-			},
-		});
+		const { data, error } = await useFetch(`${config.public.AUTH_API}/github/login`);
 		window.location.href = data.value as string;
 	};
 	const task_rc: Task[] = [
@@ -36,6 +28,8 @@
 			completed: false,
 			deleted: false,
 			hidden: false,
+			parent_id: '',
+			provider: '',
 		},
 	];
 </script>
