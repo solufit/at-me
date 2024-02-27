@@ -2,6 +2,10 @@ import type { PartsTasks } from '#build/components';
 <script setup lang="ts">
 	import type { Task } from '~/types/task';
 	import { Calendar, DatePicker } from 'v-calendar';
+	import MarkdownIt from 'markdown-it';
+	const mdit: MarkdownIt = new MarkdownIt({
+		html: true,
+	});
 	const props = defineProps<{
 		tasks: Task[];
 	}>();
@@ -24,30 +28,63 @@ import type { PartsTasks } from '#build/components';
 		<div class="p-2" v-if="tasks.length > 0" v-for="task in tasks">
 			<div class="border-2 rounded-md p-3 cursor-pointer w-full">
 				<div class="flex w-full" :class="{ 'opacity-25': task.completed }">
-					<div class="w-20">
+					<div class="w-20" v-if="task.provider == 'at-me'">
 						<input type="radio" :name="task.id" @change="task_click(task.id)" class="radio radio-primary" :checked="task.completed" />
 					</div>
-					<div class="w-full px-3">
-						<div class="font-bold">
-							{{ task.title }} <span class="text-sm font-normal ml-4">{{ task.duringtime }} mins</span>
-						</div>
-						<div class="p-1">{{ task.note }}</div>
+					<div class="w-20 flex items-center justify-center" v-if="task.provider == 'github'">
+						<svg viewBox="0 0 98 98" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8">
+							<path
+								fill-rule="evenodd"
+								clip-rule="evenodd"
+								d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z"
+								fill="#24292f"
+							/>
+						</svg>
 					</div>
-					<div class="w-9">
-						<div class="dropdown dropdown-end absolute">
-							<button tabindex="0" role="button" class="bg-neutral" aria-label="スケジュールの変更">
-								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-primary">
+					<div class="w-full max-w-xl px-3">
+						<details tabindex="0" class="collapse">
+							<summary class="collapse-title p-0">
+								<div class="font-bold ml-2">
+									{{ task.title }}
+								</div>
+								<div class="flex gap-4 my-1 text-sm font-normal ml-3">
+									<div v-if="task.provider == 'at-me'">{{ task.duringtime }} mins</div>
+									<div>{{ task.parent }}</div>
+								</div>
+							</summary>
+							<div class="collapse-content">
+								<div class="p-1 mt-2 max-w-md"><div v-html="mdit.render(task.note)"></div></div>
+							</div>
+						</details>
+					</div>
+					<div class="w-9 flex items-center justify-center">
+						<div v-if="task.provider == 'at-me'">
+							<div class="dropdown dropdown-end">
+								<button tabindex="0" role="button" class="" aria-label="スケジュールの変更">
+									<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-primary">
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"
+										/>
+									</svg>
+								</button>
+								<div class="dropdown-content z-[1] menu p-2 shadow border-2 border-primary bg-base-100 rounded-box">
+									<div class="mb-2 flex items-center justify-center text-center font-semibold text-md">リスケジュール</div>
+									<DatePicker :min-date="new Date()" :value="task.due" mode="dateTime" color="green" borderless />
+								</div>
+							</div>
+						</div>
+						<div v-else>
+							<a :href="task.selfLink">
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-primary">
 									<path
 										stroke-linecap="round"
 										stroke-linejoin="round"
-										d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"
+										d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
 									/>
 								</svg>
-							</button>
-							<div class="dropdown-content z-[1] menu p-2 shadow border-2 border-primary bg-base-100 rounded-box">
-								<div class="mb-2 flex items-center justify-center text-center font-semibold text-md">リスケジュール</div>
-								<DatePicker :min-date="new Date()" :value="task.due" mode="dateTime" color="green" borderless />
-							</div>
+							</a>
 						</div>
 					</div>
 				</div>

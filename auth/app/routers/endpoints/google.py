@@ -1,5 +1,4 @@
-from fastapi import APIRouter, Request, Depends, HTTPException, status, Query
-from fastapi.security import OAuth2AuthorizationCodeBearer
+from fastapi import APIRouter, HTTPException, status, Query
 from fastapi.responses import RedirectResponse
 import httpx
 import os
@@ -7,15 +6,13 @@ import time
 import redis
 import uuid
 import json
-import requests
+from app.core import config
 
 router = APIRouter()
 
 # 環境変数の読み込み
 CLIENT_ID = os.getenv("CLIENT_ID")
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")
-REDIRECT_URI = os.getenv("REDIRECT_URI")
-FRONTEND_URL = os.getenv("FRONTEND_URL")
 AUTHORIZATION_URL = "https://accounts.google.com/o/oauth2/v2/auth"
 TOKEN_URL = "https://oauth2.googleapis.com/token"
 
@@ -26,11 +23,11 @@ connection_pool = redis.ConnectionPool(
 )
 rc = redis.StrictRedis(connection_pool=connection_pool)
 
-@router.get("/oauth2/login")
-async def login_form(redirect: str):
-    return f"{AUTHORIZATION_URL}?response_type=code&client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}/oauth2/login/callback&scope=openid%20email%20profile%20https://www.googleapis.com/auth/calendar&access_type=offline&prompt=consent"
+@router.get("/login")
+async def login_form():
+    return f"{AUTHORIZATION_URL}?response_type=code&client_id={CLIENT_ID}&redirect_uri={config.AUTH_HOST}/google/callback&scope=openid%20email%20profile%20https://www.googleapis.com/auth/calendar&access_type=offline&prompt=consent"
 
-@router.get("/oauth2/login/callback/")
+@router.get("/callback")
 async def login_callback(code: str = Query(...)):
     async with httpx.AsyncClient() as client:
         token_response = await client.post(
@@ -38,7 +35,7 @@ async def login_callback(code: str = Query(...)):
             data={
                 "grant_type": "authorization_code",
                 "code": code,
-                "redirect_uri": f"{REDIRECT_URI}/oauth2/login/callback",
+                "redirect_uri": f"{config.AUTH_HOST}/google/callback",
                 "client_id": CLIENT_ID,
                 "client_secret": CLIENT_SECRET,
             },
@@ -64,9 +61,9 @@ async def login_callback(code: str = Query(...)):
             "exp":int(time.time())+3600
         }
     )
-    return RedirectResponse(url=f"{FRONTEND_URL}?jwt={token_response_json['id_token']}&linkcode={linkcode}")
+    return RedirectResponse(url=f"{config.FRONTEND_URL}?jwt={token_response_json['id_token']}&linkcode={linkcode}&provider=google&type=login")
 
-@router.get('/oauth2/token')
+@router.get('/token')
 async def get_token(linkcode: str, secure: str) -> str:
     if secure != os.getenv('SECURE_LOCK'):
         raise HTTPException(
@@ -80,6 +77,8 @@ async def get_token(linkcode: str, secure: str) -> str:
     data = rc.hgetall(linkcode)
     token = json.dumps({key.decode(): value.decode() for key, value in data.items()})
     token = json.loads(token)
+    if not "access_token" in token:
+        raise HTTPException(status_code=401, detail="LinkCode is invalid")
     if int(token["exp"]) - int(time.time()) < 300:
         async with httpx.AsyncClient() as client:
             token_response = await client.post(
