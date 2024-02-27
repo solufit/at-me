@@ -32,17 +32,17 @@
 	};
 </script>
 <template>
-	<div class="md:h-screen w-screen flex items-center justify-center" v-if="userLink != null && reqtype == 'login'">
-		<div class="w-5/6 m-6 md:m-0 md:w-1/2 border rounded-xl p-3">
+	<div class="lg:h-screen w-screen flex items-center justify-center" v-if="userLink != null && reqtype == 'login'">
+		<div class="w-5/6 m-6 lg:m-0 lg:w-1/2 border rounded-xl p-3">
 			<div class="flex items-center justify-center text-4xl">
 				<div>
 					<NuxtImg src="/images/logo.webp" class="h-16 w-16" alt="logo" />
 				</div>
 				<div>@me</div>
 			</div>
-			<div class="mt-6 text-center text-lg md:text-2xl">ログイン中のアカウント情報があります</div>
+			<div class="mt-6 text-center text-lg lg:text-2xl">ログイン中のアカウント情報があります</div>
 			<div class="flex mt-10 flex-wrap">
-				<div class="w-full md:w-1/2 p-2">
+				<div class="w-full lg:w-1/2 p-2">
 					<div class="text-center">現在ログイン中のアカウント</div>
 					<div class="border p-3 rounded-lg flex items-center justify-center">
 						<div class="avater">
@@ -80,7 +80,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="w-full mt-6 md:m-0 md:w-1/2 p-2">
+				<div class="w-full mt-6 lg:m-0 lg:w-1/2 p-2">
 					<div class="text-center">ログイン試行中のプロバイダー</div>
 					<div class="flex items-center justify-center mt-6">
 						<div class="rounded-full" v-if="provider == 'github'">
@@ -107,15 +107,15 @@
 				</div>
 			</div>
 			<div class="divider"></div>
-			<div class="flex w-full flex-wrap md:flex-nowrap">
-				<div class="w-full md:w-1/2 grid h-40 flex-grow place-items-center">
+			<div class="flex w-full flex-wrap lg:flex-nowrap">
+				<div class="w-full lg:w-1/2 grid h-40 flex-grow place-items-center">
 					<div class="my-6 text-sm text-gray-800">現在ログイン中のアカウントからログアウトし、このアカウントにログインする</div>
-					<button class="btn btn-primary btn-outline btn-lg w-60 md:w-80" @click="changeAccount()">ログアウト</button>
+					<button class="btn btn-primary btn-outline btn-lg w-60 lg:w-80" @click="changeAccount()">ログアウト</button>
 				</div>
-				<div class="hidden md:flex divider divider-horizontal">OR</div>
-				<div class="w-full md:w-1/2 grid h-40 flex-grow place-items-center">
+				<div class="hidden lg:flex divider divider-horizontal">OR</div>
+				<div class="w-full lg:w-1/2 grid h-40 flex-grow place-items-center">
 					<div class="my-6 text-sm text-gray-800">現在ログイン中のアカウントとこのアカウントを連携する</div>
-					<button class="btn btn-primary btn-lg w-60 md:w-80" @click="link()">連携</button>
+					<button class="btn btn-primary btn-lg w-60 lg:w-80" @click="link()">連携</button>
 				</div>
 			</div>
 		</div>
