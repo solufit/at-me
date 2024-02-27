@@ -12,6 +12,7 @@ client = AsyncIOMotorClient(
 db = client.get_database(os.getenv("MONGO_INITDB_DATABASE"))
 user_collection = db.get_collection("user")
 class ProviderInfo(BaseModel):
+    id: str = Field(...)
     photoURL: str = Field(...)
     displayName: str = Field(...)
     email: str = Field(...)
