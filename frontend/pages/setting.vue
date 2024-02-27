@@ -336,7 +336,7 @@
 			</div>
 			<div class="border rounded-lg p-2 my-6">
 				<h2 class="font-bold m-2">機能設定</h2>
-				<p class="m-4 text-sm text-gray-600">カレンダーやタスクとして表示するリソースを設定します</p>
+				<p class="m-4 text-sm text-gray-600"></p>
 				<div class="p-3">
 					<div class="flex flex-wrap my-2">
 						<div class="w-full md:w-1/3 my-1">AI Recommend</div>
