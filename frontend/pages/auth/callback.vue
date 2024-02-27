@@ -2,32 +2,63 @@
 	definePageMeta({
 		layout: false,
 	});
+	import type { User } from '~/types/user';
 	const route = useRoute();
 	const jwt = route.query.jwt;
 	const linkcode = route.query.linkcode;
 	const provider = route.query.provider;
 	const reqtype = route.query.type;
+	const config = useRuntimeConfig();
 	const { setToken } = useAccessToken();
 	const { userLink, setLink } = useUserLink();
-	const { user, clearUser } = useUserStore();
-	if (reqtype == 'auth') {
-		// APIにアカウント認証処理を送信
-		window.location.href = '/setting';
-	}
+	const { user, clearUser, setUser } = useUserStore();
 	if (userLink == null && reqtype == 'login') {
 		setToken(jwt as string);
 		setLink({ linkcode: linkcode as string, provider: provider as string });
+		const { data, error } = await useFetch(`${config.public.AUTH_API}/user/account`, {
+			params: {
+				linkcode: linkcode,
+				provider: provider,
+			},
+		});
+		setUser(data.value as User);
+		if (error.value) {
+			window.alert(error.value);
+			await navigateTo('/about');
+		}
 		window.location.href = '/';
 	}
-	const link = () => {
-		// APIにアカウント情報のリンクを送信
-		window.alert('アカウントを連携したことにしました');
+	const link = async () => {
+		const { data, error } = await useFetch(`${config.public.AUTH_API}/user/link`, {
+			params: {
+				userId: user?.userId,
+				linkcode: linkcode,
+				provider: provider,
+			},
+		});
+		if (error.value) {
+			window.alert(error.value);
+			return await navigateTo('/about');
+		}
+		setUser(data.value as User);
 		window.location.href = '/setting';
 	};
-	const changeAccount = () => {
+	const changeAccount = async () => {
 		clearUser();
 		setToken(jwt as string);
 		setLink({ linkcode: linkcode as string, provider: provider as string });
+		const { data, error } = await useFetch(`${config.public.AUTH_API}/user/account`, {
+			params: {
+				linkcode: linkcode,
+				provider: provider,
+			},
+		});
+		setUser(data.value as User);
+		if (error.value) {
+			window.alert(error.value);
+			return await navigateTo('/about');
+		}
+		window.location.href = '/';
 		navigateTo('/');
 	};
 </script>
