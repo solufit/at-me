@@ -71,7 +71,7 @@ async def get_github_issues(userlink :str) -> List[Task]:
     result = [
         Task(
             id= issue['id'],
-            provider= 'github',
+            provider= 'GithubIssues',
             title= issue['title'],
             note= issue['body_html'] if issue['body_html'] != None else '',
             updated= convert_datetime_str(issue['updated_at']),

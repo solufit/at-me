@@ -22,6 +22,7 @@ class Event(atMeBase):
     etag : str = Field("etag", description="etag")
     note : str = Field("note", description="Note")
     Taskid : str = Field("task id", description="relational task id")
+    provider: str = Field(default='atme')
 
     class Config:
         orm_mode = True
