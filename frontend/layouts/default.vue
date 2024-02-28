@@ -54,7 +54,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="p-6 w-full" style="height: 93vh">
+			<div class="p-6 w-full" style="height: 90vh">
 				<div v-if="$pwa?.isPWAInstalled == false && showInstall == true" class="w-full bg-neutral rounded-xl px-4 py-2 my-4 mb-10 text-sm flex items-center justify-center">
 					<div class="flex-1">アプリをダウンロードしてもっと便利に！</div>
 					<div class="flex-none flex gap-3">

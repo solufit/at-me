@@ -314,7 +314,7 @@
 								</div>
 								<select class="select select-bordered" v-model="rsc_calendar">
 									<option value="atme">@me</option>
-									<option value="GoogleCalender">Google カレンダー</option>
+									<option value="GoogleCalender" v-if="user?.providers.google.id != ''">Google カレンダー</option>
 								</select>
 							</label>
 						</div>
@@ -325,8 +325,8 @@
 								</div>
 								<select class="select select-bordered" v-model="rsc_tasks">
 									<option value="atme">@me</option>
-									<option value="GoogleTasks">Google タスク</option>
-									<option value="GithubIssues">Github Issues</option>
+									<option value="GoogleTasks" v-if="user?.providers.google.id != ''">Google タスク</option>
+									<option value="GithubIssues" v-if="user?.providers.github.id != ''">Github Issues</option>
 								</select>
 							</label>
 						</div>

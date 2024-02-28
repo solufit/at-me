@@ -41,7 +41,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="p-6 w-full overflow-y-auto" style="height: 93vh">
+			<div class="p-6 w-full overflow-y-auto" style="height: 90vh">
 				<slot />
 			</div>
 		</div>
