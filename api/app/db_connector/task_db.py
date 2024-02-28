@@ -151,7 +151,7 @@ class task_db():
         today = datetime.date.today()
         seven_days_later = today + datetime.timedelta(days=7)
 
-        query: Query  = self._load(localId)
+        query = self.session.query(Task).filter(Task.localId == localId)
 
         result = query.filter(Task.due >= today).filter(Task.due <= seven_days_later)\
             .filter(Task.completed == False).all()
@@ -165,7 +165,7 @@ class task_db():
         today = datetime.date.today()
         seven_days_before = today - datetime.timedelta(days=7)
 
-        query: Query  = self._load(localId)
+        query: Query  = self.session.query(Task).filter(Task.localId == localId)
 
         result = query.filter(Task.due >= seven_days_before).filter(Task.due < today)\
             .all()

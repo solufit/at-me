@@ -28,7 +28,7 @@ default_task : models.Task = models.Task(
     parent = "parent",
     position = "position",
     status = "status",
-    due = datetime.date(2023, 12, 24),
+    due = datetime.date.today() + datetime.timedelta(days=3),
     completed = False,
     completedTime = datetime.datetime(1, 1, 1, 1, 1, 1),
     deleted = False,
@@ -55,7 +55,7 @@ default_task_updated : models.Task = models.Task(
 
 default_task_nearline : models.Task = models.Task(    
     localId = "localId",
-    id = "id",
+    id = "id-sugoi",
     title = "title-updated",
     note = "notes-updated",
     updated = datetime.datetime(2, 1, 1, 1, 1, 1),
@@ -218,32 +218,28 @@ class db_task_Tests():
             assert result[default_task.id] == Task.from_orm(default_task_updated)
 
     def test_get_deadline_tasks(self, db):
-        with db() as session:
-            session : Session = session # for completion
 
             task = task_db(
-                session = session,
+                sessionmk= db
 
             )
             result = task.get_deadline_tasks(
                 localId = default_task.localId
             )
 
-            assert result[1] == Task.from_orm(default_task)
+            assert result[default_task.id] == Task.from_orm(default_task)
 
             
     def test_get_nearline_tasks(self, db):
-        with db() as session:
-            session : Session = session # for completion
 
 
             task = task_db(
-                session = session,
+                sessionmk = db                
 
             )
 
             task.create(
-                localid = default_task_nearline.localId,
+                localId = default_task_nearline.localId,
                 id = default_task_nearline.id,  
                 title = default_task_nearline.title,
                 note = default_task_nearline.note,
@@ -255,7 +251,9 @@ class db_task_Tests():
                 due = default_task_nearline.due,
                 completed = default_task_nearline.completed,
                 deleted = default_task_nearline.deleted,
-                hidden = default_task_nearline.hidden
+                hidden = default_task_nearline.hidden,
+                etag = default_task_nearline.etag,
+                kind = default_task_nearline.kind
                 
             )            
             
@@ -264,7 +262,7 @@ class db_task_Tests():
                 localId = default_task.localId
             )
 
-            assert result[1] == Task.from_orm(default_task_nearline)
+            assert result[default_task_nearline.id] == Task.from_orm(default_task_nearline)
         
 
         
