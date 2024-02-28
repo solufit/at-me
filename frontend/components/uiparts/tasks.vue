@@ -69,7 +69,7 @@ import type { PartsTasks } from '#build/components';
 							</div>
 						</div>
 						<div v-else>
-							<a :href="task.selfLink">
+							<a target="_blank" :href="task.selfLink">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-primary">
 									<path
 										stroke-linecap="round"
