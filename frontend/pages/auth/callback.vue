@@ -4,16 +4,14 @@
 	});
 	import type { User } from '~/types/user';
 	const route = useRoute();
-	const jwt = route.query.jwt;
 	const linkcode = route.query.linkcode;
 	const provider = route.query.provider;
 	const reqtype = route.query.type;
 	const config = useRuntimeConfig();
-	const { setToken } = useAccessToken();
+	const { setToken, token } = useAccessToken();
 	const { userLink, setLink } = useUserLink();
 	const { user, clearUser, setUser } = useUserStore();
 	if (userLink == null && reqtype == 'login') {
-		setToken(jwt as string);
 		setLink({ linkcode: linkcode as string, provider: provider as string });
 		const { data, error } = await useFetch(`${config.public.AUTH_API}/user/account`, {
 			params: {
@@ -21,7 +19,7 @@
 				provider: provider,
 			},
 		});
-		setUser(data.value as User);
+		setToken(data.value as string);
 		if (error.value) {
 			window.alert(error.value);
 			await navigateTo('/about');
@@ -31,7 +29,7 @@
 	const link = async () => {
 		const { data, error } = await useFetch(`${config.public.AUTH_API}/user/link`, {
 			params: {
-				userId: user?.userId,
+				token: token,
 				linkcode: linkcode,
 				provider: provider,
 			},
@@ -45,7 +43,6 @@
 	};
 	const changeAccount = async () => {
 		clearUser();
-		setToken(jwt as string);
 		setLink({ linkcode: linkcode as string, provider: provider as string });
 		const { data, error } = await useFetch(`${config.public.AUTH_API}/user/account`, {
 			params: {
@@ -53,13 +50,12 @@
 				provider: provider,
 			},
 		});
-		setUser(data.value as User);
+		setToken(data.value as string);
 		if (error.value) {
 			window.alert(error.value);
-			return await navigateTo('/about');
+			await navigateTo('/about');
 		}
 		window.location.href = '/';
-		navigateTo('/');
 	};
 </script>
 <template>

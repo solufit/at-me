@@ -15,16 +15,16 @@ export default defineNuxtRouteMiddleware(async (to: RouteLocationNormalized) => 
 		const { user, setUser } = useUserStore();
 		const { signOut } = useAuth();
 		const config = useRuntimeConfig();
-		if (!user?.userId) {
-			await signOut();
-			return await navigateTo('/about');
-		}
 		const { data, error } = await useFetch(`${config.public.AUTH_API}/user/profile`, {
 			method: 'get',
 			params: {
-				userId: user?.userId,
+				token: token,
 			},
 		});
+		if (error.value) {
+			await signOut();
+			return await navigateTo('/about');
+		}
 		setUser(data.value as User);
 	}
 });

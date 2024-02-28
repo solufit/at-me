@@ -62,7 +62,7 @@ async def login_callback(code: str = Query(...)):
         }
     )
     rc.expire(linkcode,3600)
-    return RedirectResponse(url=f"{config.FRONTEND_URL}?jwt={token_response_json['id_token']}&linkcode={linkcode}&provider=google&type=login")
+    return RedirectResponse(url=f"{config.FRONTEND_URL}?linkcode={linkcode}&provider=google&type=login")
 
 @router.get('/token')
 async def get_token(linkcode: str, secure: str) -> str:

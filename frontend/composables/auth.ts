@@ -29,6 +29,16 @@ export const useAuth = (): Auth => {
 		const auth = getAuth();
 		await firebaseSignOut(auth)
 			.then(() => {
+				const { token } = useAccessToken();
+				const config = useRuntimeConfig();
+				if (token) {
+					const { data, error } = useFetch(`${config.public.AUTH_API}/session/invalid`, {
+						method: 'get',
+						params: {
+							token: token,
+						},
+					});
+				}
 				clearUser();
 				clearToken();
 				clearLink();

@@ -52,7 +52,7 @@ def callback(token_response):
         }
     )
     rc.expire(linkcode,int(token_response_json["expires_in"]))
-    return token_response_json, linkcode
+    return linkcode
 
 @router.get("/callback")
 async def login_callback(code: str = Query(...)):
@@ -66,8 +66,8 @@ async def login_callback(code: str = Query(...)):
             "client_secret": CLIENT_SECRET,
         },
     )
-    token_response_json, linkcode = callback(token_response)
-    return RedirectResponse(url=f"{config.FRONTEND_URL}?jwt={token_response_json["access_token"]}&linkcode={linkcode}&provider=github&type=login")
+    linkcode = callback(token_response)
+    return RedirectResponse(url=f"{config.FRONTEND_URL}?linkcode={linkcode}&provider=github&type=login")
 
 @router.get('/token')
 async def get_token(linkcode: str, secure: str) -> str:

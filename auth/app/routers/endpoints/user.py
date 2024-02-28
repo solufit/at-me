@@ -5,13 +5,13 @@ import requests
 from app.core import config
 import os
 import uuid
-from app.routers.endpoints import google, github
+from app.routers.endpoints import google, github, session
 import datetime
 
 @router.get('/link')
-async def get_link(userId: str,linkcode: str, provider: str) -> User:
+async def get_link(token: str,linkcode: str, provider: str) -> User:
     # ユーザーIDから該当ユーザーが引っ張ってこれなければ404エラー
-    user = await user_collection.find_one({"userId":userId})
+    user = await session.get_verify_token(token,os.getenv('SECURE_LOCK'))
     if user is None:
         raise HTTPException(status_code=404,detail="User Data is not defind")
     SECURE_LOCK = os.getenv('SECURE_LOCK')
@@ -33,7 +33,7 @@ async def get_link(userId: str,linkcode: str, provider: str) -> User:
                 "email":content['email'],
                 "linkcoede": linkcode
             }
-            await user_collection.update_one({"userId":userId},{"$set":{"providers.google":providerinfo}})
+            await user_collection.update_one({"userId":user['userId']},{"$set":{"providers.google":providerinfo}})
         case 'github':
             res = requests.get(
                 f" https://api.github.com/user",
@@ -48,12 +48,12 @@ async def get_link(userId: str,linkcode: str, provider: str) -> User:
                 "email":content['login'],
                 "linkcoede": linkcode
             }
-            await user_collection.update_one({"userId":userId},{"$set":{"providers.github": providerinfo}})
-    return await user_collection.find_one({"userId":userId})
+            await user_collection.update_one({"userId":user['userId']},{"$set":{"providers.github": providerinfo}})
+    return await user_collection.find_one({"userId":user['userId']})
 
 @router.get('/profile')
-async def get_profile(userId: str) -> User:
-    user = await user_collection.find_one({"userId":userId})
+async def get_profile(token: str) -> User:
+    user = await session.get_verify_token(token,os.getenv('SECURE_LOCK'))
     if user is None:
         raise HTTPException(status_code=404,detail="User Data is not defind")
     return user
@@ -98,7 +98,7 @@ async def create_user(provider,providerinfo):
     return user
 
 @router.get('/account')
-async def get_account(linkcode: str, provider: str) -> User:
+async def get_account(linkcode: str, provider: str) -> str:
     # 各プロバイダーで認証して認証できたらユーザーIDを返却
     # できなければ新規作成
     SECURE_LOCK = os.getenv('SECURE_LOCK')
@@ -127,9 +127,12 @@ async def get_account(linkcode: str, provider: str) -> User:
             if not user:
                 # 新規ユーザー作成
                 user = await create_user(provider=provider,providerinfo={"id":content["id"],"displayName":content["name"],"photoURL":content['avatar_url'],"email":content['login'],"linkcode":linkcode})
-    return user
+    return await session.get_generate_token(user['userId'])
 
 @router.post('/set_provider')
-async def post_set_provider(userId: str, calenderProvider: str, taskProvider: str) -> User:
-    user = await user_collection.find_one_and_update({"userId":userId},{"$set":{"calenderProvider":calenderProvider,"taskProvider":taskProvider}})
+async def post_set_provider(token: str, calenderProvider: str, taskProvider: str) -> User:
+    user = await session.get_verify_token(token,os.getenv('SECURE_LOCK'))
+    if user is None:
+        raise HTTPException(status_code=404,detail="User Data is not defind")
+    user = await user_collection.find_one_and_update({"userId":user["userId"]},{"$set":{"calenderProvider":calenderProvider,"taskProvider":taskProvider}})
     return user
