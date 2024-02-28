@@ -19,8 +19,9 @@
 		"vscode": {
 			"extensions": [
 				"mtxr.sqltools",
-				"ms-azuretools.vscode-docker",
-				"mtxr.sqltools-driver-pg"
+				"mtxr.sqltools-driver-pg",
+				"donjayamanne.python-extension-pack",
+				"qwtel.sqlite-viewer"
 			]
 		}
 	}
