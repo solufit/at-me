@@ -112,7 +112,7 @@ async def get_token(linkcode: str, secure: str) -> str:
                 "exp":int(time.time()) + 3600
             }
         )
-        rc.expire(linkcode,3600)
+        rc.expire(linkcode)
         return token_response_json["access_token"]
     else:
         return token['access_token']

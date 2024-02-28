@@ -91,6 +91,8 @@ async def get_github_issues(userlink :str) -> List[Task]:
 )
 async def get_tasks(token: str, date: datetime.date = datetime.date(1,1,1)) -> List[Task]:
     user = requests.get(f"{AUTH_API}/session/verify?token={token}&secure={SECURE_LOCK}", timeout=(3.0, 7.5)).json()
+    if user is None:
+        raise HTTPException(status_code=401)
     match user["taskProvider"]:
         case 'atme':
             result = await get_atme_tasks(user['userId'],date)

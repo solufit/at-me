@@ -12,7 +12,7 @@ import type { PartsTasks } from '#build/components';
 	const { token } = useAccessToken();
 	const config = useRuntimeConfig();
 	const task_click = async (id: string) => {
-		const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/tasks/complite`, {
+		const { data, error, pending } = await useFetch(`${config.public.API_ENDPOINT}/v1/tasks/complite`, {
 			method: 'get',
 			headers: {
 				Authorization: `Bearer ${token}`,

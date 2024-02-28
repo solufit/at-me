@@ -18,7 +18,7 @@ async def get_google_calendar(userlink :str, date: datetime.date) -> List[Event]
     if access_token.status_code == 403:
         raise HTTPException(status_code=403)
     elif access_token.status_code == 401:
-        raise HTTPException(status_code=401)
+        raise HTTPException(status_code=401,detail="Authentication to the linked account is required")
     access_token = access_token.text
     res = requests.get(
         f"https://content.googleapis.com/calendar/v3/calendars/primary/events?timeMin={datetime.datetime(date.year, date.month, date.day,0,0,0).isoformat()}Z&timeMax={datetime.datetime(date.year, date.month, date.day,23,59,59).isoformat()}Z",
@@ -69,6 +69,8 @@ async def get_calendars(
     date: datetime.date  = datetime.date(1992, 4, 27),
     ) -> List[Event]:
     user = requests.get(f"{AUTH_API}/session/verify?token={token}&secure={SECURE_LOCK}", timeout=(3.0, 7.5)).json()
+    if user is None:
+        raise HTTPException(status_code=401)
     match user["calendarProvider"]:
         case 'atme':
             return await get_atme_calendar(user['userId'],date)

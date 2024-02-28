@@ -8,10 +8,11 @@
 	import type { Task } from '~/types/task';
 	import { useAccessToken } from '../composables/accesstoken';
 	const { token } = useAccessToken();
-	const { user } = useUserStore();
+	const { signOut } = useAuth();
+	const { setPending } = usePending();
 	const config = useRuntimeConfig();
 	// defind variable
-	const schs = ref<Schdule[]>([]);
+	const schs = ref<Schdule[] | null>([]);
 	const tasks = ref<Task[]>([]);
 	// defind today
 	const date = new Date();
@@ -19,32 +20,37 @@
 	const mm = String(date.getMonth() + 1).padStart(2, '0');
 	const dd = String(date.getDate()).padStart(2, '0');
 	const today = `${yyyy}-${mm}-${dd}`;
-
+	const calendar_pending = ref();
+	const tasks_pending = ref();
 	// api requests
 	const get_schs = async () => {
-		const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/calendar`, {
+		const { data, error, pending } = await useFetch(`${config.public.API_ENDPOINT}/v1/calendar`, {
 			method: 'get',
 			params: {
 				token: token,
 				date: today,
 			},
 		});
-		if (error.value?.data.detail == 'Not authenticated') {
-			navigateTo('/');
+		console.log(error.value);
+		setPending(pending.value);
+		if (error.value?.data.detail === 401) {
+			signOut();
+			window.location.href = '/about';
 		} else {
 			schs.value = data.value as Schdule[];
 		}
 	};
 	const get_tasks = async () => {
-		const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/tasks`, {
+		const { data, error, pending } = await useFetch(`${config.public.API_ENDPOINT}/v1/tasks`, {
 			method: 'get',
 			params: {
 				token: token,
 				date: today,
 			},
 		});
-		if (error.value?.data.detail == 'Not authenticated') {
-			navigateTo('/');
+		setPending(pending.value);
+		if (error.value?.statusCode === 401) {
+			schs.value = null;
 		} else {
 			tasks.value = data.value as Task[];
 		}
@@ -100,11 +106,21 @@
 		<div class="p-5 mt-5 md:mt-0">
 			<div class="md:flex w-full">
 				<div class="md:block md:w-1/2" :class="{ hidden: tabs !== 'calender' }">
-					<div v-if="schs.length == 0" class="flex items-center justify-center font-semibold text-2xl mt-10">予定はありません！</div>
-					<div v-else><Timeline :schdules="schs" /></div>
+					<div v-if="schs !== null">
+						<div v-if="schs?.length == 0" class="flex items-center justify-center font-semibold text-2xl mt-10">予定はありません！</div>
+						<div v-else><Timeline :schdules="schs" /></div>
+					</div>
+					<div v-else class="flex items-center justify-center">
+						<div>
+							<div class="text-3xl text-center text-red-600">連携に失敗しました</div>
+							<div class="text-lg text-center my-4">一度、カレンダーとして連携するサービスのアカウント連携を解除し再度認証を行ってください</div>
+							<NuxtImg src="/images/error.png" class="h-96 w-96 flex items-center justify-center" />
+						</div>
+					</div>
 				</div>
 				<div class="md:block md:w-1/2" :class="{ hidden: tabs !== 'tasks' }">
-					<!--
+					<div v-if="tasks !== null">
+						<!--
 					<div class="shadow-md shadow-lime-200 border-2 border-lime-200 p-3 rounded-md m-2 mb-6 font-semibold">
 						<div><span>AI Recommend</span><span class="ml-2">for 30 mins</span></div>
 						<div class="mt-4">
@@ -112,7 +128,15 @@
 						</div>
 					</div>
 					-->
-					<Tasks :tasks="tasks" />
+						<Tasks :tasks="tasks" />
+					</div>
+					<div v-else class="flex items-center justify-center">
+						<div>
+							<div class="text-3xl text-center text-red-600">連携に失敗しました</div>
+							<div class="text-lg text-center my-4">一度、タスクとして連携するサービスのアカウント連携を解除し再度認証を行ってください</div>
+							<NuxtImg src="/images/error.png" class="h-96 w-96 flex items-center justify-center" />
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
