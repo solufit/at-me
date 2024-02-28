@@ -30,7 +30,7 @@ export default defineNuxtConfig({
 	},
 	modules: ['@nuxt/image', 'dayjs-nuxt', '@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', '@vite-pwa/nuxt'],
 	image: {
-		format: ['webp', 'png'],
+		format: ['webp', 'png', 'svg'],
 		dir: 'public/',
 	},
 	pinia: {
