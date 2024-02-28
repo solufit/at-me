@@ -1,11 +1,10 @@
 from sqlalchemy import Column, Integer, String, Time, Date, Text, TIMESTAMP, ForeignKey
 from sqlalchemy.sql import func
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.dialects.postgresql import CHAR, TEXT
 from sqlalchemy.dialects.mysql import BOOLEAN
 from sqlalchemy.dialects.mysql import DATETIME
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.orm import sessionmaker, relationship, declarative_base
 import os
 
 DATABASE = "postgresql+psycopg2"
