@@ -58,7 +58,7 @@
 		window.location.href = data.value as string;
 	};
 	const linkWithGithub = async (): Promise<void> => {
-		const { data, error } = await useFetch(`${config.public.AUTH_API}/github/install`, {});
+		const { data, error } = await useFetch(`${config.public.AUTH_API}/github/login`, {});
 		window.location.href = data.value as string;
 	};
 	const rsc_submit = async () => {
