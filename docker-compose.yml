@@ -30,7 +30,6 @@ services:
       - api.env
     volumes:
       - ./api:/server/api/
-      - jwt.key.pub:/server/api/jwt.key.pub
 
   atme-auth-api:
     build:
@@ -50,8 +49,6 @@ services:
       - "8000:80"
     volumes:
       - ./auth:/server/auth/
-      - jwt.key:/server/auth/jwt.key
-      - jwt.key.pub:/server/auth/jwt.key.pub
 
 
   atme-auth-redis:

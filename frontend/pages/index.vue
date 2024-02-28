@@ -7,9 +7,8 @@
 	import type { Schdule } from '~/types/schdule';
 	import type { Task } from '~/types/task';
 	import { useAccessToken } from '../composables/accesstoken';
-	import { useUserLink } from '../composables/userlink';
 	const { token } = useAccessToken();
-	const { userLink } = useUserLink();
+	const { user } = useUserStore();
 	const config = useRuntimeConfig();
 	// defind variable
 	const schs = ref<Schdule[]>([]);
@@ -23,57 +22,29 @@
 
 	// api requests
 	const get_schs = async () => {
-		if (userLink?.provider == 'google') {
-			const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/google/calender?date=${today}&userlink=${userLink.linkcode}&provider`, {
-				method: 'get',
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			});
-			if (error.value?.data.detail == 'Not authenticated') {
-				navigateTo('');
-			} else {
-				schs.value = data.value as Schdule[];
-			}
+		const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/calenders?date=${today}`, {
+			method: 'get',
+			params: {
+				token: token,
+			},
+		});
+		if (error.value?.data.detail == 'Not authenticated') {
+			navigateTo('/');
 		} else {
-			const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/calenders?date=${today}`, {
-				method: 'get',
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			});
-			if (error.value?.data.detail == 'Not authenticated') {
-				navigateTo('/');
-			} else {
-				schs.value = data.value as Schdule[];
-			}
+			schs.value = data.value as Schdule[];
 		}
 	};
 	const get_tasks = async () => {
-		if (userLink?.provider == 'github') {
-			const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/github/issues?userlink=${userLink.linkcode}`, {
-				method: 'get',
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			});
-			if (error.value?.data.detail == 'Not authenticated') {
-				navigateTo('/');
-			} else {
-				tasks.value = data.value as Task[];
-			}
+		const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/tasks?date=${today}`, {
+			method: 'get',
+			params: {
+				token: token,
+			},
+		});
+		if (error.value?.data.detail == 'Not authenticated') {
+			navigateTo('/');
 		} else {
-			const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/tasks?date=${today}`, {
-				method: 'get',
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			});
-			if (error.value?.data.detail == 'Not authenticated') {
-				navigateTo('/');
-			} else {
-				tasks.value = data.value as Task[];
-			}
+			tasks.value = data.value as Task[];
 		}
 	};
 	get_schs();

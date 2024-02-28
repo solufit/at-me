@@ -3,7 +3,6 @@ interface ProviderInfo {
 	photoURL: string;
 	displayName: string;
 	email: string;
-	linkcoede: string;
 }
 
 interface Providers {
@@ -20,6 +19,6 @@ export interface User {
 	calenderProvider: string;
 	taskProvider: string;
 	providers: Providers;
-	lastlogin: string;
+	loginProvider: string;
 	created_at: Date;
 }

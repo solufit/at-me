@@ -9,10 +9,8 @@
 	const reqtype = route.query.type;
 	const config = useRuntimeConfig();
 	const { setToken, token } = useAccessToken();
-	const { userLink, setLink } = useUserLink();
 	const { user, clearUser, setUser } = useUserStore();
-	if (userLink == null && reqtype == 'login') {
-		setLink({ linkcode: linkcode as string, provider: provider as string });
+	if (token == null && reqtype == 'login') {
 		const { data, error } = await useFetch(`${config.public.AUTH_API}/user/account`, {
 			params: {
 				linkcode: linkcode,
@@ -43,7 +41,6 @@
 	};
 	const changeAccount = async () => {
 		clearUser();
-		setLink({ linkcode: linkcode as string, provider: provider as string });
 		const { data, error } = await useFetch(`${config.public.AUTH_API}/user/account`, {
 			params: {
 				linkcode: linkcode,
@@ -59,7 +56,7 @@
 	};
 </script>
 <template>
-	<div class="lg:h-screen w-screen flex items-center justify-center" v-if="userLink != null && reqtype == 'login'">
+	<div class="lg:h-screen w-screen flex items-center justify-center" v-if="token != null && reqtype == 'login'">
 		<div class="w-5/6 m-6 lg:m-0 lg:w-1/2 border rounded-xl p-3">
 			<div class="flex items-center justify-center text-4xl">
 				<div>
@@ -77,7 +74,7 @@
 								<img :src="user?.photoURL" class="rounded-full" />
 							</div>
 							<div class="items-center justify-center ml-10">
-								<div class="rounded-full" v-if="userLink?.provider == 'github'">
+								<div class="rounded-full" v-if="user?.loginProvider == 'github'">
 									<svg viewBox="0 0 98 98" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4">
 										<path
 											fill-rule="evenodd"
@@ -87,7 +84,7 @@
 										/>
 									</svg>
 								</div>
-								<div class="rounded-full" v-if="userLink?.provider == 'google'">
+								<div class="rounded-full" v-if="user?.loginProvider == 'google'">
 									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4">
 										<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
 										<path

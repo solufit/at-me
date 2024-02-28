@@ -7,6 +7,7 @@ import os
 import uuid
 from app.routers.endpoints import google, github, session
 import datetime
+import redis
 
 @router.get('/link')
 async def get_link(token: str,linkcode: str, provider: str) -> User:
@@ -54,8 +55,6 @@ async def get_link(token: str,linkcode: str, provider: str) -> User:
 @router.get('/profile')
 async def get_profile(token: str) -> User:
     user = await session.get_verify_token(token,os.getenv('SECURE_LOCK'))
-    if user is None:
-        raise HTTPException(status_code=404,detail="User Data is not defind")
     return user
 
 async def create_user(provider,providerinfo):
@@ -90,7 +89,7 @@ async def create_user(provider,providerinfo):
         "photoURL":providerinfo['photoURL'],
         "calenderProvider":'atme',
         "taskProvider":'atme',
-        "lastlogin": provider,
+        "loginProvider": provider,
         "providers":providers,
         "created_at":datetime.datetime.now()
     }
@@ -113,7 +112,7 @@ async def get_account(linkcode: str, provider: str) -> str:
                 headers={'Authorization': f"Bearer {access_token}"}
             )
             content = res.json()
-            user = await user_collection.find_one({"providers.google.id":content['email']})
+            user = await user_collection.find_one_and_update({"providers.google.id":content['email']},{"$set":{"loginProvider":provider}})
             if not user:
                 user = await create_user(provider=provider,providerinfo={"id":content["email"],"displayName":content["name"],"photoURL":content['picture'],"email":content['email'],"linkcode":linkcode})
         case 'github':
@@ -123,7 +122,7 @@ async def get_account(linkcode: str, provider: str) -> str:
                 headers={"Accept": "application/vnd.github+json",'Authorization': f"Bearer {access_token}","X-GitHub-Api-Version": "2022-11-28"}
             )
             content = res.json()
-            user = await user_collection.find_one({"providers.github.id":content['id']}) # 要確認
+            user = await user_collection.find_one_and_update({"providers.github.id":content['id']},{"$set":{"loginProvider":provider}})
             if not user:
                 # 新規ユーザー作成
                 user = await create_user(provider=provider,providerinfo={"id":content["id"],"displayName":content["name"],"photoURL":content['avatar_url'],"email":content['login'],"linkcode":linkcode})
@@ -136,3 +135,21 @@ async def post_set_provider(token: str, calenderProvider: str, taskProvider: str
         raise HTTPException(status_code=404,detail="User Data is not defind")
     user = await user_collection.find_one_and_update({"userId":user["userId"]},{"$set":{"calenderProvider":calenderProvider,"taskProvider":taskProvider}})
     return user
+
+@router.post('/unlink')
+async def post_rem_provider(token: str, provider: str):
+    user = await session.get_verify_token(token,os.getenv('SECURE_LOCK'))
+    if user is None:
+        raise HTTPException(status_code=404,detail="User Data is not defind")
+    rc = redis.Redis(
+        host="atme-auth-redis",
+        port=6379,
+        db=0,
+    )
+    rc.delete(user["providers"][provider]["linkcode"])
+    match provider:
+        case 'google':
+            user = await user_collection.find_one_and_update({"userId":user["userId"]},{"$set":{"providers.google":{"id":'',"photoURL":'',"displayName":'',"email":"","linkcode":''}}})
+        case 'github':
+            user = await user_collection.find_one_and_update({"userId":user["userId"]},{"$set":{"providers.github":{"id":'',"photoURL":'',"displayName":'',"email":"","linkcode":''}}})
+    return

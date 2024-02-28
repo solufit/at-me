@@ -16,7 +16,8 @@ class ProviderInfo(BaseModel):
     photoURL: str | None= Field(...)
     displayName: str| None = Field(...)
     email: str| None = Field(...)
-    linkcode: str| None = Field(...)
+    #linkcode: str| None = Field(...)
+    #実際は持っているけれどユーザー側へは返却しない
 
 class Providers(BaseModel):
     atme: ProviderInfo = Field(...)
@@ -41,7 +42,7 @@ class User(BaseModel):
     photoURL: str = Field(...)
     calenderProvider: str = Field(...)
     taskProvider: str = Field(...)
-    lastlogin: str = Field(...)
+    loginProvider: str = Field(...)
     providers: dict = Field(...)
     created_at: datetime = Field(...)
 

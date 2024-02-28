@@ -1,4 +1,3 @@
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut as firebaseSignOut, type UserCredential } from 'firebase/auth';
 import { useAccessToken } from '../composables/accesstoken';
 import { useUserStore } from '../composables/user';
 
@@ -10,7 +9,6 @@ type Auth = {
 export const useAuth = (): Auth => {
 	const { setUser, clearUser } = useUserStore();
 	const { setToken, clearToken } = useAccessToken();
-	const { clearLink } = useUserLink();
 
 	const signIn = async (): Promise<string> => {
 		const config = useRuntimeConfig();
@@ -26,27 +24,19 @@ export const useAuth = (): Auth => {
 	};
 
 	const signOut = async (): Promise<void> => {
-		const auth = getAuth();
-		await firebaseSignOut(auth)
-			.then(() => {
-				const { token } = useAccessToken();
-				const config = useRuntimeConfig();
-				if (token) {
-					const { data, error } = useFetch(`${config.public.AUTH_API}/session/invalid`, {
-						method: 'get',
-						params: {
-							token: token,
-						},
-					});
-				}
-				clearUser();
-				clearToken();
-				clearLink();
-				navigateTo('/about');
-			})
-			.catch((error) => {
-				alert(error.message);
+		const { token } = useAccessToken();
+		const config = useRuntimeConfig();
+		if (token) {
+			const { data, error } = useFetch(`${config.public.AUTH_API}/session/invalid`, {
+				method: 'get',
+				params: {
+					token: token,
+				},
 			});
+		}
+		clearUser();
+		clearToken();
+		navigateTo('/about');
 	};
 
 	return {

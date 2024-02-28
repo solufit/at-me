@@ -14,13 +14,13 @@ async def get_generate_token(userId: str):
         port=6379,
         db=1,
     )
-    token = uuid.uuid4()
+    token = str(uuid.uuid4())
     rc.set(token,userId,ex=3600)
     return token
 
 @router.get('/verify')
 async def get_verify_token(token: str, secure: str) -> User:
-    if secure == os.getenv("SECURE_LOCK"):
+    if secure != os.getenv("SECURE_LOCK"):
         raise HTTPException(status_code=401)
     rc = redis.Redis(
         host="atme-auth-redis",
@@ -31,7 +31,8 @@ async def get_verify_token(token: str, secure: str) -> User:
     if userId is None:
         raise HTTPException(status_code=401)
     else:
-        user = await user_collection.find_one({"userId":userId})
+        user = await user_collection.find_one({"userId":userId.decode('utf-8')})
+        print(userId.decode('utf-8'))
         if user is None:
             raise HTTPException(status_code=404,detail="User Data is not defind")
         else:

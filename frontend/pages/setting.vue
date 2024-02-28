@@ -8,7 +8,7 @@
 	import { useUserStore } from '../composables/user';
 	import { useAuth } from '../composables/auth';
 	const { user } = useUserStore();
-	const { userLink } = useUserLink();
+	const { token } = useAccessToken();
 	const signOut = async (): Promise<void> => {
 		await useAuth().signOut();
 		await navigateTo('/signIn');
@@ -62,12 +62,21 @@
 		window.location.href = data.value as string;
 	};
 	const rsc_submit = async () => {
-		console.log('test');
 		const { data, error } = await useFetch(`${config.public.AUTH_API}/user/set_provider`, {
 			params: {
-				userId: user?.userId,
+				token: token,
 				calenderProvider: rsc_calendar.value,
 				taskProvider: rsc_tasks.value,
+			},
+			method: 'POST',
+		});
+		await refreshNuxtData();
+	};
+	const rm_provider = async (provider: string) => {
+		const { data, error } = await useFetch(`${config.public.AUTH_API}/user/unlink`, {
+			params: {
+				token: token,
+				provider: provider,
 			},
 			method: 'POST',
 		});
@@ -83,7 +92,7 @@
 					<img alt="User Icon" :src="user?.photoURL" class="rounded-full" />
 				</div>
 				<div class="block md:hidden items-center justify-center ml-11">
-					<div class="rounded-full" v-if="userLink?.provider == 'github'">
+					<div class="rounded-full" v-if="user?.loginProvider == 'github'">
 						<svg viewBox="0 0 98 98" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4">
 							<path
 								fill-rule="evenodd"
@@ -93,7 +102,7 @@
 							/>
 						</svg>
 					</div>
-					<div class="rounded-full" v-if="userLink?.provider == 'google'">
+					<div class="rounded-full" v-if="user?.loginProvider == 'google'">
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4">
 							<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
 							<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
@@ -111,7 +120,7 @@
 				</div>
 			</div>
 			<div class="hidden md:block items-center justify-center mr-6">
-				<div class="rounded-full" v-if="userLink?.provider == 'github'">
+				<div class="rounded-full" v-if="user?.loginProvider == 'github'">
 					<svg viewBox="0 0 98 98" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8">
 						<path
 							fill-rule="evenodd"
@@ -121,7 +130,7 @@
 						/>
 					</svg>
 				</div>
-				<div class="rounded-full" v-if="userLink?.provider == 'google'">
+				<div class="rounded-full" v-if="user?.loginProvider == 'google'">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-8 w-8">
 						<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
 						<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
@@ -192,7 +201,7 @@
 									<td>Google Calender</td>
 									<td>Google Tasks</td>
 									<th>
-										<button class="btn btn-sm">連携解除</button>
+										<button class="btn btn-sm" @click="rm_provider('google')">連携解除</button>
 									</th>
 								</tr>
 								<tr v-else>
@@ -245,7 +254,7 @@
 									<td></td>
 									<td>Assigned Issue</td>
 									<th>
-										<button class="btn btn-sm">連携解除</button>
+										<button class="btn btn-sm" @click="rm_provider('github')">連携解除</button>
 									</th>
 								</tr>
 								<tr v-else>
@@ -283,7 +292,7 @@
 								</div>
 								<div class="w-1/3">Google</div>
 								<button class="btn btn-sm w-24 btn-primary" @click="signInWithGoogle()" v-if="user?.providers.google.id == ''">連携する</button>
-								<button class="btn btn-sm w-24" v-else>連携中</button>
+								<button class="btn btn-sm w-24" v-else @click="rm_provider('google')">連携解除</button>
 							</div>
 							<div class="my-3 flex items-center gap-3">
 								<svg viewBox="0 0 98 98" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4">
@@ -296,7 +305,7 @@
 								</svg>
 								<div class="w-1/3">Github</div>
 								<button class="btn btn-sm w-24 btn-primary" @click="linkWithGithub()" v-if="user?.providers.google.id == ''">連携する</button>
-								<button class="btn btn-sm w-24" v-else>連携中</button>
+								<button class="btn btn-sm w-24" v-else @click="rm_provider('github')">連携解除</button>
 							</div>
 						</div>
 					</div>
