@@ -16,7 +16,7 @@ export interface User {
 	displayName: string;
 	email: string;
 	photoURL: string;
-	calenderProvider: string;
+	calendarProvider: string;
 	taskProvider: string;
 	providers: Providers;
 	loginProvider: string;

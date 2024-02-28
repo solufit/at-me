@@ -87,7 +87,7 @@ async def create_user(provider,providerinfo):
         "displayName":providerinfo["displayName"],
         "email":providerinfo["email"],
         "photoURL":providerinfo['photoURL'],
-        "calenderProvider":'atme',
+        "calendarProvider":'atme',
         "taskProvider":'atme',
         "loginProvider": provider,
         "providers":providers,
@@ -129,11 +129,11 @@ async def get_account(linkcode: str, provider: str) -> str:
     return await session.get_generate_token(user['userId'])
 
 @router.post('/set_provider')
-async def post_set_provider(token: str, calenderProvider: str, taskProvider: str) -> User:
+async def post_set_provider(token: str, calendarProvider: str, taskProvider: str) -> User:
     user = await session.get_verify_token(token,os.getenv('SECURE_LOCK'))
     if user is None:
         raise HTTPException(status_code=404,detail="User Data is not defind")
-    user = await user_collection.find_one_and_update({"userId":user["userId"]},{"$set":{"calenderProvider":calenderProvider,"taskProvider":taskProvider}})
+    user = await user_collection.find_one_and_update({"userId":user["userId"]},{"$set":{"calendarProvider":calendarProvider,"taskProvider":taskProvider}})
     return user
 
 @router.post('/unlink')

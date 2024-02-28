@@ -22,10 +22,11 @@
 
 	// api requests
 	const get_schs = async () => {
-		const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/calenders?date=${today}`, {
+		const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/calendar`, {
 			method: 'get',
 			params: {
 				token: token,
+				date: today,
 			},
 		});
 		if (error.value?.data.detail == 'Not authenticated') {
@@ -35,10 +36,11 @@
 		}
 	};
 	const get_tasks = async () => {
-		const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/tasks?date=${today}`, {
+		const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/tasks`, {
 			method: 'get',
 			params: {
 				token: token,
+				date: today,
 			},
 		});
 		if (error.value?.data.detail == 'Not authenticated') {

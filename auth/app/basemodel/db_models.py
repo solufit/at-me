@@ -40,7 +40,7 @@ class User(BaseModel):
     displayName: str = Field(...)
     email: str = Field(...)
     photoURL: str = Field(...)
-    calenderProvider: str = Field(...)
+    calendarProvider: str = Field(...)
     taskProvider: str = Field(...)
     loginProvider: str = Field(...)
     providers: dict = Field(...)

@@ -14,11 +14,11 @@
 		await navigateTo('/signIn');
 	};
 	// defined form model
-	const rsc_calendar = ref(user?.calenderProvider);
+	const rsc_calendar = ref(user?.calendarProvider);
 	const rsc_tasks = ref(user?.taskProvider);
 	// defined translate
 	let rsc_calender_default = '未設定';
-	switch (user?.calenderProvider as String) {
+	switch (user?.calendarProvider as String) {
 		case 'atme':
 			rsc_calender_default = '@me';
 			break;
