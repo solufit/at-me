@@ -187,11 +187,9 @@ class db_task_Tests():
 
     
     def test_task_update(self, db):
-        with db() as session:
-            session : Session = session # for completion
 
             task = task_db(
-                session = session,
+                sessionmk = db
 
             )
             task.update(

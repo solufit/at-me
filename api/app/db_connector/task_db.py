@@ -1,5 +1,6 @@
 from sqlalchemy.orm import sessionmaker, Session, Query
 import datetime
+import copy
 
 
 from app.db_connector.settings import session as session_maker
@@ -116,21 +117,21 @@ class task_db():
         task: Task = self.session.query(Task).filter(Task.localId == localId)\
             .filter(Task.id == id).first()
 
-        task.id = id,
-        task.localId = localId,
-        task.kind = kind,
-        task.title = title,
-        task.note = note,
-        task.etag = etag,
-        task.updated = updated,
-        task.selfLink = selfLink,
-        task.parent = parent,
-        task.position = position,
-        task.status = status,
-        task.due = due,
-        task.completed = completed,
-        task.deleted = deleted,
-        task.hidden = hidden
+        task.id = copy.deepcopy(id)
+        task.localId = copy.deepcopy(localId)
+        task.kind = copy.deepcopy(kind)
+        task.title = copy.deepcopy(title)
+        task.note = copy.deepcopy(note)
+        task.etag = copy.deepcopy(etag)
+        task.updated = copy.deepcopy(updated)
+        task.selfLink = copy.deepcopy(selfLink)
+        task.parent = copy.deepcopy(parent)
+        task.position = copy.deepcopy(position)
+        task.status = copy.deepcopy(status)
+        task.due = copy.deepcopy(due)
+        task.completed = copy.deepcopy(completed)
+        task.deleted = copy.deepcopy(deleted)
+        task.hidden = copy.deepcopy(hidden)
         
 
 
