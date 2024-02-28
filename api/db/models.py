@@ -1,11 +1,10 @@
 from sqlalchemy import Column, Integer, String, Time, Date, Text, TIMESTAMP, ForeignKey
 from sqlalchemy.sql import func
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.dialects.postgresql import CHAR, TEXT
 from sqlalchemy.dialects.mysql import BOOLEAN
 from sqlalchemy.dialects.mysql import DATETIME
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.orm import sessionmaker, relationship, declarative_base
 import os
 
 DATABASE = "postgresql+psycopg2"
@@ -46,7 +45,7 @@ class TaskList(Base):
 class Task(Base):
     __tablename__ = 'tasks'
     id = Column(TEXT, primary_key=True, unique=True)
-    localId = Column(TEXT), ForeignKey("users.localId")
+    localId = Column(TEXT, ForeignKey("users.localId"))
     kind = Column(TEXT)
     title = Column(TEXT)
     note = Column(TEXT)
@@ -57,7 +56,8 @@ class Task(Base):
     position = Column(TEXT)
     status = Column(TEXT)
     due = Column(Date)
-    completed = Column(TIMESTAMP)
+    completed = Column(BOOLEAN)
+    completedTime = Column(TIMESTAMP)
     deleted = Column(BOOLEAN)
     hidden = Column(BOOLEAN)
     
@@ -79,7 +79,7 @@ class WorktimeDate(Base):
 
 class Event(Base):
     __tablename__ = 'calendar'
-    id = Column(Integer, primary_key=True)
+    id = Column(TEXT, primary_key=True)
     calendarId = Column(TEXT)
     htmlLink = Column(TEXT)
     starttime = Column(TIMESTAMP, nullable=False)
@@ -87,5 +87,9 @@ class Event(Base):
     title = Column(TEXT)
     etag = Column(Text)
     note = Column(Text)
-    localId = Column(TEXT), ForeignKey("users.localId")
+    #localId = Column(TEXT)
+    localId = Column(TEXT, ForeignKey("users.localId"))
+    #Taskid = Column(TEXT)
     Taskid = Column(TEXT, ForeignKey("tasks.id"))
+
+    

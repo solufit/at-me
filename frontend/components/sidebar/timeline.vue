@@ -23,12 +23,15 @@
 						>NOW</span
 					>
 				</h3>
-				<time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500"
-					>{{ sch.starttime.split('T')[1].split(':')[0] }}:{{ sch.starttime.split('T')[1].split(':')[1] }} - {{ sch.endtime?.split('T')[1].split(':')[0] }}:{{
-						sch.endtime?.split('T')[1].split(':')[1]
-					}}
-					( {{ sch.duringtime }} mins )</time
-				>
+				<time class="flex items-center mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
+					<NuxtImg src="/images/logo/google_calendar.svg" class="h-5 w-5 mr-2" />
+					<div>
+						{{ sch.starttime.split('T')[1].split(':')[0] }}:{{ sch.starttime.split('T')[1].split(':')[1] }} - {{ sch.endtime?.split('T')[1].split(':')[0] }}:{{
+							sch.endtime?.split('T')[1].split(':')[1]
+						}}
+						( {{ sch.duringtime }} mins )
+					</div>
+				</time>
 				<p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">
 					{{ sch.description }}
 				</p>

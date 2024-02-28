@@ -4,7 +4,7 @@
 	const router = useRouter();
 	const { token } = useAccessToken();
 	const config = useRuntimeConfig();
-	const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/calenders/dot`, {
+	const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/calendar/dot`, {
 		method: 'get',
 		headers: {
 			Authorization: `Bearer ${token}`,

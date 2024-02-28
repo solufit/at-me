@@ -22,6 +22,7 @@ class Event(atMeBase):
     etag : str = Field("etag", description="etag")
     note : str = Field("note", description="Note")
     Taskid : str = Field("task id", description="relational task id")
+    provider: str = Field(default='atme')
 
     class Config:
         orm_mode = True
@@ -40,6 +41,7 @@ class Task(atMeBase):
     deleted : bool = Field(False, description="if task deleted, it is true")
     hidden : bool = Field(False, description="if the flag is true, the task is hidden")
     duringtime: int = Field(30)
+    provider: str = Field(default='atme')
 
     class Config:
         orm_mode = True

@@ -8,16 +8,17 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+      POSTGRES_DB: atme
     ports:
       - 5432:5432
     volumes:
       - db-data:/var/lib/postgresql/data
 
-  api:
+  atme-app-api:
     build:
       context: .
       dockerfile: ./docker/api/Dockerfile
+    container_name: atme-app-api
 
 
     depends_on:
@@ -27,21 +28,28 @@ services:
     command: /bin/bash -c "cd /server/api/ && uvicorn main:app --host=0.0.0.0 --port=8080 --reload"
     env_file:
       - api.env
+    volumes:
+      - ./api:/server/api/
 
   atme-auth-api:
     build:
       context: .
       dockerfile: ./docker/api/Dockerfile
+    container_name: atme-auth-api
 
     depends_on:
       - db
+      - atme-auth-redis
 
-    command: /bin/bash -c "cd /server/auth/app/ && uvicorn main:app --host=0.0.0.0 --port=80 --reload"
+    command: /bin/bash -c "cd /server/auth/ && uvicorn main:app --host=0.0.0.0 --port=80 --reload"
     env_file:
       - auth.env
 
     ports:
-      - "80:80"
+      - "8000:80"
+    volumes:
+      - ./auth:/server/auth/
+
 
   atme-auth-redis:
     image: redis
@@ -50,10 +58,20 @@ services:
       - 6379
     volumes:
       - redis-data:/data/
-
+  
+  atme-auth-mongo:
+    image: mongo
+    container_name: atme-auth-mongo
+    expose:
+      - 27017
+    volumes:
+      - mongo-data:/data/db
+    env_file:
+      - auth.env
 
 volumes:
   db-data:
   redis-data:
+  mongo-data:
 
 

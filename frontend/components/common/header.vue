@@ -6,7 +6,9 @@
 		await useAuth().signOut();
 		await navigateTo('/about');
 	};
-	console.log(user);
+	const sync = async () => {
+		await refreshNuxtData();
+	};
 </script>
 <template>
 	<div>
@@ -24,6 +26,7 @@
 				<NuxtLink to="/" class="btn btn-ghost text-xl"> <NuxtImg src="/images/logo.webp" class="h-8 w-8" alt="logo" />@me</NuxtLink>
 			</div>
 			<div class="flex-none">
+				<!--
 				<div class="md:tooltip md:tooltip-bottom" data-tip="検索">
 					<button class="btn btn-ghost btn-circle" aria-label="検索">
 						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -31,8 +34,9 @@
 						</svg>
 					</button>
 				</div>
+				-->
 				<div class="md:tooltip md:tooltip-bottom" data-tip="同期">
-					<button class="btn btn-ghost btn-circle" aria-label="同期">
+					<button class="btn btn-ghost btn-circle" aria-label="同期" @click="sync()">
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
 							<path
 								stroke-linecap="round"
