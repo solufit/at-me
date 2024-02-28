@@ -20,8 +20,6 @@
 	const mm = String(date.getMonth() + 1).padStart(2, '0');
 	const dd = String(date.getDate()).padStart(2, '0');
 	const today = `${yyyy}-${mm}-${dd}`;
-	const calendar_pending = ref();
-	const tasks_pending = ref();
 	// api requests
 	const get_schs = async () => {
 		const { data, error, pending } = await useFetch(`${config.public.API_ENDPOINT}/v1/calendar`, {
