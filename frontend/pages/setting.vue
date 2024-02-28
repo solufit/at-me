@@ -13,8 +13,10 @@
 		await useAuth().signOut();
 		await navigateTo('/signIn');
 	};
+	// defined form model
+	const rsc_calendar = ref(user?.calenderProvider);
+	const rsc_tasks = ref(user?.taskProvider);
 	// defined translate
-	console.log(user?.calenderProvider === 'atme');
 	let rsc_calender_default = '未設定';
 	switch (user?.calenderProvider as String) {
 		case 'atme':
@@ -52,20 +54,24 @@
 	// defined function
 	const config = useRuntimeConfig();
 	const signInWithGoogle = async (): Promise<void> => {
-		const { data, error } = await useFetch(`${config.public.AUTH_API}/google/login`, {
-			params: {
-				redirect: config.public.AUTH_REDIRECT,
-			},
-		});
+		const { data, error } = await useFetch(`${config.public.AUTH_API}/google/login`, {});
 		window.location.href = data.value as string;
 	};
 	const linkWithGithub = async (): Promise<void> => {
-		const { data, error } = await useFetch(`${config.public.AUTH_API}/github/install`, {
-			params: {
-				redirect: config.public.AUTH_REDIRECT,
-			},
-		});
+		const { data, error } = await useFetch(`${config.public.AUTH_API}/github/install`, {});
 		window.location.href = data.value as string;
+	};
+	const rsc_submit = async () => {
+		console.log('test');
+		const { data, error } = await useFetch(`${config.public.AUTH_API}/user/set_provider`, {
+			params: {
+				userId: user?.userId,
+				calenderProvider: rsc_calendar.value,
+				taskProvider: rsc_tasks.value,
+			},
+			method: 'POST',
+		});
+		await refreshNuxtData();
 	};
 </script>
 <template>
@@ -306,8 +312,7 @@
 								<div class="label">
 									<span class="label-text">カレンダー</span>
 								</div>
-								<select class="select select-bordered">
-									<option disabled selected>{{ rsc_calender_default }}</option>
+								<select class="select select-bordered" v-model="rsc_calendar">
 									<option value="atme">@me</option>
 									<option value="GoogleCalender">Google カレンダー</option>
 								</select>
@@ -318,18 +323,17 @@
 								<div class="label">
 									<span class="label-text">タスク</span>
 								</div>
-								<select class="select select-bordered">
-									<option disabled selected>{{ rsc_tasks_default }}</option>
+								<select class="select select-bordered" v-model="rsc_tasks">
 									<option value="atme">@me</option>
 									<option value="GoogleTasks">Google タスク</option>
-									<option value="GIthubIssues">Github Issues</option>
+									<option value="GithubIssues">Github Issues</option>
 								</select>
 							</label>
 						</div>
 					</div>
 					<div class="p-4 my-6">
 						<div class="text-end">
-							<button class="btn btn-primary w-40">保存</button>
+							<button class="btn btn-primary w-40" @click="rsc_submit()">保存</button>
 						</div>
 					</div>
 				</div>

@@ -54,7 +54,6 @@ async def get_link(userId: str,linkcode: str, provider: str) -> User:
 @router.get('/profile')
 async def get_profile(userId: str) -> User:
     user = await user_collection.find_one({"userId":userId})
-    print(user)
     if user is None:
         raise HTTPException(status_code=404,detail="User Data is not defind")
     return user
@@ -127,4 +126,9 @@ async def get_account(linkcode: str, provider: str) -> User:
             if not user:
                 # 新規ユーザー作成
                 user = await create_user(provider=provider,providerinfo={"id":content["id"],"displayName":content["name"],"photoURL":content['avatar_url'],"email":content['login'],"linkcode":linkcode})
+    return user
+
+@router.post('/set_provider')
+async def post_set_provider(userId: str, calenderProvider: str, taskProvider: str) -> User:
+    user = await user_collection.find_one_and_update({"userId":userId},{"$set":{"calenderProvider":calenderProvider,"taskProvider":taskProvider}})
     return user
