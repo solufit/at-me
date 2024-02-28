@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+pydantic
+requests
+typing
+requests
+datetime
+python-multipart
+python-dateutil
+jwt
+redis
+httpx
+uuid
+motor

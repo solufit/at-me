@@ -120,7 +120,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+*.env
 .venv
 env/
 venv/
@@ -160,3 +160,6 @@ cython_debug/
 #.idea/
 
 /api/app/*.json
+/auth/*.pem
+*.key
+*.pub

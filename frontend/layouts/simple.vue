@@ -14,7 +14,7 @@
 						<div class="mb-6 lg:hidden">
 							<a class="btn btn-ghost text-xl" href="/"> <NuxtImg src="/images/logo.webp" class="h-8 w-8" alt="logo" />@me</a>
 						</div>
-						<ul class="h-96">
+						<ul class="">
 							<!-- Sidebar content here -->
 							<li class="my-3"><NuxtLink to="/">TODAY</NuxtLink></li>
 							<li class="my-3"><NuxtLink to="/near">近日予定のタスク</NuxtLink></li>
@@ -24,10 +24,11 @@
 						<ul class="">
 							<!-- Sidebar content here -->
 							<li class="my-1"><NuxtLink to="/">チュートリアル</NuxtLink></li>
-							<li class="my-1"><NuxtLink to="/">利用規約</NuxtLink></li>
+							<li class="my-1"><a href="https://solufit.net/terms" target="_blank">利用規約</a></li>
+							<li class="my-1"><a href="https://solufit.net/privacy" target="_blank">プライバシーポリシー</a></li>
 							<li class="my-1"><button onclick="oss_license.showModal()">OSSライセンス</button></li>
 
-							<li class="my-1"><NuxtLink to="/">このアプリについて</NuxtLink></li>
+							<li class="my-1"><NuxtLink to="/about">このアプリについて</NuxtLink></li>
 						</ul>
 						<dialog id="oss_license" class="modal">
 							<div class="modal-box">
@@ -40,7 +41,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="p-6 w-full overflow-y-auto" style="height: 93vh">
+			<div class="p-6 w-full overflow-y-auto" style="height: 90vh">
 				<slot />
 			</div>
 		</div>

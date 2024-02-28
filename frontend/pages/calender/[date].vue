@@ -3,48 +3,52 @@
 	import Tasks from '~/components/uiparts/tasks.vue';
 	import type { Schdule } from '~/types/schdule';
 	import type { Task } from '~/types/task';
-	import format from 'date-fns/format';
-	const schs: Schdule[] = [
-		{
-			starttime: '2024-02-20 11:44',
-			endtime: '2024-02-20 11:54',
-			duringtime: 10,
-			title: 'test',
-			description: 'test',
-		},
-		{
-			starttime: '2024-02-20 11:44',
-			endtime: '2024-02-20 11:54',
-			duringtime: 10,
-			title: 'test',
-			description: 'test',
-		},
-		{
-			starttime: '2024-02-20 11:44',
-			endtime: '2024-02-20 11:54',
-			duringtime: 10,
-			title: 'test',
-			description: 'test',
-		},
-		{
-			starttime: '2024-02-20 11:44',
-			endtime: '2024-02-20 11:54',
-			duringtime: 10,
-			title: 'test',
-			description: 'test',
-		},
-	];
-	const tasks: Task[] = [];
-	const tabs = ref('calender');
-	const change_tab = (tab: string) => {
-		tabs.value = tab;
-	};
 	const route = useRoute();
 	const targetdate = route.params.date as string;
 	useHead({
 		title: `${targetdate} | @me`,
 	});
 	const tfdate = new Date(targetdate);
+	// defind variable
+	const schs = ref<Schdule[]>([]);
+	const tasks = ref<Task[]>([]);
+	const config = useRuntimeConfig();
+	const { token } = useAccessToken();
+	// api requests
+	const get_schs = async () => {
+		const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/calendar`, {
+			method: 'get',
+			params: {
+				token: token,
+				date: targetdate,
+			},
+		});
+		if (error.value?.data.detail == 'Not authenticated') {
+			navigateTo('/');
+		} else {
+			schs.value = data.value as Schdule[];
+		}
+	};
+	const get_tasks = async () => {
+		const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/tasks`, {
+			method: 'get',
+			params: {
+				token: token,
+				date: targetdate,
+			},
+		});
+		if (error.value?.data.detail == 'Not authenticated') {
+			navigateTo('/');
+		} else {
+			tasks.value = data.value as Task[];
+		}
+	};
+	get_schs();
+	get_tasks();
+	const tabs = ref('calender');
+	const change_tab = (tab: string) => {
+		tabs.value = tab;
+	};
 </script>
 <template>
 	<div>

@@ -7,3 +7,10 @@ pydantic==1.10.9
 python-dotenv==1.0.0
 firebase-admin>=6.4.0<6.5.0
 pytest>=8.0.1,<8.1.0
+requests
+datetime
+jwt
+redis
+httpx
+uuid
+

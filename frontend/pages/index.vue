@@ -6,52 +6,74 @@
 	import Tasks from '~/components/uiparts/tasks.vue';
 	import type { Schdule } from '~/types/schdule';
 	import type { Task } from '~/types/task';
-	const schs: Schdule[] = [
-		{
-			starttime: '2024-02-20 11:44',
-			endtime: '2024-02-20 11:54',
-			duringtime: 10,
-			title: 'test',
-			description: 'test',
-		},
-		{
-			starttime: '2024-02-20 11:44',
-			endtime: '2024-02-20 11:54',
-			duringtime: 10,
-			title: 'test',
-			description: 'test',
-		},
-		{
-			starttime: '2024-02-20 11:44',
-			endtime: '2024-02-20 11:54',
-			duringtime: 10,
-			title: 'test',
-			description: 'test',
-		},
-		{
-			starttime: '2024-02-20 11:44',
-			endtime: '2024-02-20 11:54',
-			duringtime: 10,
-			title: 'test',
-			description: 'test',
-		},
-	];
-	const tasks: Task[] = [
-		{
-			id: '',
-			title: 'test',
-			description: 'test',
-			schduletime: new Date(),
-			deadtime: new Date(),
-			project: '',
-			projectId: '',
-			duringtime: 10,
-		},
-	];
+	import { useAccessToken } from '../composables/accesstoken';
+	const { token } = useAccessToken();
+	const { user } = useUserStore();
+	const config = useRuntimeConfig();
+	// defind variable
+	const schs = ref<Schdule[]>([]);
+	const tasks = ref<Task[]>([]);
+	// defind today
+	const date = new Date();
+	const yyyy = String(date.getFullYear());
+	const mm = String(date.getMonth() + 1).padStart(2, '0');
+	const dd = String(date.getDate()).padStart(2, '0');
+	const today = `${yyyy}-${mm}-${dd}`;
+
+	// api requests
+	const get_schs = async () => {
+		const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/calendar`, {
+			method: 'get',
+			params: {
+				token: token,
+				date: today,
+			},
+		});
+		if (error.value?.data.detail == 'Not authenticated') {
+			navigateTo('/');
+		} else {
+			schs.value = data.value as Schdule[];
+		}
+	};
+	const get_tasks = async () => {
+		const { data, error } = await useFetch(`${config.public.API_ENDPOINT}/v1/tasks`, {
+			method: 'get',
+			params: {
+				token: token,
+				date: today,
+			},
+		});
+		if (error.value?.data.detail == 'Not authenticated') {
+			navigateTo('/');
+		} else {
+			tasks.value = data.value as Task[];
+		}
+	};
+	get_schs();
+	get_tasks();
 	const tabs = ref('calender');
 	const change_tab = (tab: string) => {
 		tabs.value = tab;
 	};
+	const task_rc: Task[] = [
+		{
+			id: '',
+			title: 'Windows Updateをする',
+			note: '',
+			updated: new Date(),
+			selfLink: 'string',
+			parent: 'string',
+			position: 'string',
+			status: 'string',
+			due: new Date(),
+			duringtime: 30,
+			completed: false,
+			deleted: false,
+			hidden: false,
+			provider: 'at-me',
+			parent_id: '',
+		},
+	];
 </script>
 <template>
 	<div>
@@ -77,10 +99,19 @@
 		</div>
 		<div class="p-5 mt-5 md:mt-0">
 			<div class="md:flex w-full">
-				<div class="md:block md:w-1/2" :class="{ hidden: tabs != 'calender' }">
-					<Timeline :schdules="schs" />
+				<div class="md:block md:w-1/2" :class="{ hidden: tabs !== 'calender' }">
+					<div v-if="schs.length == 0" class="flex items-center justify-center font-semibold text-2xl mt-10">予定はありません！</div>
+					<div v-else><Timeline :schdules="schs" /></div>
 				</div>
-				<div class="md:block md:w-1/2" :class="{ hidden: tabs != 'tasks' }">
+				<div class="md:block md:w-1/2" :class="{ hidden: tabs !== 'tasks' }">
+					<!--
+					<div class="shadow-md shadow-lime-200 border-2 border-lime-200 p-3 rounded-md m-2 mb-6 font-semibold">
+						<div><span>AI Recommend</span><span class="ml-2">for 30 mins</span></div>
+						<div class="mt-4">
+							<Tasks :tasks="task_rc" />
+						</div>
+					</div>
+					-->
 					<Tasks :tasks="tasks" />
 				</div>
 			</div>

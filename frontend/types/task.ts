@@ -1,10 +1,17 @@
 export interface Task {
 	id: string;
 	title: string;
-	deadtime: Date;
-	description: string;
-	project: string;
-	projectId: string;
-	schduletime: Date;
+	note: string;
+	updated: Date;
+	selfLink: string;
+	parent: string;
+	parent_id: string;
+	position: string;
+	status: string;
+	due: Date;
 	duringtime: number;
+	completed: boolean;
+	deleted: boolean;
+	hidden: boolean;
+	provider: string;
 }

@@ -17,7 +17,8 @@ class Event(atMeBase):
     htmlLink : str = Field("HTTP LINK", description="Calendar Web Page")
     starttime : datetime.datetime = Field(datetime.datetime(1910,10,10,10,10,10), description="starttime")
     endtime : datetime.datetime = Field(datetime.datetime(1910,10,10,10,10,10), description="endtime")
-    title : str = Field("title", description="titlej")
+    duringtime: int = Field("duringtime")
+    title : str = Field("title", description="title")
     etag : str = Field("etag", description="etag")
     note : str = Field("note", description="Note")
     Taskid : str = Field("task id", description="relational task id")
@@ -38,9 +39,16 @@ class Task(atMeBase):
     completed : bool = Field(False, description="task completed(y or n)")
     deleted : bool = Field(False, description="if task deleted, it is true")
     hidden : bool = Field(False, description="if the flag is true, the task is hidden")
+    duringtime: int = Field(30)
+    provider: str = Field(default='atme')
 
     class Config:
         orm_mode = True
+
+class User(atMeBase):
+    email: str
+    displayName: str
+    photoURL: str
      
    
 

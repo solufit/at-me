@@ -1,0 +1,20 @@
+version: '3'
+services:
+  atme-app-api:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: atme-app-api
+    volumes:
+      - ./:/src/
+    env_file:
+      - .env
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - atme
+
+networks:
+  atme:
+    external: true

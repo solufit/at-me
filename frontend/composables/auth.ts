@@ -1,37 +1,42 @@
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut as firebaseSignOut, type UserCredential } from 'firebase/auth';
-import { useUser } from '../composables/user';
+import { useAccessToken } from '../composables/accesstoken';
+import { useUserStore } from '../composables/user';
 
 type Auth = {
-	signIn: () => Promise<void>;
+	signIn: () => Promise<string>;
 	signOut: () => Promise<void>;
 };
 
 export const useAuth = (): Auth => {
-	const { setUser, clearUser } = useUser();
+	const { setUser, clearUser } = useUserStore();
+	const { setToken, clearToken } = useAccessToken();
 
-	const signIn = async (): Promise<void> => {
-		const auth = getAuth();
-		const provider = new GoogleAuthProvider();
-		await signInWithPopup(auth, provider)
-			.then((result: UserCredential) => {
-				setUser(result.user);
-			})
-			.catch((error) => {
-				console.log(error);
-				alert(error.message);
-			});
+	const signIn = async (): Promise<string> => {
+		const config = useRuntimeConfig();
+		const { data, error } = await useFetch(`${config.public.AUTH_API}/oauth2/login`, {
+			params: {
+				redirect: config.public.AUTH_REDIRECT,
+			},
+		});
+		return data.value as string;
+		//setUser(result.user);
+		//setToken(await result.user.getIdToken());
+		//setRefresh(result.user.refreshToken);
 	};
 
 	const signOut = async (): Promise<void> => {
-		const auth = getAuth();
-		await firebaseSignOut(auth)
-			.then(() => {
-				clearUser();
-			})
-			.catch((error) => {
-				console.log(error);
-				alert(error.message);
+		const { token } = useAccessToken();
+		const config = useRuntimeConfig();
+		if (token) {
+			const { data, error } = useFetch(`${config.public.AUTH_API}/session/invalid`, {
+				method: 'get',
+				params: {
+					token: token,
+				},
 			});
+		}
+		clearUser();
+		clearToken();
+		navigateTo('/about');
 	};
 
 	return {
