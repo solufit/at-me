@@ -1,0 +1,38 @@
+from fastapi import APIRouter, HTTPException
+import os
+import redis
+import time
+import uuid
+from app.core import config
+from app.basemodel.db_models import user_collection, User
+
+router = APIRouter()
+
+async def get_generate_token(userId: str,secure: str):
+    if secure == os.getenv("SECURE_LOCK"):
+        raise HTTPException(status_code=401)
+    rc = redis.Redis(
+        host="atme-auth-redis",
+        port=6379,
+        db=1,
+    )
+    token = uuid.uuid4()
+    rc.set(token,userId,ex=3600)
+    return
+
+@router.get('/verify')
+async def get_verify_token(token: str, secure: str):
+    if secure == os.getenv("SECURE_LOCK"):
+        raise HTTPException(status_code=401)
+    rc = redis.Redis(
+        host="atme-auth-redis",
+        port=6379,
+        db=1,
+    )
+    userId = rc.get(token)
+    if userId is None:
+        raise HTTPException(status_code=401)
+    else:
+        user = await user_collection.find_one({"userId":userId})
+        if user is None:
+            raise HTTPException(status_code=404,detail="User Data is not defind")

@@ -51,6 +51,7 @@ def callback(token_response):
             "exp_refresh": int(time.time()) + int(token_response_json["refresh_token_expires_in"])
         }
     )
+    rc.expire(linkcode,int(token_response_json["expires_in"]))
     return token_response_json, linkcode
 
 @router.get("/callback")
@@ -119,6 +120,7 @@ async def get_token(linkcode: str, secure: str) -> str:
                 "exp_refresh": int(time.time()) + int(token_response_json["refresh_token_expires_in"])
             }
         )
+        rc.expire(linkcode,int(token_response_json["expires_in"]))
         return token_response_json["access_token"]
     else:
         return token['access_token']

@@ -307,7 +307,7 @@
 				<p class="m-4 text-sm text-gray-600">カレンダーやタスクとして表示するリソースを設定します</p>
 				<div class="p-3">
 					<div class="flex items-center justify-center flex-wrap">
-						<div class="w-full md:w-1/2">
+						<div class="w-full md:w-1/2 p-2">
 							<label class="form-control w-full max-w-xs md:max-w-md">
 								<div class="label">
 									<span class="label-text">カレンダー</span>
@@ -318,7 +318,7 @@
 								</select>
 							</label>
 						</div>
-						<div class="w-full md:w-1/2">
+						<div class="w-full md:w-1/2 p-2">
 							<label class="form-control w-full max-w-xs md:max-w-md">
 								<div class="label">
 									<span class="label-text">タスク</span>

@@ -20,5 +20,6 @@ export interface User {
 	calenderProvider: string;
 	taskProvider: string;
 	providers: Providers;
+	lastlogin: string;
 	created_at: Date;
 }

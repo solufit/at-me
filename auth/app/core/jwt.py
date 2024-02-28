@@ -1,6 +1,6 @@
 from jwt import JWT, jwk_from_pem
+import jwt
 import time
-import sys
 import os
 
 def generate_jwt():

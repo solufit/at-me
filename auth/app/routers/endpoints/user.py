@@ -90,6 +90,7 @@ async def create_user(provider,providerinfo):
         "photoURL":providerinfo['photoURL'],
         "calenderProvider":'atme',
         "taskProvider":'atme',
+        "lastlogin": provider,
         "providers":providers,
         "created_at":datetime.datetime.now()
     }

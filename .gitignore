@@ -161,3 +161,5 @@ cython_debug/
 
 /api/app/*.json
 /auth/*.pem
+*.key
+*.pub

@@ -41,6 +41,7 @@ class User(BaseModel):
     photoURL: str = Field(...)
     calenderProvider: str = Field(...)
     taskProvider: str = Field(...)
+    lastlogin: str = Field(...)
     providers: dict = Field(...)
     created_at: datetime = Field(...)
 
