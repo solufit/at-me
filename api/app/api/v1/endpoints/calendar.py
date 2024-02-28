@@ -26,12 +26,12 @@ async def get_google_calendar(userlink :str, date: datetime.date) -> List[Event]
         headers={'Authorization': f"Bearer {access_token}"}
     )
     if 'items' in res.json():
-        contens = [ Event(localId=item['id'],id=item['id'],calendarID=item['iCalUID'],htmlLink=item['htmlLink'],starttime=item['start']['dateTime'],endtime=item['end']['dateTime'],duringtime=((datetime.datetime.fromisoformat(item['end']['dateTime']) - datetime.datetime.fromisoformat(item['start']['dateTime'])).seconds // 60),title=item['summary'],etag=item['etag'],note=(item['description'] if 'description' in item else ''),Taskid='')  for item in res.json()["items"] if 'dateTime' in item['start']]
-        return contens
+        contents = [ Event(localId=item['id'],id=item['id'],calendarID=item['iCalUID'],htmlLink=item['htmlLink'],starttime=item['start']['dateTime'],endtime=item['end']['dateTime'],duringtime=((datetime.datetime.fromisoformat(item['end']['dateTime']) - datetime.datetime.fromisoformat(item['start']['dateTime'])).seconds // 60),title=item['summary'],etag=item['etag'],note=(item['description'] if 'description' in item else ''),Taskid='')  for item in res.json()["items"] if 'dateTime' in item['start']]
+        return contents
     else:
-        return []
+        return
 
-async def get_atme_calendar(userid :str, date: datetime.date):
+async def get_atme_calendar(userid :str, date: datetime.date) -> List[Event]:
     testdata = [
         {
             "id": '',
@@ -68,11 +68,12 @@ async def get_calendars(
     token: str,
     date: datetime.date  = datetime.date(1992, 4, 27),
     ) -> List[Event]:
-    user = requests.get(f"{AUTH_API}/session/verify?token={token}&secure={SECURE_LOCK}", timeout=(3.0, 7.5))
+    user = requests.get(f"{AUTH_API}/session/verify?token={token}&secure={SECURE_LOCK}", timeout=(3.0, 7.5)).json()
     match user["calendarProvider"]:
-        case 'googleCalendar':
-            result = get_google_calendar(user["providers"]["google"]["linkcode"],date)
-    return result
+        case 'atme':
+            return await get_atme_calendar(user['userId'],date)
+        case 'GoogleCalendar':
+            return await get_google_calendar(user["providers"]["google"]["linkcode"],date)
 
 @router.get('/dot')
 async def get_dot(cred = Depends(get_current_user)):

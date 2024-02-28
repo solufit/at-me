@@ -67,7 +67,7 @@ async def login_callback(code: str = Query(...)):
         },
     )
     linkcode = callback(token_response)
-    return RedirectResponse(url=f"{config.FRONTEND_URL}?linkcode={linkcode}&provider=github&type=login")
+    return RedirectResponse(url=f"{config.FRONTEND_URL}?linkcode={linkcode}&provider=github")
 
 @router.get('/token')
 async def get_token(linkcode: str, secure: str) -> str:

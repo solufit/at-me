@@ -10,7 +10,7 @@ import datetime
 import redis
 
 @router.get('/link')
-async def get_link(token: str,linkcode: str, provider: str) -> User:
+async def get_link(token: str,linkcode: str, provider: str) -> None:
     # ユーザーIDから該当ユーザーが引っ張ってこれなければ404エラー
     user = await session.get_verify_token(token,os.getenv('SECURE_LOCK'))
     if user is None:
@@ -32,7 +32,7 @@ async def get_link(token: str,linkcode: str, provider: str) -> User:
                 "photoURL":content['picture'],
                 "displayName":content['name'],
                 "email":content['email'],
-                "linkcoede": linkcode
+                "linkcode": linkcode
             }
             await user_collection.update_one({"userId":user['userId']},{"$set":{"providers.google":providerinfo}})
         case 'github':
@@ -47,10 +47,10 @@ async def get_link(token: str,linkcode: str, provider: str) -> User:
                 "photoURL":content['avatar_url'],
                 "displayName":content['name'],
                 "email":content['login'],
-                "linkcoede": linkcode
+                "linkcode": linkcode
             }
             await user_collection.update_one({"userId":user['userId']},{"$set":{"providers.github": providerinfo}})
-    return await user_collection.find_one({"userId":user['userId']})
+    return
 
 @router.get('/profile')
 async def get_profile(token: str) -> User:

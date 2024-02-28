@@ -2,7 +2,7 @@
 	import headervue from '~/components/common/header.vue';
 	import Licence from '~/components/licence.vue';
 	import taskdetail from '~/components/uiparts/taskdetail.vue';
-	import Calender from '~/components/sidebar/calender.vue';
+	import Calendar from '~/components/sidebar/calendar.vue';
 	const { $pwa } = useNuxtApp();
 	const showInstall = ref(true);
 	const dismiss = async () => {
@@ -25,7 +25,7 @@
 							<NuxtLink to="/" class="btn btn-ghost text-xl"> <NuxtImg src="/images/logo.webp" class="h-8 w-8" alt="logo" />@me</NuxtLink>
 						</div>
 						<div class="flex items-center justify-center mb-7">
-							<calender />
+							<Calendar />
 						</div>
 						<ul class="">
 							<!-- Sidebar content here -->

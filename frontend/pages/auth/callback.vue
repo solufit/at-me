@@ -6,11 +6,10 @@
 	const route = useRoute();
 	const linkcode = route.query.linkcode;
 	const provider = route.query.provider;
-	const reqtype = route.query.type;
 	const config = useRuntimeConfig();
 	const { setToken, token } = useAccessToken();
 	const { user, clearUser, setUser } = useUserStore();
-	if (token == null && reqtype == 'login') {
+	if (token == null) {
 		const { data, error } = await useFetch(`${config.public.AUTH_API}/user/account`, {
 			params: {
 				linkcode: linkcode,
@@ -36,7 +35,6 @@
 			window.alert(error.value);
 			return await navigateTo('/about');
 		}
-		setUser(data.value as User);
 		window.location.href = '/setting';
 	};
 	const changeAccount = async () => {
@@ -56,7 +54,7 @@
 	};
 </script>
 <template>
-	<div class="lg:h-screen w-screen flex items-center justify-center" v-if="token != null && reqtype == 'login'">
+	<div class="lg:h-screen w-screen flex items-center justify-center" v-if="token != null">
 		<div class="w-5/6 m-6 lg:m-0 lg:w-1/2 border rounded-xl p-3">
 			<div class="flex items-center justify-center text-4xl">
 				<div>

@@ -6,7 +6,6 @@
 		await useAuth().signOut();
 		await navigateTo('/about');
 	};
-	console.log(user);
 </script>
 <template>
 	<div>

@@ -104,12 +104,14 @@
 					<div v-else><Timeline :schdules="schs" /></div>
 				</div>
 				<div class="md:block md:w-1/2" :class="{ hidden: tabs !== 'tasks' }">
+					<!--
 					<div class="shadow-md shadow-lime-200 border-2 border-lime-200 p-3 rounded-md m-2 mb-6 font-semibold">
 						<div><span>AI Recommend</span><span class="ml-2">for 30 mins</span></div>
 						<div class="mt-4">
 							<Tasks :tasks="task_rc" />
 						</div>
 					</div>
+					-->
 					<Tasks :tasks="tasks" />
 				</div>
 			</div>

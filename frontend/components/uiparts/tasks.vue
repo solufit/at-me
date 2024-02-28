@@ -28,7 +28,7 @@ import type { PartsTasks } from '#build/components';
 		<div class="p-2" v-if="tasks.length > 0" v-for="task in tasks">
 			<div class="border-2 rounded-md p-3 cursor-pointer w-full">
 				<div class="flex w-full" :class="{ 'opacity-25': task.completed }">
-					<div class="w-20" v-if="task.provider == 'at-me'">
+					<div class="w-20" v-if="task.provider == 'atme'">
 						<input type="radio" :name="task.id" @change="task_click(task.id)" class="radio radio-primary" :checked="task.completed" />
 					</div>
 					<div class="w-20 flex items-center justify-center" v-if="task.provider == 'github'">
@@ -48,7 +48,7 @@ import type { PartsTasks } from '#build/components';
 									{{ task.title }}
 								</div>
 								<div class="flex gap-4 my-1 text-sm font-normal ml-3">
-									<div v-if="task.provider == 'at-me'">{{ task.duringtime }} mins</div>
+									<div v-if="task.provider == 'atme'">{{ task.duringtime }} mins</div>
 									<div>{{ task.parent }}</div>
 								</div>
 							</summary>

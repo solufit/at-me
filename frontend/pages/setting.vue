@@ -17,16 +17,16 @@
 	const rsc_calendar = ref(user?.calendarProvider);
 	const rsc_tasks = ref(user?.taskProvider);
 	// defined translate
-	let rsc_calender_default = '未設定';
+	let rsc_calendar_default = '未設定';
 	switch (user?.calendarProvider as String) {
 		case 'atme':
-			rsc_calender_default = '@me';
+			rsc_calendar_default = '@me';
 			break;
-		case 'GoogleCalender':
-			rsc_calender_default = 'Google カレンダー';
+		case 'GoogleCalendar':
+			rsc_calendar_default = 'Google カレンダー';
 			break;
 		default:
-			rsc_calender_default = '';
+			rsc_calendar_default = '';
 			break;
 	}
 	let rsc_tasks_default = '未設定';
@@ -65,7 +65,7 @@
 		const { data, error } = await useFetch(`${config.public.AUTH_API}/user/set_provider`, {
 			params: {
 				token: token,
-				calenderProvider: rsc_calendar.value,
+				calendarProvider: rsc_calendar.value,
 				taskProvider: rsc_tasks.value,
 			},
 			method: 'POST',
@@ -222,7 +222,7 @@
 										</svg>
 										<span class="ml-3 text-lg">Google</span>
 									</td>
-									<td>Google Calender</td>
+									<td>Google Calendar</td>
 									<td>Google Tasks</td>
 									<td></td>
 								</tr>
@@ -235,8 +235,8 @@
 												</div>
 											</div>
 											<div>
-												<div class="font-bold text-left">{{ user?.displayName }}</div>
-												<div class="text-sm opacity-50">{{ user?.email }}</div>
+												<div class="font-bold text-left">{{ user?.providers.github.displayName }}</div>
+												<div class="text-sm opacity-50">{{ user?.providers.github.email }}</div>
 											</div>
 										</div>
 									</td>
@@ -323,7 +323,7 @@
 								</div>
 								<select class="select select-bordered" v-model="rsc_calendar">
 									<option value="atme">@me</option>
-									<option value="GoogleCalender" v-if="user?.providers.google.id != ''">Google カレンダー</option>
+									<option value="GoogleCalendar" v-if="user?.providers.google.id != ''">Google カレンダー</option>
 								</select>
 							</label>
 						</div>

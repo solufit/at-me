@@ -32,7 +32,6 @@ async def get_verify_token(token: str, secure: str) -> User:
         raise HTTPException(status_code=401)
     else:
         user = await user_collection.find_one({"userId":userId.decode('utf-8')})
-        print(userId.decode('utf-8'))
         if user is None:
             raise HTTPException(status_code=404,detail="User Data is not defind")
         else:
