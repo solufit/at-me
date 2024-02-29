@@ -25,7 +25,7 @@ rc = redis.StrictRedis(connection_pool=connection_pool)
 
 @router.get("/login")
 async def login_form():
-    return f"{AUTHORIZATION_URL}?response_type=code&client_id={CLIENT_ID}&redirect_uri={config.AUTH_HOST}/google/callback&scope=openid%20email%20profile%20https://www.googleapis.com/auth/calendar&access_type=offline&prompt=consent"
+    return f"{AUTHORIZATION_URL}?response_type=code&client_id={CLIENT_ID}&redirect_uri={config.AUTH_HOST}/google/callback&scope=openid%20email%20profile%20https://www.googleapis.com/auth/calendar.events&access_type=offline&prompt=consent"
 
 @router.get("/callback")
 async def login_callback(code: str = Query(...)):
