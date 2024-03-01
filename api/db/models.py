@@ -1,8 +1,7 @@
 from sqlalchemy import Column, Integer, String, Time, Date, Text, TIMESTAMP, ForeignKey
+from sqlalchemy import Boolean as BOOLEAN
 from sqlalchemy.sql import func
 from sqlalchemy.dialects.postgresql import CHAR, TEXT
-from sqlalchemy.dialects.mysql import BOOLEAN
-from sqlalchemy.dialects.mysql import DATETIME
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, relationship, declarative_base
 import os
